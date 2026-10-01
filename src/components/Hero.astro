@@ -1,7 +1,8 @@
 ---
 import Foto from './Foto.astro';
 import Sterren from './Sterren.astro';
-import { site, url } from '../data/site';
+import Vink from './Vink.astro';
+import { site, url, usps } from '../data/site';
 import hero from '../assets/hero.jpg';
 ---
 <!-- Brede terrasfoto onder een groene overlay; de gestreepte doekbaan eronder verwijst naar de valk van een zonnescherm. -->
@@ -12,7 +13,10 @@ import hero from '../assets/hero.jpg';
     <div class="max-w-2xl">
       <p class="kicker text-mint">Zonwering en rolluiken, Ridderkerk</p>
       <h1 class="mt-4 text-4xl">Zonwering op maat, gemonteerd door onze eigen monteurs</h1>
-      <p class="mt-6 max-w-xl text-lg text-wit/90">Buiten- en binnenzonwering voor woningen en bedrijven. Bijna alles assembleren we zelf aan de Noordenweg. Kom kijken in de showroom of vraag een offerte aan, dan komen we bij u inmeten.</p>
+      <p class="mt-6 max-w-xl text-lg text-wit/90">Buiten- en binnenzonwering voor woningen en bedrijven in Ridderkerk en omgeving. Kom kijken in de showroom of vraag een offerte aan, dan komen we bij u inmeten.</p>
+      <ul class="mt-6 grid max-w-xl gap-2 sm:grid-cols-2">
+        {usps.map((u) => <li class="flex gap-2.5 font-medium"><Vink class="text-mint" />{u}</li>)}
+      </ul>
       <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
         <a href={url('#offerte')} class="btn btn-roest">Offerte aanvragen</a>
         <a href={url('#producten')} class="font-display font-semibold underline decoration-mint decoration-2 underline-offset-[6px]">Bekijk de producten</a>
@@ -24,7 +28,7 @@ import hero from '../assets/hero.jpg';
         </div>
         <div>
           <dt class="text-wit/80">Klanten op Google</dt>
-          <dd class="flex flex-wrap items-center gap-x-2 font-semibold"><Sterren /> <span><span class="tabular-nums">{site.google.score}</span> uit 5, {site.google.aantal} reviews</span></dd>
+          <dd><a href={site.reviewsUrl} target="_blank" rel="noopener" class="inline-flex flex-wrap items-center gap-x-2 font-semibold no-underline hover:underline"><Sterren /> <span><span class="tabular-nums">{site.google.score}</span> uit 5, {site.google.aantal} reviews<span class="sr-only"> (opent Google in een nieuw tabblad)</span></span></a></dd>
         </div>
       </dl>
     </div>

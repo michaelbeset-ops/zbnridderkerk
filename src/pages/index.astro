@@ -6,6 +6,8 @@ import Werkwijze from '../components/Werkwijze.astro';
 import Showroom from '../components/Showroom.astro';
 import Reviews from '../components/Reviews.astro';
 import Offerte from '../components/Offerte.astro';
+import Waarom from '../components/Waarom.astro';
+import Contactrij from '../components/Contactrij.astro';
 import Vandaag from '../components/Vandaag.astro';
 import { site, tijden, url } from '../data/site';
 
@@ -26,9 +28,11 @@ const jsonld = site.preview ? undefined : {
 >
   <Hero />
   <Producten />
+  <Waarom />
   <Werkwijze />
   <Showroom />
   <Reviews />
   <Offerte />
+  <Contactrij />
   <Vandaag />
 </Base>

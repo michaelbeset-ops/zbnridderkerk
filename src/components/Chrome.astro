@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { site, url } from '../data/site';
+import { site, url, producten } from '../data/site';
 import logo from '../assets/logo.png';
 interface Props { deel: 'kop' | 'voet' }
 const { deel } = Astro.props;
@@ -17,7 +17,16 @@ const menu = [
       </a>
       <nav aria-label="Hoofdmenu" class="hidden lg:block">
         <ul class="flex gap-7 text-[1rem] font-semibold">
-          {menu.map(([n, h]) => <li><a href={url(h)} class="no-underline transition-colors hover:text-roest">{n}</a></li>)}
+          {menu.map(([n, h]) => (
+            <li class={n === 'Producten' ? 'group relative' : ''}>
+              <a href={url(h)} class="no-underline transition-colors hover:text-roest">{n}</a>
+              {n === 'Producten' && (
+                <ul class="invisible absolute left-1/2 top-full z-50 mt-3 grid w-[32rem] -translate-x-1/2 grid-cols-2 gap-x-6 rounded-xl bg-wit p-4 opacity-0 shadow-[0_12px_32px_-8px_rgba(23,35,31,0.25)] ring-1 ring-lijn transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 before:absolute before:-top-4 before:left-0 before:h-4 before:w-full">
+                  {producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="block rounded-md px-3 py-2 text-sm font-medium no-underline hover:bg-ecru">{p.naam}</a></li>)}
+                </ul>
+              )}
+            </li>
+          ))}
         </ul>
       </nav>
       <div class="flex items-center gap-2">
@@ -27,7 +36,12 @@ const menu = [
     </div>
     <nav id="menu-mobiel" aria-label="Menu" class="hidden border-t border-lijn bg-linnen lg:!hidden" data-menu>
       <ul class="wrap grid py-2 text-lg font-semibold">
-        {menu.map(([n, h]) => <li><a href={url(h)} class="block border-b border-lijn py-3 no-underline last:border-0">{n}</a></li>)}
+        {menu.map(([n, h]) => (
+          <li class="border-b border-lijn last:border-0">
+            <a href={url(h)} class="block py-3 no-underline">{n}</a>
+            {n === 'Producten' && <ul class="mb-3 grid grid-cols-2 gap-x-4 text-base font-normal">{producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="block py-1.5 no-underline">{p.naam}</a></li>)}</ul>}
+          </li>
+        ))}
       </ul>
     </nav>
   </header>

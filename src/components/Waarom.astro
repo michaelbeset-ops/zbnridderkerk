@@ -1,0 +1,35 @@
+---
+// Wat je van ZBN mag verwachten: foto naast tekst met vinkjes. Alle punten komen van de oude site.
+import Foto from './Foto.astro';
+import Vink from './Vink.astro';
+import { site, url } from '../data/site';
+import knikarm from '../assets/knikarm.jpg';
+const punten = [
+  ['Eigen assemblage', 'Bijna alle producten worden in ons eigen bedrijf aan de Noordenweg geassembleerd. Daardoor weten we precies wat we leveren.'],
+  ['Eigen monteurs', 'Onze eigen deskundige monteurs plaatsen uw zonwering op de voorgeschreven manier en leggen uit hoe het werkt.'],
+  ['Showroom in Ridderkerk', 'Alles wat we leveren kunt u in de showroom bekijken, met stalen van doek en stoffen.'],
+  ['Ook reparatie en onderhoud', 'Ook na de montage kunt u bij ons terecht, voor onderhoud of als er iets kapot is.'],
+];
+---
+<section class="bg-ecru py-16 lg:py-24">
+  <div class="wrap grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+    <div class="aspect-[4/3] overflow-hidden rounded-xl lg:col-span-6 lg:aspect-[4/5]"><Foto src={knikarm} alt="Lichte overkapping tegen een blauwe lucht met een palmboom en struiken ervoor" sizes="(min-width: 1024px) 560px, 100vw" /></div>
+    <div class="lg:col-span-6">
+      <p class="kicker text-oker-ink">Wat u van ons mag verwachten</p>
+      <h2 class="mt-2 text-3xl">Zonwering uit eigen huis, voor bedrijven en particulieren</h2>
+      <p class="mt-5 text-lg text-ink-zacht">ZBN levert uitsluitend producten van hoge kwaliteit met een lange levensduur. In overleg met u zorgen we voor een oplossing die past bij uw woning of bedrijfspand.</p>
+      <ul class="mt-8 grid gap-5">
+        {punten.map(([kop, tekst]) => (
+          <li class="flex gap-3">
+            <Vink />
+            <div><strong class="font-display text-lg font-semibold">{kop}</strong><p class="mt-0.5 text-ink-zacht">{tekst}</p></div>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <a href={url('#offerte')} class="btn btn-groen">Offerte aanvragen</a>
+        <a href={site.telHref} class="font-display font-semibold underline decoration-roest decoration-2 underline-offset-[6px]">Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -11,6 +11,7 @@ export const site = {
   mail: 'info@zbnridderkerk.nl',
   kvk: '24249059',
   maps: 'https://www.google.com/maps/dir/?api=1&destination=Noordenweg+71a,+2984+AG+Ridderkerk',
+  reviewsUrl: 'https://www.google.com/maps/search/?api=1&query=ZBN+Zonwering+Noordenweg+71a+Ridderkerk',
   mapsEmbed: 'https://www.google.com/maps?q=Noordenweg+71a,+2984+AG+Ridderkerk&z=15&hl=nl&output=embed',
   google: { score: '4,7', aantal: 12 },
   themeColor: '#22433a',
@@ -30,6 +31,14 @@ export const tijden = [
   { dag: 0, naam: 'Zondag', open: '' },
 ];
 
+// Waar ZBN voor staat, letterlijk uit de welkomstekst van de oude site. Geen cijfers of garanties verzonnen.
+export const usps = [
+  'Alles op maat gemaakt',
+  'Bijna alles in eigen bedrijf geassembleerd',
+  'Montage door onze eigen monteurs',
+  'Showroom en inmeten aan huis',
+];
+
 export const merken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger. Raamdecoratie van Velux.';
 
 export interface Product {
@@ -38,7 +47,7 @@ export interface Product {
   kort: string;          // een regel in het overzicht
   intro: string;         // eerste alinea op de productpagina
   tekst: string[];       // overige alinea's
-  punten: string[];      // waar u op kunt rekenen / opties
+  punten: string[];      // waar u op kunt rekenen / opties; de eerste drie staan ook in het overzicht
   foto?: 'hero' | 'luifel' | 'binnen' | 'knikarm';
   fotoAlt?: string;
 }
