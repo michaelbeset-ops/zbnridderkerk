@@ -1,37 +1,48 @@
 ---
+// Hero: grote kop met veel wit, daarnaast de foto in een kaart. Dunne lijnen en kruisjes als rasterdetail.
+import { Image } from 'astro:assets';
 import Foto from './Foto.astro';
 import Sterren from './Sterren.astro';
-import Vink from './Vink.astro';
-import { site, url, usps } from '../data/site';
+import { site, url } from '../data/site';
+import logo from '../assets/logo.png';
 import hero from '../assets/hero.jpg';
 ---
-<!-- Brede terrasfoto onder een groene overlay; de gestreepte doekbaan eronder verwijst naar de valk van een zonnescherm. -->
-<section class="relative overflow-hidden bg-groen text-wit">
-  <div class="absolute inset-0"><Foto src={hero} alt="Groot uitgeschoven knikarmscherm met verlichting boven een terras met tafel en ligbedden" hero sizes="100vw" /></div>
-  <div aria-hidden="true" class="absolute inset-0 bg-groen-donker/80 lg:bg-transparent lg:bg-gradient-to-r lg:from-groen-donker lg:via-groen-donker/85 lg:to-groen-donker/10"></div>
-  <div class="wrap relative py-16 lg:py-28">
-    <div class="max-w-2xl">
-      <p class="kicker text-mint">Zonwering en rolluiken, Ridderkerk</p>
-      <h1 class="mt-4 text-4xl">Zonwering op maat, gemonteerd door onze eigen monteurs</h1>
-      <p class="mt-6 max-w-xl text-lg text-wit/90">Buiten- en binnenzonwering voor woningen en bedrijven in Ridderkerk en omgeving. Kom kijken in de showroom of vraag een offerte aan, dan komen we bij u inmeten.</p>
-      <ul class="mt-6 grid max-w-xl gap-2 sm:grid-cols-2">
-        {usps.map((u) => <li class="flex gap-2.5 font-medium"><Vink class="text-mint" />{u}</li>)}
-      </ul>
-      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-        <a href={url('#offerte')} class="btn btn-roest">Offerte aanvragen</a>
-        <a href={url('#producten')} class="font-display font-semibold underline decoration-mint decoration-2 underline-offset-[6px]">Bekijk de producten</a>
+<section class="wrap pt-10 lg:pt-16">
+  <div class="raster kruis kruis-onder grid gap-10 py-10 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-0 lg:py-14">
+    <div class="lg:col-span-7 lg:pr-6">
+      <div class="flex items-center gap-4">
+        <Image src={logo} alt="" width={176} height={120} loading="eager" class="hidden h-16 w-auto lg:block" />
+        <p class="kicker text-ink-zacht">Zonweringsbedrijf Noordenweg, Ridderkerk</p>
       </div>
-      <dl class="mt-10 grid max-w-xl grid-cols-1 gap-4 border-t border-wit/25 pt-6 text-sm sm:grid-cols-2">
+      <h1 class="mt-8 text-4xl">Zonwering en rolluiken op maat, uit Ridderkerk.</h1>
+      <p class="mt-6 max-w-xl text-lg text-ink-zacht lg:text-xl">Buiten- en binnenzonwering, rolluiken, garagedeuren en terrasoverkappingen. Bijna alles assembleren we zelf en onze eigen monteurs plaatsen het.</p>
+      <div class="mt-9 flex flex-wrap items-center gap-3">
+        <a href={url('#offerte')} class="btn btn-groen">Offerte aanvragen</a>
+        <a href={url('#producten')} class="btn btn-wit">Bekijk producten</a>
+      </div>
+    </div>
+    <div class="lg:col-span-5 lg:row-span-2">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-xl shadow-kaart lg:aspect-[4/5]">
+        <Foto src={hero} alt="Groot uitgeschoven knikarmscherm met verlichting boven een terras met tafel en ligbedden" hero sizes="(min-width: 1024px) 520px, 100vw" />
+        <!-- Klein label op de foto, zoals een bijschrift. -->
+        <p class="absolute bottom-4 left-4 rounded-pill bg-wit/95 px-3.5 py-1.5 text-xs font-medium shadow-zacht">Knikarmscherm, elektrisch met verlichting</p>
+      </div>
+    </div>
+    <div class="lg:col-span-7 lg:self-end lg:pr-6">
+      <dl class="flex flex-wrap gap-x-10 gap-y-4 border-t border-lijn pt-6 text-sm lg:mt-10">
         <div>
-          <dt class="text-wit/80">Showroom</dt>
-          <dd class="font-semibold" data-vandaag>Di t/m vr <span class="whitespace-nowrap tabular-nums">8.30 tot 16.30</span> uur</dd>
+          <dt class="text-ink-zacht">Liever bellen?</dt>
+          <dd class="mt-0.5"><a href={site.telHref} class="font-display text-lg font-semibold tabular-nums no-underline hover:underline">{site.tel}</a></dd>
         </div>
         <div>
-          <dt class="text-wit/80">Klanten op Google</dt>
-          <dd><a href={site.reviewsUrl} target="_blank" rel="noopener" class="inline-flex flex-wrap items-center gap-x-2 font-semibold no-underline hover:underline"><Sterren /> <span><span class="tabular-nums">{site.google.score}</span> uit 5, {site.google.aantal} reviews<span class="sr-only"> (opent Google in een nieuw tabblad)</span></span></a></dd>
+          <dt class="text-ink-zacht">Showroom</dt>
+          <dd class="mt-0.5 font-semibold" data-vandaag>Di t/m vr <span class="whitespace-nowrap tabular-nums">8.30 tot 16.30</span> uur</dd>
+        </div>
+        <div>
+          <dt class="text-ink-zacht">Klanten op Google</dt>
+          <dd class="mt-0.5"><a href={site.reviewsUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-semibold no-underline hover:underline"><Sterren /> <span class="tabular-nums">{site.google.score}</span> uit 5<span class="sr-only"> (opent Google in een nieuw tabblad)</span></a></dd>
         </div>
       </dl>
     </div>
   </div>
-  <div class="baan relative h-3" aria-hidden="true"></div>
 </section>

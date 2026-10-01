@@ -1,79 +1,107 @@
 ---
 import { Image } from 'astro:assets';
-import { site, url, producten } from '../data/site';
+import { site, url, producten, usps } from '../data/site';
 import logo from '../assets/logo.png';
 interface Props { deel: 'kop' | 'voet' }
 const { deel } = Astro.props;
 const menu = [
-  ['Producten', '#producten'], ['Werkwijze', '#werkwijze'], ['Showroom', '#showroom'], ['Reviews', '#reviews'], ['Offerte', '#offerte'],
+  ['Producten', '#producten'], ['Werkwijze', '#werkwijze'], ['Showroom', '#showroom'], ['Reviews', '#reviews'],
 ];
 ---
 {deel === 'kop' ? (
-  <header class="sticky top-0 z-40 border-b border-lijn bg-linnen/95 backdrop-blur-sm">
-    <div class="wrap flex h-[4.25rem] items-center justify-between gap-3 lg:h-20">
-      <a href={url('')} class="flex items-center gap-3 no-underline" aria-label="ZBN Ridderkerk, naar de homepage">
-        <Image src={logo} alt="" width={176} height={120} loading="eager" class="h-11 w-auto lg:h-14" />
-        <span class="hidden font-display text-lg font-semibold leading-tight tracking-[-0.02em] text-groen md:block"><span class="block">Zonweringsbedrijf</span><span class="block">Noordenweg</span></span>
-      </a>
-      <nav aria-label="Hoofdmenu" class="hidden lg:block">
-        <ul class="flex gap-7 text-[1rem] font-semibold">
+  <>
+    <!-- Dunne USP-balk: alleen punten die op hun eigen site staan. -->
+    <div class="bg-groen text-wit">
+      <ul class="wrap flex h-9 items-center gap-6 overflow-hidden text-xs font-medium sm:text-sm">
+        {usps.map((u, i) => <li class={`flex items-center gap-2 whitespace-nowrap ${i > 1 ? 'hidden sm:flex' : ''} ${i > 2 ? 'sm:hidden lg:flex' : ''}`}><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>{u}</li>)}
+        <li class="ml-auto hidden md:block"><a href={site.telHref} class="whitespace-nowrap tabular-nums no-underline hover:underline">{site.tel}</a></li>
+      </ul>
+    </div>
+    <!-- Sticky navigatie als afgeronde witte kaart met schaduw. -->
+    <header class="sticky top-0 z-40 px-3 pt-3 md:px-6">
+      <div class="mx-auto flex h-16 max-w-[76rem] items-center justify-between gap-3 rounded-pill bg-wit/95 pl-2 pr-2 shadow-zacht ring-1 ring-lijn backdrop-blur-sm lg:h-[4.5rem] lg:pl-3">
+        <a href={url('')} class="flex items-center gap-3 no-underline" aria-label="ZBN Zonwering, naar de homepage">
+          <Image src={logo} alt="" width={176} height={120} loading="eager" class="h-12 w-auto lg:h-14" />
+          <span class="hidden font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] text-groen md:block"><span class="block">ZBN</span><span class="block text-sm font-medium text-ink-zacht">Zonwering en rolluiken</span></span>
+        </a>
+        <nav aria-label="Hoofdmenu" class="hidden lg:block">
+          <ul class="flex gap-1 font-display text-[0.95rem] font-semibold">
+            {menu.map(([n, h]) => (
+              <li class={n === 'Producten' ? 'group relative' : ''}>
+                <a href={url(h)} class="block rounded-pill px-4 py-2 no-underline transition-colors hover:bg-ijs">{n}</a>
+                {n === 'Producten' && (
+                  <ul class="invisible absolute left-1/2 top-full z-50 mt-2 grid w-[30rem] -translate-x-1/2 grid-cols-2 gap-x-4 rounded-xl bg-wit p-3 opacity-0 shadow-kaart ring-1 ring-lijn transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 before:absolute before:-top-3 before:left-0 before:h-3 before:w-full">
+                    {producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="flex items-center justify-between rounded-sm px-3 py-2 text-sm font-medium no-underline hover:bg-ijs">{p.naam}<span aria-hidden="true" class="text-ink-zacht">&rarr;</span></a></li>)}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div class="flex items-center gap-2">
+          <a href={site.telHref} class="btn btn-wit hidden !px-4 !py-2.5 text-sm xl:inline-flex"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg><span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+          <a href={url('#offerte')} class="btn btn-groen !px-4 !py-2.5 text-sm">Offerte aanvragen</a>
+          <button type="button" class="flex h-11 w-11 items-center justify-center rounded-pill ring-1 ring-lijn lg:hidden" aria-expanded="false" aria-controls="menu-mobiel" aria-label="Menu" data-menu-knop>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" data-open-icoon /><path d="M6 6l12 12M18 6L6 18" class="hidden" data-dicht-icoon /></svg>
+          </button>
+        </div>
+      </div>
+      <nav id="menu-mobiel" aria-label="Menu" class="mx-auto mt-2 hidden max-w-[76rem] rounded-xl bg-wit p-4 shadow-kaart ring-1 ring-lijn lg:!hidden" data-menu>
+        <ul class="grid font-display text-lg font-semibold">
           {menu.map(([n, h]) => (
-            <li class={n === 'Producten' ? 'group relative' : ''}>
-              <a href={url(h)} class="no-underline transition-colors hover:text-roest">{n}</a>
-              {n === 'Producten' && (
-                <ul class="invisible absolute left-1/2 top-full z-50 mt-3 grid w-[32rem] -translate-x-1/2 grid-cols-2 gap-x-6 rounded-xl bg-wit p-4 opacity-0 shadow-[0_12px_32px_-8px_rgba(23,35,31,0.25)] ring-1 ring-lijn transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 before:absolute before:-top-4 before:left-0 before:h-4 before:w-full">
-                  {producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="block rounded-md px-3 py-2 text-sm font-medium no-underline hover:bg-ecru">{p.naam}</a></li>)}
-                </ul>
-              )}
+            <li class="border-b border-lijn last:border-0">
+              <a href={url(h)} class="block py-3 no-underline">{n}</a>
+              {n === 'Producten' && <ul class="mb-3 grid grid-cols-2 gap-x-4 font-body text-base font-normal">{producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="block py-1.5 no-underline">{p.naam}</a></li>)}</ul>}
             </li>
           ))}
         </ul>
+        <a href={site.telHref} class="btn btn-wit mt-4 w-full">Bel <span class="tabular-nums">{site.tel}</span></a>
       </nav>
-      <div class="flex items-center gap-2">
-        <a href={site.telHref} class="btn btn-groen !px-3.5 !py-2 text-sm"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg><span class="whitespace-nowrap tabular-nums"><span class="sr-only">Bel </span>{site.tel}</span></a>
-        <button type="button" class="btn btn-lijn !px-3 !py-2 text-sm lg:hidden" aria-expanded="false" aria-controls="menu-mobiel" data-menu-knop>Menu</button>
-      </div>
-    </div>
-    <nav id="menu-mobiel" aria-label="Menu" class="hidden border-t border-lijn bg-linnen lg:!hidden" data-menu>
-      <ul class="wrap grid py-2 text-lg font-semibold">
-        {menu.map(([n, h]) => (
-          <li class="border-b border-lijn last:border-0">
-            <a href={url(h)} class="block py-3 no-underline">{n}</a>
-            {n === 'Producten' && <ul class="mb-3 grid grid-cols-2 gap-x-4 text-base font-normal">{producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="block py-1.5 no-underline">{p.naam}</a></li>)}</ul>}
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </header>
+    </header>
+  </>
 ) : (
-  <footer class="bg-groen text-wit/85">
-    <div class="baan h-2" aria-hidden="true"></div>
-    <div class="wrap grid gap-10 py-12 md:grid-cols-12 md:gap-6">
-      <div class="md:col-span-5">
-        <div class="inline-block rounded-md bg-linnen p-2"><Image src={logo} alt="" width={176} height={120} class="h-14 w-auto" /></div>
-        <p class="mt-4 text-sm"><strong class="font-display text-lg font-semibold text-wit">{site.naam} {site.rechtsvorm}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}<br />KvK {site.kvk}</p>
+  <>
+    <footer class="border-t border-lijn bg-ijs">
+      <div class="wrap grid gap-10 py-14 md:grid-cols-12 md:gap-6">
+        <div class="md:col-span-4">
+          <Image src={logo} alt="" width={176} height={120} class="h-16 w-auto" />
+          <p class="mt-4 text-sm"><strong class="font-display text-base font-semibold">{site.naam} {site.rechtsvorm}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}<br />KvK {site.kvk}</p>
+        </div>
+        <div class="text-sm md:col-span-3">
+          <p class="kicker text-ink-zacht">Contact</p>
+          <p class="mt-3"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline">{site.mail}</a></p>
+          <p class="mt-3"><a href={site.maps} target="_blank" rel="noopener" class="underline">Plan route</a></p>
+        </div>
+        <div class="text-sm md:col-span-3">
+          <p class="kicker text-ink-zacht">Showroom</p>
+          <p class="mt-3">Ma 12.30 tot 16.30<br />Di t/m vr 8.30 tot 16.30<br />Za 9.30 tot 12.30<br />Zo gesloten</p>
+        </div>
+        <div class="text-sm md:col-span-2">
+          <p class="kicker text-ink-zacht">Over deze site</p>
+          <ul class="mt-3 grid gap-1.5">
+            <li><a href={url('privacy/')} class="underline">Privacyverklaring</a></li>
+            <li><a href={url('algemene-voorwaarden/')} class="underline">Algemene voorwaarden</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="text-sm md:col-span-3">
-        <p class="kicker text-mint">Contact</p>
-        <p class="mt-2"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline decoration-mint underline-offset-4">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline decoration-mint underline-offset-4">{site.mail}</a></p>
-      </div>
-      <div class="text-sm md:col-span-4">
-        <p class="kicker text-mint">Over deze site</p>
-        <ul class="mt-2 grid gap-1.5">
-          <li><a href={url('privacy/')} class="underline decoration-mint underline-offset-4">Privacyverklaring</a></li>
-          <li><a href={url('algemene-voorwaarden/')} class="underline decoration-mint underline-offset-4">Algemene voorwaarden</a></li>
-          <li><button type="button" class="underline decoration-mint underline-offset-4" data-cookies-opnieuw>Cookie-instellingen</button></li>
-        </ul>
-      </div>
+    </footer>
+    <!-- Vaste balk onderaan op mobiel: bellen en offerte altijd binnen handbereik. De body krijgt onderaan ruimte, zodat de footer niet afgedekt wordt. -->
+    <div class="fixed inset-x-0 bottom-0 z-30 grid grid-cols-2 gap-2 border-t border-lijn bg-wit/95 p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur-sm md:hidden">
+      <a href={site.telHref} class="btn btn-wit !py-3 text-sm">Bellen</a>
+      <a href={url('#offerte')} class="btn btn-groen !py-3 text-sm">Offerte aanvragen</a>
     </div>
-  </footer>
+  </>
 )}
 <script>
   // Mobiel menu: open en dicht, en dicht na een klik op een link.
   const knop = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
   const menu = document.querySelector<HTMLElement>('[data-menu]');
   if (knop && menu) {
-    const zet = (open: boolean) => { menu.classList.toggle('hidden', !open); knop.setAttribute('aria-expanded', String(open)); knop.textContent = open ? 'Sluit' : 'Menu'; };
+    const zet = (open: boolean) => {
+      menu.classList.toggle('hidden', !open); knop.setAttribute('aria-expanded', String(open));
+      knop.querySelector('[data-open-icoon]')?.classList.toggle('hidden', open);
+      knop.querySelector('[data-dicht-icoon]')?.classList.toggle('hidden', !open);
+    };
     knop.addEventListener('click', () => zet(menu.classList.contains('hidden')));
     menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => zet(false)));
   }

@@ -8,13 +8,13 @@ export const site = {
   plaats: 'Ridderkerk',
   tel: '0180 430 211',
   telHref: 'tel:+31180430211',
-  mail: 'info@zbnridderkerk.nl',
+  mail: 'zonwering@zbnridderkerk.nl',
   kvk: '24249059',
   maps: 'https://www.google.com/maps/dir/?api=1&destination=Noordenweg+71a,+2984+AG+Ridderkerk',
   reviewsUrl: 'https://www.google.com/maps/search/?api=1&query=ZBN+Zonwering+Noordenweg+71a+Ridderkerk',
   mapsEmbed: 'https://www.google.com/maps?q=Noordenweg+71a,+2984+AG+Ridderkerk&z=15&hl=nl&output=embed',
   google: { score: '4,7', aantal: 12 },
-  themeColor: '#22433a',
+  themeColor: '#3b4a47',
   // Zolang de site nog niet op het eigen domein staat: niet indexeren.
   preview: import.meta.env.PUBLIC_PREVIEW === '1',
 };
@@ -33,10 +33,10 @@ export const tijden = [
 
 // Waar ZBN voor staat, letterlijk uit de welkomstekst van de oude site. Geen cijfers of garanties verzonnen.
 export const usps = [
-  'Alles op maat gemaakt',
-  'Bijna alles in eigen bedrijf geassembleerd',
-  'Montage door onze eigen monteurs',
-  'Showroom en inmeten aan huis',
+  'Maatwerk',
+  'Eigen montage',
+  'Eigen showroom in Ridderkerk',
+  'Bijna alles zelf geassembleerd',
 ];
 
 export const merken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger. Raamdecoratie van Velux.';
