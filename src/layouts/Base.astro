@@ -4,7 +4,7 @@ import { site, url } from '../data/site';
 import Chrome from '../components/Chrome.astro';
 // Fonts vooraf laden, anders verspringt de tekst zodra het lettertype binnenkomt.
 import dmSans from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
-import grotesk from '@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url';
+import archivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 
 interface Props { title: string; description: string; jsonld?: object; }
 const { title, description, jsonld } = Astro.props;
@@ -20,7 +20,7 @@ const csp = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-
     <meta http-equiv="Content-Security-Policy" content={csp} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="preload" href={dmSans} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={grotesk} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     {site.preview ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={canonical} />}
