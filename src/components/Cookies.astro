@@ -3,9 +3,9 @@
 // laadt die pas na akkoord. De keuze staat in localStorage, dat is geen cookie en niet herleidbaar.
 import { url } from '../data/site';
 ---
-<div id="cookies" class="fixed inset-x-0 bottom-0 z-50 hidden border-t-4 border-groen bg-wit p-5 md:inset-x-auto md:bottom-6 md:left-6 md:max-w-md md:border-4 md:rounded-md" role="region" aria-label="Cookiemelding" data-cookies>
+<div id="cookies" class="fixed inset-x-0 bottom-0 z-50 translate-y-[120%] border-t-4 border-roest bg-wit p-5 md:inset-x-auto md:bottom-6 md:left-6 md:max-w-md md:rounded-xl md:border-4 motion-safe:transition-transform motion-safe:duration-300 data-[open]:translate-y-0" role="region" aria-label="Cookiemelding" data-cookies hidden>
   <p class="font-display text-lg font-semibold">Kaart van Google tonen?</p>
-  <p class="mt-2 text-sm">Deze site zet zelf geen cookies. Alleen de routekaart van Google Maps plaatst cookies van Google. Zonder akkoord ziet u het adres en een knop om de route te plannen. Meer in de <a href={url('privacy/')} class="underline">privacyverklaring</a>.</p>
+  <p class="mt-2 text-sm">Deze site zet zelf geen cookies. Alleen de kaart van Google Maps plaatst cookies van Google. Zonder akkoord ziet u het adres en een routeknop. Meer in de <a href={url('privacy/')} class="underline">privacyverklaring</a>.</p>
   <div class="mt-4 flex flex-wrap gap-2">
     <button type="button" class="btn btn-groen text-sm" data-cookies-ja>Kaart tonen</button>
     <button type="button" class="btn btn-lijn text-sm" data-cookies-nee>Liever niet</button>
@@ -24,7 +24,7 @@ import { url } from '../data/site';
     f.className = 'absolute inset-0 h-full w-full border-0';
     el.replaceChildren(f);
   });
-  const toon = (open: boolean) => vak?.classList.toggle('hidden', !open);
+  const toon = (open: boolean) => { if (!vak) return; if (open) { vak.hidden = false; requestAnimationFrame(() => vak.setAttribute('data-open', '')); } else { vak.removeAttribute('data-open'); setTimeout(() => { vak.hidden = true; }, 350); } };
   const keuze = lees();
   if (keuze === 'ja') laadKaarten();
   else if (keuze !== 'nee') toon(true);

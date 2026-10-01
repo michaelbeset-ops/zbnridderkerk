@@ -13,7 +13,7 @@ export const site = {
   maps: 'https://www.google.com/maps/dir/?api=1&destination=Noordenweg+71a,+2984+AG+Ridderkerk',
   mapsEmbed: 'https://www.google.com/maps?q=Noordenweg+71a,+2984+AG+Ridderkerk&z=15&hl=nl&output=embed',
   google: { score: '4,7', aantal: 12 },
-  themeColor: '#384848',
+  themeColor: '#22433a',
   // Zolang de site nog niet op het eigen domein staat: niet indexeren.
   preview: import.meta.env.PUBLIC_PREVIEW === '1',
 };

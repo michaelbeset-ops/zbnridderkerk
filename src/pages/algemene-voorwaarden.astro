@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, url } from '../data/site';
+---
+<Base title="Algemene voorwaarden | ZBN Ridderkerk" description={`Algemene voorwaarden van ${site.naam} voor offertes, levering en montage.`}>
+  <section class="wrap py-12 lg:py-20">
+    <div class="prose">
+      <h1 class="text-3xl">Algemene voorwaarden</h1>
+      <p class="mt-6 text-ink-zacht">Versie 1 oktober 2026. Van toepassing op alle offertes, overeenkomsten en leveringen van {site.naam} {site.rechtsvorm}, {site.straat}, {site.postcode} {site.plaats}, KvK {site.kvk} (hierna: ZBN).</p>
+
+      <h2>1. Toepasselijkheid</h2>
+      <p>Deze voorwaarden gelden voor alle offertes en overeenkomsten tussen ZBN en de klant, voor zover partijen niet schriftelijk iets anders afspreken. Voorwaarden van de klant gelden alleen als ZBN die schriftelijk heeft aanvaard.</p>
+
+      <h2>2. Offertes</h2>
+      <p>Een offerte is vrijblijvend en geldig gedurende [[AANLEVEREN: geldigheidsduur offerte, bijv. 30 dagen]] na de offertedatum, tenzij de offerte een andere termijn noemt. Prijzen zijn inclusief btw, tenzij anders vermeld. Een definitieve offerte stellen we op nadat we bij de klant hebben ingemeten; een eerdere indicatie kan daarvan afwijken. Kennelijke vergissingen of verschrijvingen in een offerte binden ZBN niet.</p>
+
+      <h2>3. Overeenkomst</h2>
+      <p>De overeenkomst komt tot stand zodra de klant de offerte schriftelijk of per e-mail aanvaardt, of zodra ZBN met de uitvoering begint. Wijzigingen na de opdracht, zoals een andere maat, kleur of bediening, kunnen tot meerkosten en een latere levering leiden. ZBN meldt dat vooraf.</p>
+
+      <h2>4. Maatwerk en herroeping</h2>
+      <p>Vrijwel alle producten van ZBN worden op maat gemaakt op basis van de specificaties van de klant. Voor op maat gemaakte producten geldt geen wettelijk herroepingsrecht. Annuleren na de opdracht is alleen mogelijk in overleg en tegen vergoeding van de kosten die ZBN al heeft gemaakt.</p>
+
+      <h2>5. Prijzen en betaling</h2>
+      <p>[[AANLEVEREN: aanbetaling, bijv. "Bij opdracht vraagt ZBN een aanbetaling van x procent; het restant betaalt u na montage."]] Facturen betaalt de klant binnen 14 dagen na factuurdatum, tenzij anders afgesproken. Blijft betaling uit, dan stuurt ZBN eerst een herinnering. Daarna mag ZBN de wettelijke rente en redelijke incassokosten in rekening brengen.</p>
+
+      <h2>6. Levering en montage</h2>
+      <p>Levertijden zijn een inschatting en geen fatale termijn, omdat ZBN afhankelijk is van fabrikanten en van het weer. Loopt een levering uit, dan informeert ZBN de klant. De klant zorgt dat de plaats van montage bereikbaar en vrij is, dat er elektriciteit beschikbaar is en dat ZBN weet waar leidingen en kabels in de gevel of wand lopen. Zijn er verborgen gebreken in de gevel, het kozijn of de ondergrond, dan zijn de extra kosten daarvan voor de klant, na overleg.</p>
+      <p>Een vergunning of toestemming van een vereniging van eigenaren of verhuurder regelt de klant zelf. ZBN adviseert daar graag over.</p>
+
+      <h2>7. Eigendomsvoorbehoud</h2>
+      <p>Geleverde producten blijven eigendom van ZBN tot de klant alles heeft betaald wat hij op grond van de overeenkomst verschuldigd is.</p>
+
+      <h2>8. Garantie</h2>
+      <p>Op de producten geldt de fabrieksgarantie van de betreffende fabrikant. Op de montage geeft ZBN [[AANLEVEREN: montagegarantie, bijv. "twee jaar garantie"]]. Garantie geldt niet bij schade door verkeerd gebruik, storm (zonwering die bij harde wind uitstaat), gebrek aan onderhoud, aanpassingen door anderen of normale slijtage van doek en bewegende delen. Meld een klacht zo snel mogelijk, dan kijken we samen naar een oplossing.</p>
+
+      <h2>9. Aansprakelijkheid</h2>
+      <p>ZBN is aansprakelijk voor schade die het directe gevolg is van een tekortkoming van ZBN, tot ten hoogste het bedrag van de betreffende opdracht. Voor gevolgschade is ZBN niet aansprakelijk, behalve bij opzet of grove nalatigheid. Deze beperking geldt niet voor zover de wet dat verbiedt.</p>
+
+      <h2>10. Klachten en geschillen</h2>
+      <p>Klachten over een product of de montage meldt de klant zo snel mogelijk aan ZBN, zodat we het kunnen bekijken en oplossen. Komen partijen er samen niet uit, dan is Nederlands recht van toepassing en beslist de bevoegde rechter in het arrondissement Rotterdam, tenzij de wet een andere rechter aanwijst.</p>
+
+      <h2>11. Privacy</h2>
+      <p>Hoe ZBN met persoonsgegevens omgaat, staat in de <a href={url('privacy/')}>privacyverklaring</a>.</p>
+      <p class="mt-10"><a href={url('')} class="btn btn-lijn text-groen">Terug naar de homepage</a></p>
+    </div>
+  </section>
+</Base>

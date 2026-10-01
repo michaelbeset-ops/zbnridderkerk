@@ -11,13 +11,13 @@ const menu = [
 {deel === 'kop' ? (
   <header class="sticky top-0 z-40 border-b border-lijn bg-linnen/95 backdrop-blur-sm">
     <div class="wrap flex h-[4.25rem] items-center justify-between gap-3 lg:h-20">
-      <a href={url('')} class="flex items-center gap-3 no-underline">
+      <a href={url('')} class="flex items-center gap-3 no-underline" aria-label="ZBN Ridderkerk, naar de homepage">
         <Image src={logo} alt="" width={176} height={120} loading="eager" class="h-11 w-auto lg:h-14" />
-        <span class="hidden font-display text-lg font-semibold leading-tight tracking-[-0.01em] text-groen md:block"><span class="block">Zonweringsbedrijf</span><span class="block">Noordenweg</span></span>
+        <span class="hidden font-display text-lg font-semibold leading-tight tracking-[-0.02em] text-groen md:block"><span class="block">Zonweringsbedrijf</span><span class="block">Noordenweg</span></span>
       </a>
       <nav aria-label="Hoofdmenu" class="hidden lg:block">
         <ul class="flex gap-7 text-[1rem] font-semibold">
-          {menu.map(([n, h]) => <li><a href={url(h)} class="no-underline hover:underline">{n}</a></li>)}
+          {menu.map(([n, h]) => <li><a href={url(h)} class="no-underline transition-colors hover:text-roest">{n}</a></li>)}
         </ul>
       </nav>
       <div class="flex items-center gap-2">
@@ -32,22 +32,23 @@ const menu = [
     </nav>
   </header>
 ) : (
-  <footer class="border-t border-lijn bg-zand">
+  <footer class="bg-groen text-wit/85">
+    <div class="baan h-2" aria-hidden="true"></div>
     <div class="wrap grid gap-10 py-12 md:grid-cols-12 md:gap-6">
       <div class="md:col-span-5">
-        <Image src={logo} alt="" width={176} height={120} class="h-16 w-auto" />
-        <p class="mt-4 text-sm"><strong>{site.naam} {site.rechtsvorm}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}<br />KvK {site.kvk}</p>
+        <div class="inline-block rounded-md bg-linnen p-2"><Image src={logo} alt="" width={176} height={120} class="h-14 w-auto" /></div>
+        <p class="mt-4 text-sm"><strong class="font-display text-lg font-semibold text-wit">{site.naam} {site.rechtsvorm}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}<br />KvK {site.kvk}</p>
       </div>
       <div class="text-sm md:col-span-3">
-        <p class="kicker text-ink-zacht">Contact</p>
-        <p class="mt-2"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline">{site.mail}</a></p>
+        <p class="kicker text-mint">Contact</p>
+        <p class="mt-2"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline decoration-mint underline-offset-4">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline decoration-mint underline-offset-4">{site.mail}</a></p>
       </div>
       <div class="text-sm md:col-span-4">
-        <p class="kicker text-ink-zacht">Over deze site</p>
+        <p class="kicker text-mint">Over deze site</p>
         <ul class="mt-2 grid gap-1.5">
-          <li><a href={url('privacy/')} class="underline">Privacyverklaring</a></li>
-          <li><a href={url('algemene-voorwaarden/')} class="underline">Algemene voorwaarden</a></li>
-          <li><button type="button" class="underline" data-cookies-opnieuw>Cookie-instellingen</button></li>
+          <li><a href={url('privacy/')} class="underline decoration-mint underline-offset-4">Privacyverklaring</a></li>
+          <li><a href={url('algemene-voorwaarden/')} class="underline decoration-mint underline-offset-4">Algemene voorwaarden</a></li>
+          <li><button type="button" class="underline decoration-mint underline-offset-4" data-cookies-opnieuw>Cookie-instellingen</button></li>
         </ul>
       </div>
     </div>

@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@import "@fontsource-variable/fraunces";
-@import "@fontsource-variable/source-sans-3";
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/dm-sans";
 
 @theme {
   --color-*: initial;
@@ -8,21 +8,23 @@
   --radius-*: initial;
   --shadow-*: initial;
 
-  /* Het groen komt uit het logo. Linnen is de doekkleur van ongebleekt zonweringsdoek. */
-  --color-groen: #384848;        /* wit erop 9,2:1 */
-  --color-groen-donker: #263332;
-  --color-ink: #1d2624;
-  --color-ink-zacht: #4f5c59;    /* op linnen 6,0:1 */
-  --color-linnen: #f5f1e8;
-  --color-zand: #e8e1d2;
+  /* Woudgroen en ongebleekt doek, met roestoranje als een baan in het zonnescherm (richting uit het eerste voorstel). */
+  --color-groen: #22433a;        /* wit erop 10,8:1 */
+  --color-groen-donker: #183129;
+  --color-ink: #17231f;
+  --color-ink-zacht: #4b5a54;    /* op linnen 6,4:1 */
+  --color-linnen: #fbf9f4;       /* papier */
+  --color-ecru: #f3eee3;
+  --color-zand: #e8e0cf;
   --color-wit: #ffffff;
-  --color-oker: #b8862b;         /* alleen decoratie: strepen, sterren, onderstreping */
-  --color-oker-ink: #7a5712;     /* oker als tekst, op linnen 6,1:1 */
-  --color-lijn: #1d262426;
-  --color-mist: #d7dcd9;         /* lichte tekst-accenten op groen */
+  --color-roest: #b4472c;        /* knop met witte tekst 5,4:1, strepen */
+  --color-oker: #b4472c;         /* sterren en kleine accenten: dezelfde roest */
+  --color-oker-ink: #9a3a22;     /* roest als tekst op linnen 5,6:1 */
+  --color-mint: #b9d6c8;         /* alleen op woudgroen */
+  --color-lijn: #17231f26;
 
-  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
-  --font-body: "Source Sans 3 Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
 
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
@@ -31,18 +33,18 @@
   --text-xl: 1.4375rem;
   --text-2xl: 1.875rem;
   --text-3xl: clamp(1.9rem, 2.8vw + 0.9rem, 2.9rem);
-  --text-4xl: clamp(2.25rem, 3.6vw + 1rem, 3.6rem);
+  --text-4xl: clamp(2.3rem, 4.6vw + 0.6rem, 4.25rem);
   --text-cijfer: clamp(3.5rem, 6vw + 1rem, 5.5rem);
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-xl: 14px;
 }
 
 @layer base {
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body { background: var(--color-linnen); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.55; }
-  h1, h2, h3, h4 { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 30; font-weight: 700; letter-spacing: -0.025em; line-height: 1.04; text-wrap: balance; overflow-wrap: anywhere; }
-  h1 { font-weight: 800; letter-spacing: -0.03em; }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.035em; line-height: 1.04; text-wrap: balance; overflow-wrap: anywhere; }
   h3, h4 { font-weight: 600; letter-spacing: -0.015em; line-height: 1.15; }
   p, li { text-wrap: pretty; }
   a { text-underline-offset: 3px; }
@@ -57,24 +59,23 @@
   .wrap { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
   @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
 
-  .kicker { font-family: var(--font-body); font-size: var(--text-sm); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .kicker { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
 
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-weight: 600; padding: .8rem 1.3rem; border-radius: var(--radius-sm); text-decoration: none; line-height: 1.2; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; cursor: pointer; font: inherit; font-weight: 600; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-family: var(--font-display); padding: .85rem 1.35rem; border-radius: var(--radius-md); text-decoration: none; line-height: 1.2; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; cursor: pointer; font: inherit; font-weight: 600; }
   .btn-groen { background: var(--color-groen); color: var(--color-wit); }
   .btn-groen:hover { background: var(--color-ink); }
-  .btn-wit { background: var(--color-wit); color: var(--color-groen); }
-  .btn-wit:hover { background: var(--color-zand); }
+  .btn-roest { background: var(--color-roest); color: var(--color-wit); }
+  .btn-roest:hover { background: var(--color-groen-donker); }
   .btn-lijn { box-shadow: inset 0 0 0 2px currentColor; }
   .btn-lijn:hover { background: var(--color-groen); color: var(--color-wit); box-shadow: none; }
 
-  /* Valk: de geschulpte rand van een zonnescherm, zoals in het logo. Kleur via color, hoogte via height. */
-  .valk { height: 14px; background: radial-gradient(circle at 50% 0, currentColor 0 9px, transparent 10px); background-size: 24px 14px; background-repeat: repeat-x; }
-  .valk-boven { height: 14px; background: radial-gradient(circle at 50% 100%, currentColor 0 9px, transparent 10px); background-size: 24px 14px; background-repeat: repeat-x; }
-
+  /* Doekbaan: verwijzing naar gestreept zonweringsdoek. Spaarzaam gebruiken. */
+  .baan { background: repeating-linear-gradient(90deg, var(--color-roest) 0 14px, var(--color-ecru) 14px 22px, var(--color-roest) 22px 26px, var(--color-ecru) 26px 34px); }
+  .baan-groen { background: repeating-linear-gradient(90deg, var(--color-groen) 0 14px, var(--color-ecru) 14px 20px); }
   /* Gestreept doek, voor vlakken zonder foto. */
-  .doek { background: repeating-linear-gradient(90deg, var(--color-zand) 0 28px, var(--color-linnen) 28px 56px); }
+  .doek { background: repeating-linear-gradient(90deg, var(--color-zand) 0 28px, var(--color-ecru) 28px 56px); }
 
-  .veld { width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #1d262466; background: var(--color-wit); padding: .7rem .85rem; font: inherit; color: var(--color-ink); }
+  .veld { width: 100%; border-radius: var(--radius-md); border: 1.5px solid #17231f59; background: var(--color-wit); padding: .7rem .85rem; font: inherit; color: var(--color-ink); }
   .veld:focus-visible { outline-offset: 1px; border-color: var(--color-groen); }
 
   .prose { max-width: 42rem; }

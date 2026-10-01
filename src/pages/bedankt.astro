@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, url } from '../data/site';
+---
+<Base title="Bedankt voor uw aanvraag | ZBN Ridderkerk" description="Uw offerteaanvraag is ontvangen. We nemen contact met u op.">
+  <section class="wrap py-20 lg:py-32">
+    <div class="max-w-xl">
+      <p class="kicker text-oker-ink">Aanvraag ontvangen</p>
+      <h1 class="mt-4 text-4xl">Bedankt, we nemen contact met u op</h1>
+      <p class="mt-6 text-lg text-ink-zacht">Uw aanvraag is binnen. We bellen of mailen u om een afspraak te maken voor het inmeten. Heeft u ondertussen een vraag? Bel <a href={site.telHref} class="whitespace-nowrap tabular-nums font-semibold text-ink underline decoration-roest decoration-2 underline-offset-4">{site.tel}</a>.</p>
+      <a href={url('')} class="btn btn-groen mt-8">Terug naar de homepage</a>
+    </div>
+  </section>
+</Base>

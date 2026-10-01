@@ -1,0 +1,57 @@
+---
+// Offerteformulier via FormSubmit.co: gewone POST, bijlage mee als multipart. De eerste inzending vraagt eenmalig
+// een activatiemail bij ZBN. Honeypot (_honey) tegen bots; geen captcha-pagina.
+import { site, url, offerteOpties } from '../data/site';
+interface Props { product?: string; kop?: string }
+const { product, kop = 'Offerte aanvragen' } = Astro.props;
+const bedankt = new URL(url('bedankt/'), Astro.site).href;
+---
+<section id="offerte" class="scroll-mt-20 bg-zand py-16 lg:py-24">
+  <div class="wrap grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <h2 class="text-3xl">{kop}</h2>
+      <p class="mt-6 text-lg">Vertel ons wat u zoekt. Een foto van de gevel, het raam of het terras helpt ons om direct een goed beeld te krijgen. We nemen contact met u op voor een afspraak om in te meten.</p>
+      <p class="mt-6 text-ink-zacht">Liever direct iemand spreken? Bel <a href={site.telHref} class="whitespace-nowrap tabular-nums font-semibold text-ink underline decoration-roest decoration-2 underline-offset-4">{site.tel}</a> of kom langs in de showroom.</p>
+    </div>
+    <form action={`https://formsubmit.co/${site.mail}`} method="POST" enctype="multipart/form-data" class="rounded-xl bg-wit p-6 md:p-10 lg:col-span-8">
+      <input type="hidden" name="_subject" value={`Offerteaanvraag via de website${product ? `: ${product}` : ''}`} />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value={bedankt} />
+      <!-- Honeypot: onzichtbaar voor mensen, bots vullen het in en de inzending wordt genegeerd. -->
+      <div class="hidden" aria-hidden="true"><label>Laat dit veld leeg<input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label></div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div class="sm:col-span-2"><label for="naam" class="text-sm font-medium">Naam <span class="text-roest" aria-hidden="true">*</span></label><input id="naam" name="Naam" autocomplete="name" required maxlength="100" class="veld mt-1.5" /></div>
+        <div class="sm:col-span-2"><label for="adres" class="text-sm font-medium">Adres <span class="text-roest" aria-hidden="true">*</span></label><input id="adres" name="Adres" autocomplete="street-address" required maxlength="120" placeholder="Straat, huisnummer en plaats" class="veld mt-1.5" /></div>
+        <div><label for="tel" class="text-sm font-medium">Telefoon <span class="text-roest" aria-hidden="true">*</span></label><input id="tel" name="Telefoon" type="tel" autocomplete="tel" required maxlength="20" class="veld mt-1.5" /></div>
+        <div><label for="mail" class="text-sm font-medium">E-mail <span class="text-roest" aria-hidden="true">*</span></label><input id="mail" name="email" type="email" autocomplete="email" required maxlength="120" class="veld mt-1.5" /></div>
+        <div class="sm:col-span-2">
+          <label for="product" class="text-sm font-medium">Waar gaat het om?</label>
+          <select id="product" name="Product" class="veld mt-1.5">
+            {!product && <option value="">Kies een product</option>}
+            {offerteOpties.map((o) => <option selected={o === product}>{o}</option>)}
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="foto" class="text-sm font-medium">Foto van de situatie</label>
+          <input id="foto" name="attachment" type="file" accept="image/jpeg,image/png,image/webp,image/heic" class="veld mt-1.5 file:mr-3 file:rounded-sm file:border-0 file:bg-ecru file:px-3 file:py-1.5 file:font-medium" />
+          <p class="mt-1 text-xs text-ink-zacht">Optioneel. JPG, PNG, WebP of HEIC, maximaal 10 MB.</p>
+        </div>
+        <div class="sm:col-span-2"><label for="bericht" class="text-sm font-medium">Opmerkingen</label><textarea id="bericht" name="Opmerkingen" rows="4" maxlength="2000" placeholder="Bijvoorbeeld de maten, de gewenste kleur of wanneer u het liefst gebeld wordt." class="veld mt-1.5"></textarea></div>
+      </div>
+      <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <button type="submit" class="btn btn-groen">Verstuur aanvraag</button>
+        <p class="text-sm text-ink-zacht">We gebruiken uw gegevens alleen voor deze aanvraag. Zie de <a href={url('privacy/')} class="underline">privacyverklaring</a>.</p>
+      </div>
+    </form>
+  </div>
+</section>
+<script>
+  // Grote foto's weigeren voordat ze verstuurd worden (de maildienst accepteert tot ongeveer 10 MB).
+  const foto = document.querySelector<HTMLInputElement>('#foto');
+  foto?.addEventListener('change', () => {
+    const f = foto.files?.[0];
+    if (f && f.size > 10 * 1024 * 1024) { foto.setCustomValidity('De foto is groter dan 10 MB. Kies een kleinere foto.'); foto.reportValidity(); }
+    else foto.setCustomValidity('');
+  });
+</script>

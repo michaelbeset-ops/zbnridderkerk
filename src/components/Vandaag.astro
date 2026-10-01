@@ -1,0 +1,19 @@
+<script>
+  // Markeer vandaag in de openingstijden en toon in de hero de tijden van vandaag (Nederlandse tijd).
+  const naam = new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'Europe/Amsterdam' }).format(new Date());
+  const dag = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(naam);
+  const rij = document.querySelector<HTMLElement>(`tr[data-dag="${dag}"]`);
+  if (rij) {
+    rij.classList.add('text-roest', 'font-semibold');
+    const tijd = rij.querySelector('td')?.textContent ?? '';
+    const el = document.querySelector('[data-vandaag]');
+    let tekst = `Vandaag open, <span class="whitespace-nowrap tabular-nums">${tijd}</span>`;
+    if (tijd === 'Gesloten') {
+      const volgende = document.querySelector(`tr[data-dag="${(dag + 1) % 7}"]`);
+      const dagnaam = volgende?.querySelector('th')?.textContent?.toLowerCase() ?? '';
+      const vanaf = volgende?.querySelector('td')?.textContent?.split(' ')[0] ?? '';
+      tekst = `Vandaag gesloten, ${dagnaam} vanaf <span class="whitespace-nowrap tabular-nums">${vanaf}</span> uur`;
+    }
+    if (el) el.innerHTML = tekst;
+  }
+</script>

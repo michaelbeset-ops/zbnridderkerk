@@ -1,3 +1,4 @@
-# Ontwerpvoorstel: niet indexeren. Bij oplevering vervangen door Allow en een Sitemap-regel.
+# Preview op github.io: niet indexeren. Bij livegang op zbnridderkerk.nl: Disallow weg en de Sitemap-regel aan.
 User-agent: *
 Disallow: /
+# Sitemap: https://www.zbnridderkerk.nl/sitemap-index.xml
