@@ -46,7 +46,8 @@ const menu = [
           </button>
         </div>
       </div>
-      <nav id="menu-mobiel" aria-label="Menu" class="mx-auto mt-2 hidden max-w-[76rem] rounded-xl bg-wit p-4 shadow-kaart ring-1 ring-lijn lg:!hidden" data-menu>
+      <div class="fixed inset-0 z-[-1] hidden bg-ink/40 lg:!hidden" data-menu-sluier aria-hidden="true"></div>
+      <nav id="menu-mobiel" aria-label="Menu" class="mx-auto mt-2 hidden max-h-[calc(100dvh-6rem)] max-w-[76rem] overflow-y-auto rounded-xl bg-wit p-4 shadow-kaart ring-1 ring-lijn lg:!hidden" data-menu>
         <ul class="grid font-display text-lg font-semibold">
           {menu.map(([n, h]) => (
             <li class="border-b border-lijn last:border-0">
@@ -91,7 +92,7 @@ const menu = [
     <!-- Vaste balk onderaan op mobiel: bellen en offerte altijd binnen handbereik. De body krijgt onderaan ruimte, zodat de footer niet afgedekt wordt. -->
     <div class="fixed inset-x-0 bottom-0 z-30 grid grid-cols-2 gap-2 border-t border-lijn bg-wit/95 p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur-sm md:hidden">
       <a href={site.telHref} class="btn btn-wit !py-3 text-sm">Bellen</a>
-      <a href={url('#offerte')} class="btn btn-groen !py-3 text-sm">Offerte aanvragen</a>
+      <a href={url('#offerte')} class="btn btn-groen !py-3 text-sm" data-balk-offerte>Offerte aanvragen</a>
     </div>
   </>
 )}
@@ -99,13 +100,23 @@ const menu = [
   // Mobiel menu: open en dicht, en dicht na een klik op een link.
   const knop = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
   const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const sluier = document.querySelector<HTMLElement>('[data-menu-sluier]');
   if (knop && menu) {
     const zet = (open: boolean) => {
       menu.classList.toggle('hidden', !open); knop.setAttribute('aria-expanded', String(open));
+      sluier?.classList.toggle('hidden', !open);
       knop.querySelector('[data-open-icoon]')?.classList.toggle('hidden', open);
       knop.querySelector('[data-dicht-icoon]')?.classList.toggle('hidden', !open);
+      // Pagina niet laten scrollen achter het open menu.
+      document.body.style.overflow = open ? 'hidden' : '';
     };
     knop.addEventListener('click', () => zet(menu.classList.contains('hidden')));
     menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => zet(false)));
+    sluier?.addEventListener('click', () => zet(false));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.classList.contains('hidden')) { zet(false); knop.focus(); } });
   }
+  // Vaste balk op een productpagina: het product meegeven aan het formulier.
+  const balk = document.querySelector<HTMLAnchorElement>('[data-balk-offerte]');
+  const slug = location.pathname.match(/\/producten\/([^/]+)\/?$/)?.[1];
+  if (balk && slug) balk.href = balk.href.replace('#offerte', `?product=${slug}#offerte`);
 </script>
