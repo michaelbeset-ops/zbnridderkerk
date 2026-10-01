@@ -4,15 +4,15 @@
   const dag = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(naam);
   const rij = document.querySelector<HTMLElement>(`tr[data-dag="${dag}"]`);
   if (rij) {
-    rij.classList.add('text-roest', 'font-semibold');
+    rij.classList.add('text-groen', 'font-semibold'); rij.querySelector('th')?.insertAdjacentHTML('beforeend', ' <span class="ml-1 rounded-pill bg-groen px-2 py-0.5 text-xs font-semibold text-wit">vandaag</span>');
     const tijd = rij.querySelector('td')?.textContent ?? '';
     const el = document.querySelector('[data-vandaag]');
-    let tekst = `Vandaag open, <span class="whitespace-nowrap tabular-nums">${tijd}</span>`;
+    let tekst = `vandaag open, <span class="whitespace-nowrap tabular-nums">${tijd.replace(' uur', '')}</span>`;
     if (tijd === 'Gesloten') {
       const volgende = document.querySelector(`tr[data-dag="${(dag + 1) % 7}"]`);
       const dagnaam = volgende?.querySelector('th')?.textContent?.toLowerCase() ?? '';
       const vanaf = volgende?.querySelector('td')?.textContent?.split(' ')[0] ?? '';
-      tekst = `Vandaag gesloten, ${dagnaam} vanaf <span class="whitespace-nowrap tabular-nums">${vanaf}</span> uur`;
+      tekst = `vandaag gesloten, ${dagnaam} vanaf <span class="whitespace-nowrap tabular-nums">${vanaf}</span>`;
     }
     if (el) el.innerHTML = tekst;
   }

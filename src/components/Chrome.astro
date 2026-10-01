@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { site, url, producten, usps } from '../data/site';
+import { site, url, producten, usps, tijden } from '../data/site';
 import logo from '../assets/logo.png';
 interface Props { deel: 'kop' | 'voet' }
 const { deel } = Astro.props;
@@ -74,7 +74,7 @@ const menu = [
         </div>
         <div class="text-sm md:col-span-3">
           <p class="kicker text-ink-zacht">Showroom</p>
-          <p class="mt-3">Ma 12.30 tot 16.30<br />Di t/m vr 8.30 tot 16.30<br />Za 9.30 tot 12.30<br />Zo gesloten</p>
+          <ul class="mt-3">{tijden.map((t) => <li class="flex justify-between gap-4"><span>{t.naam.slice(0, 2)}</span><span class="tabular-nums">{t.open || 'Gesloten'}</span></li>)}</ul>
         </div>
         <div class="text-sm md:col-span-2">
           <p class="kicker text-ink-zacht">Over deze site</p>

@@ -19,20 +19,11 @@ import hero from '../assets/hero.jpg';
         <a href={url('#producten')} class="btn btn-glas">Bekijk producten</a>
       </div>
     </div>
-    <dl class="grid gap-0 divide-y divide-lijn rounded-xl bg-wit text-ink shadow-kaart lg:col-span-4">
-      <div class="flex items-center justify-between gap-4 px-5 py-4">
-        <dt class="text-sm text-ink-zacht">Showroom</dt>
-        <dd class="text-right font-display font-semibold" data-vandaag>Di t/m vr <span class="whitespace-nowrap tabular-nums">8.30 tot 16.30</span></dd>
-      </div>
-      <div class="flex items-center justify-between gap-4 px-5 py-4">
-        <dt class="text-sm text-ink-zacht">Google</dt>
-        <dd><a href={site.reviewsUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-display font-semibold no-underline hover:underline"><Sterren /> <span class="tabular-nums">{site.google.score}</span> uit 5<span class="sr-only"> (opent Google in een nieuw tabblad)</span></a></dd>
-      </div>
-      <div class="flex items-center justify-between gap-4 px-5 py-4">
-        <dt class="text-sm text-ink-zacht">Bel ons</dt>
-        <dd><a href={site.telHref} class="font-display text-lg font-bold tabular-nums no-underline hover:underline">{site.tel}</a></dd>
-      </div>
-    </dl>
+    <ul class="flex flex-wrap gap-x-8 gap-y-3 text-sm text-wit/90 lg:col-span-4 lg:flex-col lg:items-end lg:gap-y-2 lg:text-right">
+      <li><span class="text-wit/70">Showroom</span> <strong class="font-display" data-vandaag>di t/m vr 8.30 tot 16.30</strong></li>
+      <li><a href={site.reviewsUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 no-underline hover:underline"><Sterren /> <strong class="font-display tabular-nums">{site.google.score}</strong> op Google<span class="sr-only"> (opent in een nieuw tabblad)</span></a></li>
+      <li><a href={site.telHref} class="font-display text-xl font-bold tabular-nums no-underline hover:underline">{site.tel}</a></li>
+    </ul>
   </div>
 </section>
 <!-- Snelkeuze onder de hero: alle producten in een rij, op mobiel swipebaar. -->

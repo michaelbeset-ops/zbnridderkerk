@@ -1,8 +1,9 @@
 ---
-// Plek voor een foto die ZBN nog moet aanleveren: gestreept doek met de markering, geen stockfoto.
+// Plek voor een foto die nog moet komen: licht vlak met een dun raster en de markering. Geen stockfoto, geen bruin.
 interface Props { wat: string; class?: string; }
 const { wat, class: cls = '' } = Astro.props;
 ---
-<div class={`doek relative flex h-full w-full items-end p-4 ${cls}`} role="img" aria-label={`Foto volgt: ${wat}`}>
-  <span class="rounded-sm bg-wit/90 px-2 py-1 text-xs text-ink-zacht">[[AANLEVEREN: foto {wat}]]</span>
+<div class={`relative flex h-full w-full items-start bg-ijs p-4 ${cls}`} role="img" aria-label={`Foto volgt: ${wat}`}
+  style="background-image: linear-gradient(var(--color-lijn) 1px, transparent 1px), linear-gradient(90deg, var(--color-lijn) 1px, transparent 1px); background-size: 32px 32px;">
+  <span class="rounded-sm bg-wit px-2 py-1 text-xs text-ink-zacht ring-1 ring-lijn">[[AANLEVEREN: foto {wat}]]</span>
 </div>

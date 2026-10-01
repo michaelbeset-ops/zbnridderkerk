@@ -1,57 +1,158 @@
 ---
-// Offerteformulier via FormSubmit.co: gewone POST, bijlage mee als multipart. De eerste inzending vraagt eenmalig
-// een activatiemail bij ZBN. Honeypot (_honey) tegen bots; geen captcha-pagina.
-import { site, url, offerteOpties } from '../data/site';
-interface Props { product?: string; kop?: string }
-const { product, kop = 'Offerte aanvragen' } = Astro.props;
-const bedankt = new URL(url('bedankt/'), Astro.site).href;
+// Offerteformulier als kaart in de merkkleur: links de uitleg, rechts het formulier.
+// Verzenden via Web3Forms (AJAX), met inline foutmeldingen, fotopreviews, bevestiging en een honeypot.
+// De access key komt uit PUBLIC_WEB3FORMS_KEY; zonder key blijft het formulier zichtbaar maar verstuurt het niets.
+import { site, url, offerteOpties, producten } from '../data/site';
+const key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
 ---
-<section id="offerte" class="scroll-mt-20 bg-zand py-16 lg:py-24">
-  <div class="wrap grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-4">
-      <h2 class="text-3xl">{kop}</h2>
-      <p class="mt-6 text-lg">Vertel ons wat u zoekt. Een foto van de gevel, het raam of het terras helpt ons om direct een goed beeld te krijgen. We nemen contact met u op voor een afspraak om in te meten.</p>
-      <p class="mt-6 text-ink-zacht">Liever direct iemand spreken? Bel <a href={site.telHref} class="whitespace-nowrap tabular-nums font-semibold text-ink underline decoration-roest decoration-2 underline-offset-4">{site.tel}</a> of kom langs in de showroom.</p>
+<section id="offerte" class="wrap scroll-mt-24 py-16 lg:py-24">
+  <div class="grid overflow-hidden rounded-xl bg-groen text-wit shadow-kaart lg:grid-cols-12">
+    <div class="p-6 md:p-10 lg:col-span-5 lg:p-14">
+      <p class="kicker text-wit/75">Offerte aanvragen</p>
+      <h2 class="mt-3 text-3xl text-wit">Vertel ons wat u zoekt.</h2>
+      <p class="mt-5 text-lg text-wit/90">Een foto van de gevel, het raam of het terras helpt ons om direct een goed beeld te krijgen.</p>
+      <ol class="mt-8 grid gap-4 text-wit/90">
+        <li class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-pill bg-wit/15 font-display text-sm font-bold">1</span>U verstuurt het formulier, wij ontvangen het direct.</li>
+        <li class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-pill bg-wit/15 font-display text-sm font-bold">2</span>We bellen of mailen u om een afspraak te maken voor het inmeten.</li>
+        <li class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-pill bg-wit/15 font-display text-sm font-bold">3</span>Na het inmeten ontvangt u een definitieve offerte.</li>
+      </ol>
+      <p class="mt-10 text-wit/80">Liever direct iemand spreken?</p>
+      <a href={site.telHref} class="mt-1 inline-block font-display text-2xl font-bold tabular-nums text-wit no-underline hover:underline">{site.tel}</a>
     </div>
-    <form action={`https://formsubmit.co/${site.mail}`} method="POST" enctype="multipart/form-data" class="rounded-xl bg-wit p-6 md:p-10 lg:col-span-8">
-      <input type="hidden" name="_subject" value={`Offerteaanvraag via de website${product ? `: ${product}` : ''}`} />
-      <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_next" value={bedankt} />
-      <!-- Honeypot: onzichtbaar voor mensen, bots vullen het in en de inzending wordt genegeerd. -->
-      <div class="hidden" aria-hidden="true"><label>Laat dit veld leeg<input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label></div>
+    <form class="bg-wit p-6 text-ink md:p-10 lg:col-span-7 lg:p-14" novalidate data-offerte data-key={key} data-slugs={JSON.stringify(slugs)}>
       <div class="grid gap-5 sm:grid-cols-2">
-        <div class="sm:col-span-2"><label for="naam" class="text-sm font-medium">Naam <span class="text-roest" aria-hidden="true">*</span></label><input id="naam" name="Naam" autocomplete="name" required maxlength="100" class="veld mt-1.5" /></div>
-        <div class="sm:col-span-2"><label for="adres" class="text-sm font-medium">Adres <span class="text-roest" aria-hidden="true">*</span></label><input id="adres" name="Adres" autocomplete="street-address" required maxlength="120" placeholder="Straat, huisnummer en plaats" class="veld mt-1.5" /></div>
-        <div><label for="tel" class="text-sm font-medium">Telefoon <span class="text-roest" aria-hidden="true">*</span></label><input id="tel" name="Telefoon" type="tel" autocomplete="tel" required maxlength="20" class="veld mt-1.5" /></div>
-        <div><label for="mail" class="text-sm font-medium">E-mail <span class="text-roest" aria-hidden="true">*</span></label><input id="mail" name="email" type="email" autocomplete="email" required maxlength="120" class="veld mt-1.5" /></div>
         <div class="sm:col-span-2">
-          <label for="product" class="text-sm font-medium">Waar gaat het om?</label>
+          <label for="naam" class="text-sm font-medium">Naam <span class="text-fout" aria-hidden="true">*</span></label>
+          <input id="naam" name="Naam" autocomplete="name" required maxlength="100" class="veld mt-1.5" aria-describedby="naam-fout" />
+          <p id="naam-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul uw naam in.</p>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="straat" class="text-sm font-medium">Straat en huisnummer</label>
+          <input id="straat" name="Straat en huisnummer" autocomplete="street-address" maxlength="120" class="veld mt-1.5" />
+        </div>
+        <div>
+          <label for="postcode" class="text-sm font-medium">Postcode</label>
+          <input id="postcode" name="Postcode" autocomplete="postal-code" maxlength="10" class="veld mt-1.5" />
+        </div>
+        <div>
+          <label for="plaats" class="text-sm font-medium">Plaats</label>
+          <input id="plaats" name="Plaats" autocomplete="address-level2" maxlength="60" class="veld mt-1.5" />
+        </div>
+        <div>
+          <label for="tel" class="text-sm font-medium">Telefoon <span class="text-fout" aria-hidden="true">*</span></label>
+          <input id="tel" name="Telefoon" type="tel" autocomplete="tel" required maxlength="20" class="veld mt-1.5" aria-describedby="tel-fout" />
+          <p id="tel-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul een telefoonnummer in.</p>
+        </div>
+        <div>
+          <label for="mail" class="text-sm font-medium">E-mail <span class="text-fout" aria-hidden="true">*</span></label>
+          <input id="mail" name="email" type="email" autocomplete="email" required maxlength="120" class="veld mt-1.5" aria-describedby="mail-fout" />
+          <p id="mail-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul een geldig e-mailadres in.</p>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="product" class="text-sm font-medium">Product</label>
           <select id="product" name="Product" class="veld mt-1.5">
-            {!product && <option value="">Kies een product</option>}
-            {offerteOpties.map((o) => <option selected={o === product}>{o}</option>)}
+            <option value="">Kies een product</option>
+            {offerteOpties.map((o) => <option>{o}</option>)}
           </select>
         </div>
         <div class="sm:col-span-2">
-          <label for="foto" class="text-sm font-medium">Foto van de situatie</label>
-          <input id="foto" name="attachment" type="file" accept="image/jpeg,image/png,image/webp,image/heic" class="veld mt-1.5 file:mr-3 file:rounded-sm file:border-0 file:bg-ecru file:px-3 file:py-1.5 file:font-medium" />
-          <p class="mt-1 text-xs text-ink-zacht">Optioneel. JPG, PNG, WebP of HEIC, maximaal 10 MB.</p>
+          <label for="fotos" class="text-sm font-medium">Foto's van de situatie</label>
+          <input id="fotos" name="attachment" type="file" accept="image/jpeg,image/png,image/webp,image/heic" multiple class="veld mt-1.5 file:mr-3 file:rounded-sm file:border-0 file:bg-ijs file:px-3 file:py-1.5 file:font-medium" aria-describedby="fotos-uitleg fotos-fout" />
+          <p id="fotos-uitleg" class="mt-1 text-xs text-ink-zacht">Optioneel. JPG, PNG, WebP of HEIC, maximaal 5 MB per foto en 5 foto's.</p>
+          <p id="fotos-fout" class="mt-1 hidden text-sm text-fout" data-fout></p>
+          <ul class="mt-3 flex flex-wrap gap-2" data-previews aria-label="Gekozen foto's"></ul>
         </div>
-        <div class="sm:col-span-2"><label for="bericht" class="text-sm font-medium">Opmerkingen</label><textarea id="bericht" name="Opmerkingen" rows="4" maxlength="2000" placeholder="Bijvoorbeeld de maten, de gewenste kleur of wanneer u het liefst gebeld wordt." class="veld mt-1.5"></textarea></div>
+        <div class="sm:col-span-2">
+          <label for="bericht" class="text-sm font-medium">Opmerkingen</label>
+          <textarea id="bericht" name="Opmerkingen" rows="4" maxlength="2000" placeholder="Bijvoorbeeld de maten, de gewenste kleur of wanneer u het liefst gebeld wordt." class="veld mt-1.5"></textarea>
+        </div>
       </div>
+      <!-- Honeypot van Web3Forms: onzichtbaar voor mensen, bots vullen het in. -->
+      <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <button type="submit" class="btn btn-groen">Verstuur aanvraag</button>
+        <button type="submit" class="btn btn-groen" data-verstuur>Verstuur aanvraag</button>
         <p class="text-sm text-ink-zacht">We gebruiken uw gegevens alleen voor deze aanvraag. Zie de <a href={url('privacy/')} class="underline">privacyverklaring</a>.</p>
       </div>
+      <p class="mt-4 hidden rounded-sm bg-ijs px-4 py-3 text-sm" role="status" aria-live="polite" data-status></p>
     </form>
   </div>
 </section>
 <script>
-  // Grote foto's weigeren voordat ze verstuurd worden (de maildienst accepteert tot ongeveer 10 MB).
-  const foto = document.querySelector<HTMLInputElement>('#foto');
-  foto?.addEventListener('change', () => {
-    const f = foto.files?.[0];
-    if (f && f.size > 10 * 1024 * 1024) { foto.setCustomValidity('De foto is groter dan 10 MB. Kies een kleinere foto.'); foto.reportValidity(); }
-    else foto.setCustomValidity('');
-  });
+  const form = document.querySelector<HTMLFormElement>('[data-offerte]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const knop = form.querySelector<HTMLButtonElement>('[data-verstuur]')!;
+    const fotos = form.querySelector<HTMLInputElement>('#fotos')!;
+    const previews = form.querySelector<HTMLElement>('[data-previews]')!;
+    const select = form.querySelector<HTMLSelectElement>('#product')!;
+
+    // Product vooraf kiezen via ?product=slug (vanaf een productpagina).
+    const slugs = JSON.parse(form.dataset.slugs ?? '{}') as Record<string, string>;
+    const gekozen = slugs[new URLSearchParams(location.search).get('product') ?? ''];
+    if (gekozen) select.value = gekozen;
+
+    const toon = (el: HTMLElement, tekst: string, soort: 'fout' | 'ok' | 'bezig') => {
+      el.textContent = tekst; el.classList.remove('hidden');
+      el.classList.toggle('text-fout', soort === 'fout');
+      el.classList.toggle('bg-groen', soort === 'ok'); el.classList.toggle('text-wit', soort === 'ok'); el.classList.toggle('bg-ijs', soort !== 'ok');
+    };
+
+    // Inline controle per veld: fout tonen bij verlaten of bij versturen.
+    const velden = Array.from(form.querySelectorAll<HTMLInputElement>('input[required]'));
+    const controleer = (v: HTMLInputElement) => {
+      const ok = v.checkValidity();
+      v.setAttribute('aria-invalid', String(!ok));
+      v.parentElement?.querySelector('[data-fout]')?.classList.toggle('hidden', ok);
+      return ok;
+    };
+    velden.forEach((v) => { v.addEventListener('blur', () => controleer(v)); v.addEventListener('input', () => { if (v.getAttribute('aria-invalid') === 'true') controleer(v); }); });
+
+    // Foto's: alleen afbeeldingen, maximaal 5 stuks en 5 MB per stuk, met previews.
+    const MAX = 5 * 1024 * 1024;
+    const fotoFout = form.querySelector<HTMLElement>('#fotos-fout')!;
+    let urls: string[] = [];
+    const controleerFotos = () => {
+      urls.forEach((u) => URL.revokeObjectURL(u)); urls = []; previews.replaceChildren();
+      const lijst = Array.from(fotos.files ?? []);
+      let fout = '';
+      if (lijst.length > 5) fout = 'Kies maximaal 5 foto’s.';
+      else if (lijst.some((f) => !f.type.startsWith('image/'))) fout = 'Alleen afbeeldingen zijn mogelijk.';
+      else if (lijst.some((f) => f.size > MAX)) fout = 'Een foto is groter dan 5 MB. Kies een kleinere foto.';
+      fotos.setCustomValidity(fout); fotos.setAttribute('aria-invalid', String(!!fout));
+      fotoFout.textContent = fout; fotoFout.classList.toggle('hidden', !fout);
+      if (fout) return false;
+      lijst.forEach((f) => {
+        const u = URL.createObjectURL(f); urls.push(u);
+        const li = document.createElement('li'); li.className = 'h-16 w-16 overflow-hidden rounded-sm ring-1 ring-lijn';
+        const img = document.createElement('img'); img.src = u; img.alt = f.name; img.className = 'h-full w-full object-cover';
+        li.append(img); previews.append(li);
+      });
+      return true;
+    };
+    fotos.addEventListener('change', controleerFotos);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const geldig = velden.map(controleer).every(Boolean) && controleerFotos();
+      if (!geldig) { form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus(); return; }
+      const key = form.dataset.key;
+      if (!key) { toon(status, 'Het formulier is nog niet gekoppeld. Bel ons of stuur een e-mail, dan helpen we u direct.', 'fout'); return; }
+      knop.disabled = true; toon(status, 'Bezig met versturen…', 'bezig');
+      const data = new FormData(form);
+      data.append('access_key', key);
+      data.append('subject', `Offerteaanvraag via de website${select.value ? `: ${select.value}` : ''}`);
+      data.append('from_name', 'Website ZBN');
+      try {
+        const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        const j = await r.json();
+        if (r.ok && j.success) {
+          toon(status, 'Bedankt, uw aanvraag is verstuurd. We nemen contact met u op om een afspraak te maken voor het inmeten.', 'ok');
+          form.reset(); previews.replaceChildren(); if (gekozen) select.value = gekozen;
+        } else throw new Error(j.message || 'fout');
+      } catch {
+        toon(status, 'Versturen is niet gelukt. Probeer het opnieuw, of bel ons.', 'fout');
+      } finally { knop.disabled = false; }
+    });
+  }
 </script>
