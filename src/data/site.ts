@@ -48,7 +48,7 @@ export interface Product {
   intro: string;         // eerste alinea op de productpagina
   tekst: string[];       // overige alinea's
   punten: string[];      // waar u op kunt rekenen / opties; de eerste drie staan ook in het overzicht
-  foto?: 'hero' | 'luifel' | 'binnen' | 'knikarm';
+  foto?: keyof typeof import('../components/Fotos').fotos;
   fotoAlt?: string;
 }
 
@@ -62,7 +62,7 @@ export const producten: Product[] = [
       'De meeste klanten kiezen voor elektrische bediening met afstandsbediening. Een wind- en zonsensor kan het scherm zelf in- en uitdraaien. Handbediening met een slinger blijft mogelijk.',
     ],
     punten: ['Open, halfopen of gesloten cassette', 'Doek in veel kleuren en dessins', 'Elektrisch met afstandsbediening of met slinger', 'Optioneel: wind- en zonsensor, verlichting', 'Inmeten en montage door onze eigen monteurs'],
-    foto: 'hero', fotoAlt: 'Groot uitgeschoven knikarmscherm met verlichting boven een terras met tafel en ligbedden',
+    foto: 'knikarmscherm', fotoAlt: 'Antracietgrijs knikarmscherm met licht doek boven een terras aan een bakstenen woning',
   },
   {
     slug: 'uitvalschermen', naam: 'Uitvalschermen', kort: 'Zon buiten het raam houden, uitzicht behouden.',
@@ -72,6 +72,7 @@ export const producten: Product[] = [
       'U kiest de uitvalhoek, de doekkleur en de bediening. Elektrisch kan per raam of in groepen tegelijk.',
     ],
     punten: ['Per raam op maat', 'Houdt warmte buiten, zicht naar buiten blijft', 'Handbediening of elektrisch', 'Doek afgestemd op de rest van de gevel'],
+    foto: 'uitvalscherm', fotoAlt: 'Lichtgrijs uitvalscherm schuin naar buiten boven een raam van een bakstenen woning',
   },
   {
     slug: 'markiezen', naam: 'Markiezen', kort: 'Klassiek, met een gebogen vorm die bij veel woningen past.',
@@ -81,7 +82,7 @@ export const producten: Product[] = [
       'Een markies bedient u met een koord of elektrisch. Voor bedrijfspanden of winkels is een markies met opdruk mogelijk.',
     ],
     punten: ['Vorm en maat afgestemd op de gevel', 'Rechte of geschulpte volant', 'Koordbediening of elektrisch', 'Ook voor winkels en bedrijfspanden'],
-    foto: 'luifel', fotoAlt: 'Rood-wit gestreepte markies boven een raam in een gele houten gevel',
+    foto: 'markies', fotoAlt: 'Groen-wit gestreepte markies met geschulpte volant boven een raam van een jarendertigwoning',
   },
   {
     slug: 'screens', naam: 'Screens', kort: 'Strak, verticaal doek dat warmte buiten houdt en uitzicht doorlaat.',
@@ -91,6 +92,7 @@ export const producten: Product[] = [
       'Met ritsscreens zit het doek vast in de zijgeleiders. Dat scheelt wapperen bij wind en houdt insecten buiten. Bediening is meestal elektrisch, ook met zonsensor.',
     ],
     punten: ['Ritsscreens: doek vast in de geleiders, ook bij wind', 'Doek in verschillende openheidsgraden', 'Elektrisch, ook met zon- en windsensor', 'Cassette weggewerkt in of op het kozijn'],
+    foto: 'screens', fotoAlt: 'Donkergrijze ritsscreens half neergelaten voor grote ramen van een moderne witte woning',
   },
   {
     slug: 'rolluiken', naam: 'Rolluiken', kort: 'Isoleren, verduisteren en beveiligen in een.',
@@ -100,6 +102,7 @@ export const producten: Product[] = [
       'Elektrische bediening is standaard. Een rolluik met zonnepaneel heeft geen bekabeling nodig: handig bij bestaande woningen. Ook een tijdklok of koppeling aan een app is mogelijk.',
     ],
     punten: ['Isolerend en verduisterend', 'Inbraakwerend', 'Elektrisch, ook op zonne-energie zonder kabels', 'Kast in beeld of weggewerkt', 'In veel kleuren leverbaar'],
+    foto: 'rolluiken', fotoAlt: 'Antracietgrijze rolluiken op de ramen van een bakstenen woning, een rolluik half gesloten',
   },
   {
     slug: 'terrasoverkappingen', naam: 'Terrasoverkappingen', kort: 'Buiten zitten, ook als het regent.',
@@ -109,7 +112,7 @@ export const producten: Product[] = [
       'Combineer de overkapping met zonwering onder of boven het dak, met verlichting of met schuifwanden. Dan heeft u een buitenkamer.',
     ],
     punten: ['Dak van glas of polycarbonaat', 'Aan de gevel of vrijstaand', 'Te combineren met zonwering, verlichting en zijwanden', 'Frame in een kleur naar keuze'],
-    foto: 'knikarm', fotoAlt: 'Lichte overkapping tegen een blauwe lucht met een palmboom en struiken ervoor',
+    foto: 'overkapping', fotoAlt: 'Antracietgrijze terrasoverkapping met glazen dak aan een bakstenen woning, met loungebank eronder',
   },
   {
     slug: 'garagedeuren', naam: 'Garagedeuren', kort: 'Sectionaaldeuren op maat, met of zonder motor.',
@@ -119,6 +122,7 @@ export const producten: Product[] = [
       'Met een motor opent u de deur met de afstandsbediening vanuit de auto. Bestaande deuren kunnen vaak worden vervangen zonder aanpassingen aan de opening.',
     ],
     punten: ['Sectionaaldeur, geïsoleerd', 'Op maat voor de bestaande opening', 'Elektrisch met afstandsbediening', 'Kleur of houtlook naar keuze', 'Optioneel: loopdeur, ramen'],
+    foto: 'garagedeur', fotoAlt: 'Antracietgrijze sectionaaldeur in een bakstenen woning met bestrate oprit',
   },
   {
     slug: 'raamdecoratie', naam: 'Raamdecoratie', kort: 'Jaloezieën, rolgordijnen, shutters en meer.',
@@ -128,7 +132,7 @@ export const producten: Product[] = [
       'Alles wordt op maat gemaakt en door ons gemonteerd.',
     ],
     punten: ['Jaloezieën in hout en aluminium', 'Rolgordijnen, vouwgordijnen en paneelgordijnen', 'Lamellen en shutters', 'Ook voor Velux-dakramen', 'Lichtdoorlatend of verduisterend, elektrisch mogelijk'],
-    foto: 'binnen', fotoAlt: 'Lichte bank met kussens voor een erker met witte jaloezieën en gordijnen',
+    foto: 'jaloezie', fotoAlt: 'Lichte woonkamer met witte houten jaloezieën voor hoge ramen',
   },
   {
     slug: 'binnenzonwering', naam: 'Binnenzonwering', kort: 'Plissé, duo plissé en Perfectfit, strak in het kozijn.',
@@ -138,6 +142,7 @@ export const producten: Product[] = [
       'Perfectfit zit in een slank frame dat zonder boren in het kozijn klemt. Dat is handig bij kunststof kozijnen, draai-kiepramen en huurwoningen. In de showroom ziet u de stalen en de bediening.',
     ],
     punten: ['Plissé en duo plissé', 'Perfectfit, zonder boren', 'Lichtdoorlatend of verduisterend', 'Ook voor draai-kiepramen', 'Op maat gemaakt en door ons gemonteerd'],
+    foto: 'binnen', fotoAlt: 'Lichte bank met kussens voor een erker met witte jaloezieën en gordijnen',
   },
 ];
 

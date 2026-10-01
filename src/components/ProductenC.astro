@@ -1,0 +1,34 @@
+---
+// Optie C: een beeldstrip van rand tot rand. Staande foto's naast elkaar met de naam onderin,
+// de rij schuift van links naar rechts, op elk scherm.
+import Foto from './Foto.astro';
+import Vlak from './Vlak.astro';
+import { producten, url } from '../data/site';
+import { fotos } from './Fotos';
+---
+<section id="producten" class="scroll-mt-24 py-16 lg:py-24">
+  <div class="wrap grid gap-6 lg:grid-cols-12 lg:items-end">
+    <div class="lg:col-span-7">
+      <p class="kicker text-ink-zacht">Wat doen wij</p>
+      <h2 class="mt-3 text-3xl">Alles voor buiten en binnen, op maat gemaakt.</h2>
+    </div>
+    <p class="text-lg text-ink-zacht lg:col-span-5 lg:pb-1">Negen producten, allemaal op maat en door ons gemonteerd. Kies een product voor uitleg en foto's.</p>
+  </div>
+  <ul class="slider mt-10 !gap-2 [--inzet:max(1.25rem,calc((100vw-80rem)/2+2.5rem))] !px-[var(--inzet)] !scroll-pl-[var(--inzet)]" data-strip>
+    {producten.map((p, i) => (
+      <li class="group relative h-[26rem] w-[16rem] overflow-hidden rounded-xl bg-ijs lg:h-[30rem] lg:w-[19rem]" data-strip-item>
+        <a href={url(`producten/${p.slug}/`)} class="block h-full no-underline">
+          <div class="absolute inset-0">
+            {p.foto ? <Foto src={fotos[p.foto]} alt="" sizes="(min-width: 1024px) 320px, 240px" class="transition-transform duration-700 group-hover:scale-[1.05]" /> : <Vlak wat={p.naam.toLowerCase()} />}
+          </div>
+          <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 p-5 text-wit">
+            <p class="kicker text-wit/70">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="mt-1 text-xl text-wit">{p.naam}</h3>
+            <p class="mt-1 max-h-0 overflow-hidden text-sm text-wit/85 opacity-0 transition-all duration-500 group-hover:max-h-20 group-hover:opacity-100 group-focus-within:max-h-20 group-focus-within:opacity-100">{p.kort}</p>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
