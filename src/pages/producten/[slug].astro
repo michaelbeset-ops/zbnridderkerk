@@ -93,12 +93,12 @@ const naam = p.naam.toLowerCase();
         <h2 id="bediening" class="text-2xl">Bediening</h2>
         <ul class="mt-6 divide-y divide-lijn rounded-xl bg-ijs">
           {d.bediening.map((b) => (
-            <li class={`flex gap-4 px-5 py-4 ${b.beschikbaar ? '' : 'opacity-50'}`}>
+            <li class="flex gap-4 px-5 py-4">
               <span class={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-pill ${b.beschikbaar ? 'bg-groen text-wit' : 'bg-wit ring-1 ring-lijn'}`}>
                 {b.beschikbaar ? <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg> : <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>}
               </span>
               <div>
-                <h3 class="text-base font-semibold">{b.naam}{!b.beschikbaar && <span class="sr-only"> (niet van toepassing)</span>}</h3>
+                <h3 class="text-base font-semibold">{b.naam}{!b.beschikbaar && <span class="ml-2 text-sm font-normal text-ink-zacht">niet van toepassing</span>}</h3>
                 <p class="mt-0.5 text-sm text-ink-zacht">{b.tekst}</p>
               </div>
             </li>
