@@ -8,12 +8,13 @@ export const site = {
   plaats: 'Ridderkerk',
   tel: '0180 430 211',
   telHref: 'tel:+31180430211',
-  mail: 'info@zbnridderkerk.nl',
+  mail: 'zonwering@zbnridderkerk.nl',
   kvk: '24249059',
   maps: 'https://www.google.com/maps/dir/?api=1&destination=Noordenweg+71a,+2984+AG+Ridderkerk',
+  reviewsUrl: 'https://www.google.com/maps/search/?api=1&query=ZBN+Zonwering+Noordenweg+71a+Ridderkerk',
   mapsEmbed: 'https://www.google.com/maps?q=Noordenweg+71a,+2984+AG+Ridderkerk&z=15&hl=nl&output=embed',
   google: { score: '4,7', aantal: 12 },
-  themeColor: '#22433a',
+  themeColor: '#3b4a47',
   // Zolang de site nog niet op het eigen domein staat: niet indexeren.
   preview: import.meta.env.PUBLIC_PREVIEW === '1',
 };
@@ -30,6 +31,14 @@ export const tijden = [
   { dag: 0, naam: 'Zondag', open: '' },
 ];
 
+// Waar ZBN voor staat, letterlijk uit de welkomstekst van de oude site. Geen cijfers of garanties verzonnen.
+export const usps = [
+  'Maatwerk',
+  'Eigen montage',
+  'Eigen showroom in Ridderkerk',
+  'Bijna alles zelf geassembleerd',
+];
+
 export const merken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger. Raamdecoratie van Velux.';
 
 export interface Product {
@@ -38,8 +47,8 @@ export interface Product {
   kort: string;          // een regel in het overzicht
   intro: string;         // eerste alinea op de productpagina
   tekst: string[];       // overige alinea's
-  punten: string[];      // waar u op kunt rekenen / opties
-  foto?: 'hero' | 'luifel' | 'binnen' | 'knikarm';
+  punten: string[];      // waar u op kunt rekenen / opties; de eerste drie staan ook in het overzicht
+  foto?: keyof typeof import('../components/Fotos').fotos;
   fotoAlt?: string;
 }
 
@@ -53,7 +62,7 @@ export const producten: Product[] = [
       'De meeste klanten kiezen voor elektrische bediening met afstandsbediening. Een wind- en zonsensor kan het scherm zelf in- en uitdraaien. Handbediening met een slinger blijft mogelijk.',
     ],
     punten: ['Open, halfopen of gesloten cassette', 'Doek in veel kleuren en dessins', 'Elektrisch met afstandsbediening of met slinger', 'Optioneel: wind- en zonsensor, verlichting', 'Inmeten en montage door onze eigen monteurs'],
-    foto: 'hero', fotoAlt: 'Groot uitgeschoven knikarmscherm met verlichting boven een terras met tafel en ligbedden',
+    foto: 'knikarmscherm', fotoAlt: 'Antracietgrijs knikarmscherm met licht doek boven een terras aan een bakstenen woning',
   },
   {
     slug: 'uitvalschermen', naam: 'Uitvalschermen', kort: 'Zon buiten het raam houden, uitzicht behouden.',
@@ -63,6 +72,7 @@ export const producten: Product[] = [
       'U kiest de uitvalhoek, de doekkleur en de bediening. Elektrisch kan per raam of in groepen tegelijk.',
     ],
     punten: ['Per raam op maat', 'Houdt warmte buiten, zicht naar buiten blijft', 'Handbediening of elektrisch', 'Doek afgestemd op de rest van de gevel'],
+    foto: 'uitvalscherm', fotoAlt: 'Lichtgrijs uitvalscherm schuin naar buiten boven een raam van een bakstenen woning',
   },
   {
     slug: 'markiezen', naam: 'Markiezen', kort: 'Klassiek, met een gebogen vorm die bij veel woningen past.',
@@ -72,7 +82,7 @@ export const producten: Product[] = [
       'Een markies bedient u met een koord of elektrisch. Voor bedrijfspanden of winkels is een markies met opdruk mogelijk.',
     ],
     punten: ['Vorm en maat afgestemd op de gevel', 'Rechte of geschulpte volant', 'Koordbediening of elektrisch', 'Ook voor winkels en bedrijfspanden'],
-    foto: 'luifel', fotoAlt: 'Rood-wit gestreepte markies boven een raam in een gele houten gevel',
+    foto: 'markies', fotoAlt: 'Groen-wit gestreepte markies met geschulpte volant boven een raam van een jarendertigwoning',
   },
   {
     slug: 'screens', naam: 'Screens', kort: 'Strak, verticaal doek dat warmte buiten houdt en uitzicht doorlaat.',
@@ -82,15 +92,7 @@ export const producten: Product[] = [
       'Met ritsscreens zit het doek vast in de zijgeleiders. Dat scheelt wapperen bij wind en houdt insecten buiten. Bediening is meestal elektrisch, ook met zonsensor.',
     ],
     punten: ['Ritsscreens: doek vast in de geleiders, ook bij wind', 'Doek in verschillende openheidsgraden', 'Elektrisch, ook met zon- en windsensor', 'Cassette weggewerkt in of op het kozijn'],
-  },
-  {
-    slug: 'serrezonwering', naam: 'Serrezonwering', kort: 'Voor glazen daken, veranda\'s en serres.',
-    intro: 'Een serre of glazen overkapping wordt snel warm. Serrezonwering legt een doek over of onder het glas, zodat u er ook op warme dagen kunt zitten.',
-    tekst: [
-      'We meten de dakvlakken in en maken de zonwering passend, ook bij schuine of samengestelde daken. Bovendaks houdt de warmte het best buiten; onderdaks is een optie als het dak zelf niet belast mag worden.',
-      'Bediening is vrijwel altijd elektrisch. Een zonsensor laat het doek automatisch uitrollen als de zon erop staat.',
-    ],
-    punten: ['Boven- of onderdaks', 'Op maat voor elk dakvlak', 'Elektrisch, optioneel met zonsensor', 'Ook voor veranda\'s en overkappingen'],
+    foto: 'screens', fotoAlt: 'Donkergrijze ritsscreens half neergelaten voor grote ramen van een moderne witte woning',
   },
   {
     slug: 'rolluiken', naam: 'Rolluiken', kort: 'Isoleren, verduisteren en beveiligen in een.',
@@ -100,6 +102,7 @@ export const producten: Product[] = [
       'Elektrische bediening is standaard. Een rolluik met zonnepaneel heeft geen bekabeling nodig: handig bij bestaande woningen. Ook een tijdklok of koppeling aan een app is mogelijk.',
     ],
     punten: ['Isolerend en verduisterend', 'Inbraakwerend', 'Elektrisch, ook op zonne-energie zonder kabels', 'Kast in beeld of weggewerkt', 'In veel kleuren leverbaar'],
+    foto: 'rolluiken', fotoAlt: 'Antracietgrijze rolluiken op de ramen van een bakstenen woning, een rolluik half gesloten',
   },
   {
     slug: 'terrasoverkappingen', naam: 'Terrasoverkappingen', kort: 'Buiten zitten, ook als het regent.',
@@ -109,7 +112,7 @@ export const producten: Product[] = [
       'Combineer de overkapping met zonwering onder of boven het dak, met verlichting of met schuifwanden. Dan heeft u een buitenkamer.',
     ],
     punten: ['Dak van glas of polycarbonaat', 'Aan de gevel of vrijstaand', 'Te combineren met zonwering, verlichting en zijwanden', 'Frame in een kleur naar keuze'],
-    foto: 'knikarm', fotoAlt: 'Lichte overkapping tegen een blauwe lucht met een palmboom en struiken ervoor',
+    foto: 'overkapping', fotoAlt: 'Antracietgrijze terrasoverkapping met glazen dak aan een bakstenen woning, met loungebank eronder',
   },
   {
     slug: 'garagedeuren', naam: 'Garagedeuren', kort: 'Sectionaaldeuren op maat, met of zonder motor.',
@@ -119,29 +122,31 @@ export const producten: Product[] = [
       'Met een motor opent u de deur met de afstandsbediening vanuit de auto. Bestaande deuren kunnen vaak worden vervangen zonder aanpassingen aan de opening.',
     ],
     punten: ['Sectionaaldeur, geïsoleerd', 'Op maat voor de bestaande opening', 'Elektrisch met afstandsbediening', 'Kleur of houtlook naar keuze', 'Optioneel: loopdeur, ramen'],
+    foto: 'garagedeur', fotoAlt: 'Antracietgrijze sectionaaldeur in een bakstenen woning met bestrate oprit',
   },
   {
-    slug: 'horren', naam: 'Horren en hordeuren', kort: 'Ramen en deuren open, insecten buiten.',
-    intro: 'Horren maken we op maat voor elk raam en elke deur. Zo kunt u in de zomer lekker ventileren zonder muggen en vliegen in huis.',
-    tekst: [
-      'Voor ramen zijn er inzethorren, rolhorren en plisséhorren. Voor deuren schuif-, draai- en plisséhordeuren. Welke past, hangt af van het kozijn en hoe vaak u de deur gebruikt.',
-      'De profielen leveren we in een kleur die bij het kozijn past. Monteren doen we zelf, ook bij draai-kiepramen en schuifpuien.',
-    ],
-    punten: ['Inzet-, rol- en plisséhorren voor ramen', 'Schuif-, draai- en plisséhordeuren', 'Profiel in de kleur van het kozijn', 'Ook voor schuifpuien en draai-kiepramen'],
-  },
-  {
-    slug: 'raamdecoratie', naam: 'Raamdecoratie', kort: 'Jaloezieën, rolgordijnen, plissé, shutters en meer.',
-    intro: 'Voor binnen leveren we raamdecoratie op maat: jaloezieën, rolgordijnen, vouwgordijnen, plissé en duo plissé, paneelgordijnen, lamellen, Perfectfit, shutters en raamdecoratie voor Velux-dakramen.',
+    slug: 'raamdecoratie', naam: 'Raamdecoratie', kort: 'Jaloezieën, rolgordijnen, shutters en meer.',
+    intro: 'Voor binnen leveren we raamdecoratie op maat: jaloezieën, rolgordijnen, vouwgordijnen, paneelgordijnen, lamellen en shutters, ook voor Velux-dakramen.',
     tekst: [
       'In de showroom ziet u stalen van alle stoffen en materialen, zodat u kleuren naast uw eigen inrichting kunt leggen. We adviseren over lichtdoorlatend of verduisterend, over bediening en over wat praktisch is in een keuken of badkamer.',
-      'Alles wordt op maat gemaakt en door ons gemonteerd. Perfectfit klemt zonder boren in het kozijn, handig bij kunststof kozijnen en huurwoningen.',
+      'Alles wordt op maat gemaakt en door ons gemonteerd.',
     ],
-    punten: ['Jaloezieën in hout en aluminium', 'Rolgordijnen, vouwgordijnen en paneelgordijnen', 'Plissé en duo plissé, ook voor dakramen', 'Lamellen, Perfectfit en shutters', 'Lichtdoorlatend of verduisterend, elektrisch mogelijk'],
+    punten: ['Jaloezieën in hout en aluminium', 'Rolgordijnen, vouwgordijnen en paneelgordijnen', 'Lamellen en shutters', 'Ook voor Velux-dakramen', 'Lichtdoorlatend of verduisterend, elektrisch mogelijk'],
+    foto: 'jaloezie', fotoAlt: 'Lichte woonkamer met witte houten jaloezieën voor hoge ramen',
+  },
+  {
+    slug: 'binnenzonwering', naam: 'Binnenzonwering', kort: 'Plissé, duo plissé en Perfectfit, strak in het kozijn.',
+    intro: 'Binnenzonwering houdt het licht en de warmte aan de binnenkant van het glas tegen. Plissé en duo plissé vouwen compact op, Perfectfit klemt zonder boren in het kozijn.',
+    tekst: [
+      'Plissé is er in lichtdoorlatende en verduisterende stoffen. Met duo plissé combineert u beide in een systeem, zodat u overdag licht heeft en \'s avonds privacy.',
+      'Perfectfit zit in een slank frame dat zonder boren in het kozijn klemt. Dat is handig bij kunststof kozijnen, draai-kiepramen en huurwoningen. In de showroom ziet u de stalen en de bediening.',
+    ],
+    punten: ['Plissé en duo plissé', 'Perfectfit, zonder boren', 'Lichtdoorlatend of verduisterend', 'Ook voor draai-kiepramen', 'Op maat gemaakt en door ons gemonteerd'],
     foto: 'binnen', fotoAlt: 'Lichte bank met kussens voor een erker met witte jaloezieën en gordijnen',
   },
 ];
 
-export const offerteOpties = [...producten.map((p) => p.naam), 'Reparatie of onderhoud', 'Iets anders'];
+export const offerteOpties = [...producten.map((p) => p.naam), 'Reparatie of onderhoud', 'Weet ik nog niet'];
 
 // Google-reviews, letterlijk overgenomen (aangeleverd door Michael). Alleen 5-sterren met tekst.
 export const reviews = [

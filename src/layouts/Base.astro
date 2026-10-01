@@ -2,16 +2,15 @@
 import '../styles/global.css';
 import { site, url } from '../data/site';
 import Chrome from '../components/Chrome.astro';
-import Cookies from '../components/Cookies.astro';
 // Fonts vooraf laden, anders verspringt de tekst zodra het lettertype binnenkomt.
 import dmSans from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
-import grotesk from '@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url';
+import archivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 
 interface Props { title: string; description: string; jsonld?: object; }
 const { title, description, jsonld } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 // Alles van de eigen host; alleen de kaart (Google) en het formulier (FormSubmit) gaan naar buiten.
-const csp = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; frame-src https://www.google.com; form-action 'self' https://formsubmit.co; object-src 'none'; base-uri 'self'; upgrade-insecure-requests";
+const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; frame-src https://www.google.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests";
 ---
 <!doctype html>
 <html lang="nl">
@@ -21,7 +20,7 @@ const csp = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-
     <meta http-equiv="Content-Security-Policy" content={csp} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="preload" href={dmSans} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={grotesk} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     {site.preview ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={canonical} />}
@@ -38,11 +37,10 @@ const csp = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-
     <meta name="twitter:card" content="summary_large_image" />
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
   </head>
-  <body class="min-h-dvh">
+  <body class="min-h-dvh pb-[4.5rem] md:pb-0">
     <a href="#inhoud" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
     <Chrome deel="kop" />
     <main id="inhoud"><slot /></main>
     <Chrome deel="voet" />
-    <Cookies />
   </body>
 </html>

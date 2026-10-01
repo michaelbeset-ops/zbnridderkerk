@@ -1,17 +1,20 @@
 ---
+// Showroom: foto, adres, openingstijden met vandaag gemarkeerd, kaart die pas laadt na een klik (geen cookies vooraf).
 import Vlak from './Vlak.astro';
-import { site, tijden, merken } from '../data/site';
+import { site, tijden } from '../data/site';
 ---
-<section id="showroom" class="wrap scroll-mt-20 py-16 lg:py-24">
-  <div class="grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-6">
-      <h2 class="text-3xl">Showroom en openingstijden</h2>
-      <p class="mt-6 text-lg text-ink-zacht">In de showroom aan de Noordenweg ziet u de producten in het echt en kunt u stalen van doek en stoffen bekijken. U krijgt direct advies, of we maken een afspraak om bij u te komen inmeten.</p>
-      <div class="mt-8 aspect-[3/2] overflow-hidden rounded-xl"><Vlak wat="showroom, liggend" /></div>
-      <p class="mt-6 text-sm text-ink-zacht">{merken}</p>
+<section id="showroom" class="wrap scroll-mt-24 py-16 lg:py-24">
+  <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+    <div class="lg:col-span-7">
+      <p class="kicker text-ink-zacht">Showroom en openingstijden</p>
+      <h2 class="mt-3 text-3xl">Kom kijken aan de Noordenweg.</h2>
     </div>
-    <div class="lg:col-span-5 lg:col-start-8">
-      <div class="rounded-xl bg-wit p-6 ring-1 ring-lijn md:p-8">
+    <p class="text-lg text-ink-zacht lg:col-span-5 lg:pb-1">In de showroom ziet u de producten in het echt en bekijkt u stalen van doek en stoffen. U krijgt direct advies.</p>
+  </div>
+  <div class="mt-12 grid gap-8 lg:grid-cols-12">
+    <div class="aspect-[4/3] overflow-hidden rounded-xl lg:col-span-7 lg:aspect-auto"><Vlak wat="showroom, liggend" /></div>
+    <div class="grid gap-6 lg:col-span-5">
+      <div class="rounded-xl bg-wit p-6 shadow-kaart ring-1 ring-lijn md:p-8">
         <h3 class="text-xl">Openingstijden</h3>
         <table class="mt-4 w-full text-left">
           <caption class="sr-only">Openingstijden van de showroom</caption>
@@ -25,20 +28,34 @@ import { site, tijden, merken } from '../data/site';
           </tbody>
         </table>
       </div>
-      <address class="mt-8 not-italic">
+      <address class="not-italic">
         <p class="font-display text-lg font-semibold">{site.naam} {site.rechtsvorm}</p>
-        <p>{site.straat}, {site.postcode} {site.plaats}</p>
-        <p class="mt-2"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline decoration-roest decoration-2 underline-offset-4">{site.tel}</a> <span class="text-ink-zacht">of</span> <a href={`mailto:${site.mail}`} class="break-all underline decoration-roest decoration-2 underline-offset-4">{site.mail}</a></p>
+        <p class="text-ink-zacht">{site.straat}, {site.postcode} {site.plaats}</p>
+        <p class="mt-2"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline">{site.tel}</a> <span class="text-ink-zacht">of</span> <a href={`mailto:${site.mail}`} class="break-all underline">{site.mail}</a></p>
       </address>
-      <a href={site.maps} rel="noopener" target="_blank" class="btn btn-groen mt-6">Route plannen<span class="sr-only"> (opent Google Maps in een nieuw tabblad)</span></a>
+      <div class="flex flex-wrap gap-3">
+        <a href={site.maps} rel="noopener" target="_blank" class="btn btn-groen">Plan route<span class="sr-only"> (opent Google Maps in een nieuw tabblad)</span></a>
+      </div>
     </div>
   </div>
-  <!-- De kaart laadt pas na akkoord in de cookiemelding; tot die tijd staat hier een knop. -->
-  <div class="relative mt-12 aspect-[16/9] overflow-hidden rounded-xl bg-zand sm:aspect-[21/9] lg:aspect-[4/1]" data-kaart={site.mapsEmbed}>
+  <!-- Kaart: click-to-load. Pas na de klik laadt Google iets, daarom is er geen cookiebanner nodig. -->
+  <div class="relative mt-8 aspect-[16/9] overflow-hidden rounded-xl bg-ijs ring-1 ring-lijn sm:aspect-[21/9] lg:aspect-[4/1]" data-kaart={site.mapsEmbed}
+    style="background-image: linear-gradient(var(--color-lijn) 1px, transparent 1px), linear-gradient(90deg, var(--color-lijn) 1px, transparent 1px); background-size: 32px 32px;">
     <div class="flex h-full flex-col items-start justify-center gap-3 p-6 md:p-10">
       <p class="font-display text-xl font-semibold">{site.straat}, {site.plaats}</p>
-      <p class="max-w-md text-sm text-ink-zacht">De kaart van Google Maps tonen we pas na uw akkoord, omdat Google daarbij cookies plaatst.</p>
-      <button type="button" class="btn btn-lijn text-sm" data-cookies-opnieuw>Kaart tonen</button>
+      <p class="max-w-md text-sm text-ink-zacht">De kaart komt van Google Maps en laadt pas als u erop klikt. Tot die tijd plaatst deze pagina niets van Google.</p>
+      <button type="button" class="btn btn-wit text-sm" data-kaart-knop>Kaart laden</button>
     </div>
   </div>
 </section>
+<script>
+  // Laad de Google Maps-embed pas na de klik.
+  document.querySelectorAll<HTMLElement>('[data-kaart]').forEach((el) => {
+    el.querySelector('[data-kaart-knop]')?.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = el.dataset.kaart ?? ''; f.title = 'Kaart met de locatie van de showroom'; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.className = 'absolute inset-0 h-full w-full border-0';
+      el.replaceChildren(f);
+    });
+  });
+</script>

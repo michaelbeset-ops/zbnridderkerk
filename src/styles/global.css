@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/archivo/wdth.css";
 @import "@fontsource-variable/dm-sans";
 
 @theme {
@@ -8,22 +8,20 @@
   --radius-*: initial;
   --shadow-*: initial;
 
-  /* Woudgroen en ongebleekt doek, met roestoranje als een baan in het zonnescherm (richting uit het eerste voorstel). */
-  --color-groen: #22433a;        /* wit erop 10,8:1 */
-  --color-groen-donker: #183129;
-  --color-ink: #17231f;
-  --color-ink-zacht: #4b5a54;    /* op linnen 6,4:1 */
-  --color-linnen: #fbf9f4;       /* papier */
-  --color-ecru: #f3eee3;
-  --color-zand: #e8e0cf;
+  /* Het groen is met de color picker uit logo.png gehaald (#3b4a47). Verder alleen wit, een heel licht
+     gebroken wit met een groene zweem, en diep groen-zwart voor tekst. Geen bruin, geen grijs. */
+  --color-groen: #3b4a47;        /* merkkleur; wit erop 8,0:1 */
+  --color-groen-diep: #024136;   /* zit ook in het logo; voor hover */
+  --color-ink: #14201d;
+  --color-ink-zacht: #4d5c58;    /* op wit 6,3:1 */
   --color-wit: #ffffff;
-  --color-roest: #b4472c;        /* knop met witte tekst 5,4:1, strepen */
-  --color-oker: #b4472c;         /* sterren en kleine accenten: dezelfde roest */
-  --color-oker-ink: #9a3a22;     /* roest als tekst op linnen 5,6:1 */
-  --color-mint: #b9d6c8;         /* alleen op woudgroen */
-  --color-lijn: #17231f26;
+  --color-ijs: #f5f8f7;          /* heel licht gebroken wit, voor afwisseling van secties */
+  --color-nevel: #e6ecea;        /* vlakken zonder foto */
+  --color-lijn: #14201d1a;       /* dunne lijnen, 10 procent */
+  --color-ster: #e0a419;         /* alleen de sterren bij reviews */
+  --color-fout: #b3261e;
 
-  --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
   --font-body: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
 
   --text-xs: 0.8125rem;
@@ -32,51 +30,86 @@
   --text-lg: 1.1875rem;
   --text-xl: 1.4375rem;
   --text-2xl: 1.875rem;
-  --text-3xl: clamp(1.9rem, 2.8vw + 0.9rem, 2.9rem);
-  --text-4xl: clamp(2.3rem, 4.6vw + 0.6rem, 4.25rem);
-  --text-cijfer: clamp(3.5rem, 6vw + 1rem, 5.5rem);
+  --text-3xl: clamp(2rem, 3.2vw + 0.8rem, 3.25rem);
+  --text-4xl: clamp(2.6rem, 5.6vw + 0.4rem, 5.9rem);
+  --text-cijfer: clamp(3rem, 5vw + 1rem, 4.5rem);
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-xl: 14px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  --shadow-zacht: 0 1px 2px rgba(20, 32, 29, 0.06), 0 8px 24px -8px rgba(20, 32, 29, 0.14);
+  --shadow-knop: 0 1px 2px rgba(20, 32, 29, 0.12), 0 6px 16px -6px rgba(59, 74, 71, 0.45);
+  --shadow-kaart: 0 2px 6px rgba(20, 32, 29, 0.05), 0 20px 40px -20px rgba(20, 32, 29, 0.18);
 }
 
 @layer base {
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body { background: var(--color-linnen); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.55; }
-  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.035em; line-height: 1.04; text-wrap: balance; overflow-wrap: anywhere; }
-  h3, h4 { font-weight: 600; letter-spacing: -0.015em; line-height: 1.15; }
+  body { background: var(--color-wit); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.55; }
+  /* Archivo iets verbreed en zwaar: koppen krijgen gewicht door de letter, niet door de maat. */
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 112; letter-spacing: -0.03em; line-height: 0.98; text-wrap: balance; overflow-wrap: anywhere; }
+  h1 { font-weight: 850; }
+  h3, h4 { font-weight: 700; font-variation-settings: "wdth" 105; letter-spacing: -0.02em; line-height: 1.12; }
   p, li { text-wrap: pretty; }
   a { text-underline-offset: 3px; }
-  :focus-visible { outline: 3px solid var(--color-oker); outline-offset: 3px; }
+  :focus-visible { outline: 3px solid var(--color-groen); outline-offset: 3px; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    *, *::before, *::after { transition: none !important; animation: none !important; }
+    *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
   }
 }
 
 @layer components {
-  .wrap { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
   @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
 
-  .kicker { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
+  .kicker { font-family: var(--font-display); font-variation-settings: "wdth" 110; font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-family: var(--font-display); padding: .85rem 1.35rem; border-radius: var(--radius-md); text-decoration: none; line-height: 1.2; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; cursor: pointer; font: inherit; font-weight: 600; }
-  .btn-groen { background: var(--color-groen); color: var(--color-wit); }
-  .btn-groen:hover { background: var(--color-ink); }
-  .btn-roest { background: var(--color-roest); color: var(--color-wit); }
-  .btn-roest:hover { background: var(--color-groen-donker); }
-  .btn-lijn { box-shadow: inset 0 0 0 2px currentColor; }
+  /* Pill-knoppen met een zachte schaduw. */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-family: var(--font-display); font-variation-settings: "wdth" 105; font-weight: 650; padding: .9rem 1.5rem; border-radius: var(--radius-pill); text-decoration: none; line-height: 1.2; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease; cursor: pointer; font-size: var(--text-base); }
+  .btn:active { transform: translateY(1px); }
+  .btn-groen { background: var(--color-groen); color: var(--color-wit); box-shadow: var(--shadow-knop); }
+  .btn-groen:hover { background: var(--color-groen-diep); }
+  .btn-wit { background: var(--color-wit); color: var(--color-ink); box-shadow: var(--shadow-zacht), inset 0 0 0 1px var(--color-lijn); }
+  .btn-wit:hover { background: var(--color-ijs); }
+  .btn-lijn { box-shadow: inset 0 0 0 1.5px currentColor; }
   .btn-lijn:hover { background: var(--color-groen); color: var(--color-wit); box-shadow: none; }
+  .btn-glas { color: var(--color-wit); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.7); backdrop-filter: blur(6px); }
+  .btn-glas:hover { background: rgba(255,255,255,.14); }
 
-  /* Doekbaan: verwijzing naar gestreept zonweringsdoek. Spaarzaam gebruiken. */
-  .baan { background: repeating-linear-gradient(90deg, var(--color-roest) 0 14px, var(--color-ecru) 14px 22px, var(--color-roest) 22px 26px, var(--color-ecru) 26px 34px); }
-  .baan-groen { background: repeating-linear-gradient(90deg, var(--color-groen) 0 14px, var(--color-ecru) 14px 20px); }
-  /* Gestreept doek, voor vlakken zonder foto. */
-  .doek { background: repeating-linear-gradient(90deg, var(--color-zand) 0 28px, var(--color-ecru) 28px 56px); }
+  /* Rasterdetail: dunne lijnen met kleine kruisjes op de hoeken, zodat het geheel "gebouwd" voelt. */
+  .raster { position: relative; border-top: 1px solid var(--color-lijn); border-bottom: 1px solid var(--color-lijn); }
+  .kruis { position: relative; }
+  .kruis::before, .kruis::after { content: ""; position: absolute; width: 11px; height: 11px; pointer-events: none;
+    background:
+      linear-gradient(var(--color-groen), var(--color-groen)) center / 1px 100% no-repeat,
+      linear-gradient(var(--color-groen), var(--color-groen)) center / 100% 1px no-repeat; opacity: .55; }
+  .kruis::before { top: -6px; left: -6px; }
+  .kruis::after { top: -6px; right: -6px; }
+  .kruis-onder::before, .kruis-onder::after { content: ""; position: absolute; width: 11px; height: 11px; pointer-events: none; bottom: -6px;
+    background:
+      linear-gradient(var(--color-groen), var(--color-groen)) center / 1px 100% no-repeat,
+      linear-gradient(var(--color-groen), var(--color-groen)) center / 100% 1px no-repeat; opacity: .55; }
+  .kruis-onder::before { left: -6px; }
+  .kruis-onder::after { right: -6px; }
 
-  .veld { width: 100%; border-radius: var(--radius-md); border: 1.5px solid #17231f59; background: var(--color-wit); padding: .7rem .85rem; font: inherit; color: var(--color-ink); }
+  /* Kaart waarvan de foto onderaan zacht in wit overloopt. */
+  .vervaag { position: relative; }
+  .vervaag::after { content: ""; position: absolute; inset: auto 0 0 0; height: 45%; background: linear-gradient(to bottom, transparent, var(--color-wit)); pointer-events: none; }
+
+  /* Horizontale slider met snap-scroll (reviews, foto's op mobiel). */
+  .slider { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 1.25rem; padding-inline: 1.25rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  /* Op grotere schermen kan een slider een gewoon grid in de container worden: dan geldt de padding van .wrap. */
+  @media (min-width: 640px) { .slider.wrap { padding-inline: 2.5rem; scroll-padding-inline: 0; } }
+  @media (min-width: 640px) and (max-width: 767px) { .slider.wrap { padding-inline: 1.25rem; } }
+  .slider::-webkit-scrollbar { display: none; }
+  .slider > * { scroll-snap-align: start; flex: 0 0 auto; }
+
+  .veld { width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #14201d33; background: var(--color-wit); padding: .75rem .9rem; font: inherit; color: var(--color-ink); transition: border-color .15s ease; }
+  .veld:hover { border-color: #14201d66; }
   .veld:focus-visible { outline-offset: 1px; border-color: var(--color-groen); }
+  .veld[aria-invalid="true"] { border-color: var(--color-fout); }
 
   .prose { max-width: 42rem; }
   .prose h2 { font-size: var(--text-xl); margin-top: 2.25rem; margin-bottom: .75rem; }

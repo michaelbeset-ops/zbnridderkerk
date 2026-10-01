@@ -1,8 +1,9 @@
 ---
+// Een sjabloon voor alle productpagina's: kop met hoofdfoto, uitleg, galerij met lightbox, offerteblok, andere producten.
 import Base from '../../layouts/Base.astro';
 import Foto from '../../components/Foto.astro';
 import Vlak from '../../components/Vlak.astro';
-import Offerte from '../../components/Offerte.astro';
+import Galerij from '../../components/Galerij.astro';
 import { producten, site, url } from '../../data/site';
 import { fotos } from '../../components/Fotos';
 
@@ -10,54 +11,77 @@ export function getStaticPaths() {
   return producten.map((p) => ({ params: { slug: p.slug }, props: { p } }));
 }
 const { p } = Astro.props;
-const anderen = producten.filter((x) => x.slug !== p.slug);
+const anderen = producten.filter((x) => x.slug !== p.slug).slice(0, 3);
+const offerte = url(`?product=${p.slug}#offerte`);
 ---
-<Base title={`${p.naam} op maat in Ridderkerk | ZBN`} description={`${p.intro} Inmeten en montage door de eigen monteurs van ZBN Ridderkerk.`}>
-  <section class="bg-ecru">
-    <div class="wrap py-12 lg:py-20">
-      <nav aria-label="Kruimelpad" class="text-sm text-ink-zacht"><a href={url('#producten')} class="underline">Producten</a> <span aria-hidden="true">/</span> <span>{p.naam}</span></nav>
-      <div class="mt-6 grid gap-8 lg:grid-cols-12">
-        <div class="lg:col-span-7">
-          <h1 class="text-4xl">{p.naam}</h1>
-          <p class="mt-6 max-w-2xl text-lg text-ink-zacht">{p.intro}</p>
-          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <a href="#offerte" class="btn btn-roest">Offerte aanvragen</a>
-            <a href={site.telHref} class="font-display font-semibold underline decoration-roest decoration-2 underline-offset-[6px]">Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
-          </div>
+<Base title={`${p.naam} op maat in Ridderkerk | ZBN Zonwering`} description={`${p.intro} Inmeten en montage door de eigen monteurs van ZBN in Ridderkerk.`}>
+  <section class="wrap pt-6 lg:pt-10">
+    <nav aria-label="Kruimelpad" class="text-sm text-ink-zacht">
+      <ol class="flex flex-wrap gap-2">
+        <li><a href={url('')} class="underline">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href={url('#producten')} class="underline">Producten</a></li>
+        <li aria-hidden="true">/</li>
+        <li aria-current="page">{p.naam}</li>
+      </ol>
+    </nav>
+    <div class="mt-8 grid gap-8 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-7">
+        <p class="kicker text-ink-zacht">Product</p>
+        <h1 class="mt-3 text-3xl hyphens-auto lg:text-[3.6rem]" lang="nl">{p.naam}</h1>
+        <p class="mt-6 max-w-2xl text-lg text-ink-zacht">{p.intro}</p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href={offerte} class="btn btn-groen">Offerte aanvragen</a>
+          <a href={site.telHref} class="btn btn-wit">Bel <span class="tabular-nums">{site.tel}</span></a>
         </div>
-        <ul class="text-sm lg:col-span-4 lg:col-start-9 lg:pt-3">
-          {p.punten.map((x) => <li class="border-b border-lijn py-2.5 first:border-t">{x}</li>)}
-        </ul>
       </div>
+      <ul class="grid gap-2 text-sm lg:col-span-5">
+        {p.punten.map((x) => <li class="flex gap-2.5 border-b border-lijn py-2.5 first:border-t"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-groen"><path d="M4 12.5l5 5L20 6.5"/></svg>{x}</li>)}
+      </ul>
     </div>
-    <div class="baan h-2" aria-hidden="true"></div>
-  </section>
-
-  <section class="wrap py-12 lg:py-16" aria-label={`Foto's van ${p.naam.toLowerCase()}`}>
-    <div class="grid gap-4 md:grid-cols-3">
-      <div class="aspect-[3/2] overflow-hidden rounded-xl md:col-span-2 md:row-span-2 md:aspect-auto">
-        {p.foto ? <Foto src={fotos[p.foto]} alt={p.fotoAlt ?? ''} sizes="(min-width: 1024px) 760px, 100vw" /> : <Vlak wat={`${p.naam.toLowerCase()} 1, liggend`} />}
-      </div>
-      <div class="aspect-[3/2] overflow-hidden rounded-xl"><Vlak wat={`${p.naam.toLowerCase()} 2`} /></div>
-      <div class="aspect-[3/2] overflow-hidden rounded-xl"><Vlak wat={`${p.naam.toLowerCase()} 3`} /></div>
+    <div class="mt-10 aspect-[16/9] overflow-hidden rounded-xl shadow-kaart lg:aspect-[21/9]">
+      {p.foto ? <Foto src={fotos[p.foto]} alt={p.fotoAlt ?? ''} hero sizes="(min-width: 1280px) 1200px, 100vw" /> : <Vlak wat={`${p.naam.toLowerCase()}, hoofdfoto liggend`} />}
     </div>
   </section>
 
-  <section class="wrap pb-16 lg:pb-24">
+  <section class="wrap py-14 lg:py-20">
     <div class="grid gap-10 lg:grid-cols-12">
       <div class="prose lg:col-span-7">
         <h2 class="text-2xl">Over {p.naam.toLowerCase()}</h2>
         {p.tekst.map((t) => <p class="mt-4 text-lg">{t}</p>)}
         <p class="mt-4 text-lg">Alles maken we op maat. In de showroom aan de Noordenweg ziet u voorbeelden en stalen, en we komen bij u inmeten voordat we een definitieve offerte maken.</p>
+        <p class="mt-4 text-sm text-ink-zacht">[[AANLEVEREN: extra info {p.naam.toLowerCase()}]]</p>
       </div>
-      <div class="lg:col-span-4 lg:col-start-9">
-        <h2 class="kicker text-ink-zacht">Andere producten</h2>
-        <ul class="mt-3">
-          {anderen.map((a) => <li class="border-b border-lijn"><a href={url(`producten/${a.slug}/`)} class="block py-2.5 no-underline hover:text-roest">{a.naam}</a></li>)}
-        </ul>
-      </div>
+      <aside class="lg:col-span-4 lg:col-start-9">
+        <div class="rounded-xl bg-groen p-6 text-wit shadow-kaart md:p-8">
+          <h2 class="text-xl text-wit">Offerte aanvragen voor {p.naam.toLowerCase()}</h2>
+          <p class="mt-3 text-wit/85">Vrijblijvend. We bellen u voor een afspraak om in te meten.</p>
+          <a href={offerte} class="btn btn-wit mt-6 w-full">Naar het formulier</a>
+          <p class="mt-4 text-sm text-wit/80">Of bel <a href={site.telHref} class="font-semibold tabular-nums text-wit underline">{site.tel}</a></p>
+        </div>
+      </aside>
     </div>
   </section>
 
-  <Offerte product={p.naam} kop={`Offerte voor ${p.naam.toLowerCase()}`} />
+  <Galerij naam={p.naam} foto={p.foto} fotoAlt={p.fotoAlt} />
+
+  <section class="wrap py-14 lg:py-20" aria-labelledby="andere">
+    <div class="flex items-end justify-between gap-4">
+      <h2 id="andere" class="text-2xl">Andere producten</h2>
+      <a href={url('#producten')} class="font-display font-semibold underline">Alle producten</a>
+    </div>
+    <ul class="mt-8 grid gap-6 sm:grid-cols-3">
+      {anderen.map((a) => (
+        <li class="group">
+          <a href={url(`producten/${a.slug}/`)} class="block no-underline">
+            <div class="vervaag aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
+              {a.foto ? <Foto src={fotos[a.foto]} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" /> : <Vlak wat={a.naam.toLowerCase()} />}
+            </div>
+            <h3 class="relative -mt-8 flex items-center justify-between gap-3 px-1 text-lg"><span>{a.naam}</span><span aria-hidden="true">&rarr;</span></h3>
+            <p class="mt-1 px-1 text-sm text-ink-zacht">{a.kort}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
 </Base>

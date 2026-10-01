@@ -1,0 +1,13 @@
+---
+// Afsluiter boven de footer: een grote vraag en een duidelijke knop.
+import { site, url } from '../data/site';
+---
+<section class="wrap pb-16 lg:pb-24">
+  <div class="raster kruis kruis-onder grid gap-8 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
+    <h2 class="text-3xl lg:col-span-7">Weten wat zonwering voor uw woning kost?</h2>
+    <div class="flex flex-wrap items-center gap-3 lg:col-span-5 lg:justify-end">
+      <a href={url('#offerte')} class="btn btn-groen">Offerte aanvragen</a>
+      <a href={site.telHref} class="btn btn-wit">Bel <span class="tabular-nums">{site.tel}</span></a>
+    </div>
+  </div>
+</section>

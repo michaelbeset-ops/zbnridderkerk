@@ -6,13 +6,14 @@ import Werkwijze from '../components/Werkwijze.astro';
 import Showroom from '../components/Showroom.astro';
 import Reviews from '../components/Reviews.astro';
 import Offerte from '../components/Offerte.astro';
+import Afsluiter from '../components/Afsluiter.astro';
 import Vandaag from '../components/Vandaag.astro';
 import { site, tijden, url } from '../data/site';
 
-// Alleen echte gegevens; pas opnemen als de site op het eigen domein staat.
+// JSON-LD LocalBusiness met alleen de echte gegevens. Pas opnemen als de site op het eigen domein staat.
 const dagen = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const jsonld = site.preview ? undefined : {
-  '@context': 'https://schema.org', '@type': 'HomeAndConstructionBusiness',
+  '@context': 'https://schema.org', '@type': 'LocalBusiness',
   name: `${site.naam} ${site.rechtsvorm}`, alternateName: site.kort, telephone: '+31180430211', email: site.mail,
   url: new URL(url(''), Astro.site).href, image: new URL(url('og.png'), Astro.site).href,
   address: { '@type': 'PostalAddress', streetAddress: site.straat, postalCode: site.postcode, addressLocality: site.plaats, addressCountry: 'NL' },
@@ -20,8 +21,8 @@ const jsonld = site.preview ? undefined : {
 };
 ---
 <Base
-  title="ZBN Ridderkerk | Zonwering, rolluiken en raamdecoratie op maat"
-  description="Zonweringsbedrijf Noordenweg in Ridderkerk: knikarmschermen, screens, rolluiken, markiezen, overkappingen en raamdecoratie op maat, gemonteerd door eigen monteurs. Showroom aan de Noordenweg 71a."
+  title="ZBN Zonwering Ridderkerk | Zonwering en rolluiken op maat"
+  description="Zonweringsbedrijf Noordenweg in Ridderkerk: binnen- en buitenzonwering, rolluiken, garagedeuren en terrasoverkappingen op maat, met eigen montage en showroom aan de Noordenweg 71a."
   jsonld={jsonld}
 >
   <Hero />
@@ -30,5 +31,6 @@ const jsonld = site.preview ? undefined : {
   <Showroom />
   <Reviews />
   <Offerte />
+  <Afsluiter />
   <Vandaag />
 </Base>
