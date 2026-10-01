@@ -1,34 +1,65 @@
 ---
+import { Image } from 'astro:assets';
 import { site, url } from '../data/site';
+import logo from '../assets/logo.png';
 interface Props { deel: 'kop' | 'voet' }
 const { deel } = Astro.props;
+const menu = [
+  ['Producten', '#producten'], ['Werkwijze', '#werkwijze'], ['Showroom', '#showroom'], ['Reviews', '#reviews'], ['Offerte', '#offerte'],
+];
 ---
 {deel === 'kop' ? (
-  <header class="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-sm">
-    <div class="wrap flex h-16 items-center justify-between gap-4">
-      <a href={url('')} class="flex items-baseline gap-2 no-underline">
-        <span class="font-display text-2xl font-bold tracking-[-0.05em] text-woud">ZBN</span>
-        <span class="hidden font-display text-sm font-medium text-ink-soft sm:inline">zonwering, Ridderkerk</span>
+  <header class="sticky top-0 z-40 border-b border-lijn bg-linnen/95 backdrop-blur-sm">
+    <div class="wrap flex h-[4.25rem] items-center justify-between gap-3 lg:h-20">
+      <a href={url('')} class="flex items-center gap-3 no-underline">
+        <Image src={logo} alt="" width={176} height={120} loading="eager" class="h-11 w-auto lg:h-14" />
+        <span class="hidden font-display text-lg font-semibold leading-tight tracking-[-0.01em] text-groen md:block"><span class="block">Zonweringsbedrijf</span><span class="block">Noordenweg</span></span>
       </a>
-      <nav aria-label="Hoofdmenu" class="hidden md:block">
-        <ul class="flex gap-6 text-sm font-medium">
-          <li><a href={url('#assortiment')} class="no-underline transition-colors hover:text-roest">Assortiment</a></li>
-          <li><a href={url('#werkwijze')} class="no-underline transition-colors hover:text-roest">Werkwijze</a></li>
-          <li><a href={url('#showroom')} class="no-underline transition-colors hover:text-roest">Showroom</a></li>
-          <li><a href={url('#offerte')} class="no-underline transition-colors hover:text-roest">Offerte</a></li>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-[1rem] font-semibold">
+          {menu.map(([n, h]) => <li><a href={url(h)} class="no-underline hover:underline">{n}</a></li>)}
         </ul>
       </nav>
-      <a href={site.telHref} class="btn btn-woud !px-4 !py-2 text-sm"><span class="hidden sm:inline">Bel</span> <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+      <div class="flex items-center gap-2">
+        <a href={site.telHref} class="btn btn-groen !px-3.5 !py-2 text-sm"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg><span class="whitespace-nowrap tabular-nums"><span class="sr-only">Bel </span>{site.tel}</span></a>
+        <button type="button" class="btn btn-lijn !px-3 !py-2 text-sm lg:hidden" aria-expanded="false" aria-controls="menu-mobiel" data-menu-knop>Menu</button>
+      </div>
     </div>
+    <nav id="menu-mobiel" aria-label="Menu" class="hidden border-t border-lijn bg-linnen lg:!hidden" data-menu>
+      <ul class="wrap grid py-2 text-lg font-semibold">
+        {menu.map(([n, h]) => <li><a href={url(h)} class="block border-b border-lijn py-3 no-underline last:border-0">{n}</a></li>)}
+      </ul>
+    </nav>
   </header>
 ) : (
-  <footer class="bg-woud text-white/85">
-    <div class="baan h-2" aria-hidden="true"></div>
-    <div class="wrap grid gap-8 py-12 text-sm md:grid-cols-12">
-      <p class="md:col-span-5"><strong class="font-display text-lg font-semibold text-white">{site.naam} vof</strong><br />{site.straat}, {site.postcode} {site.plaats}<br />KvK <span class="text-xs text-white/80">[[AANLEVEREN: KvK-nummer]]</span></p>
-      <p class="md:col-span-4"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline decoration-mint underline-offset-4">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline decoration-mint underline-offset-4">{site.mail}</a></p>
-      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-4">Privacyverklaring</a></p>
+  <footer class="border-t border-lijn bg-zand">
+    <div class="wrap grid gap-10 py-12 md:grid-cols-12 md:gap-6">
+      <div class="md:col-span-5">
+        <Image src={logo} alt="" width={176} height={120} class="h-16 w-auto" />
+        <p class="mt-4 text-sm"><strong>{site.naam} {site.rechtsvorm}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}<br />KvK {site.kvk}</p>
+      </div>
+      <div class="text-sm md:col-span-3">
+        <p class="kicker text-ink-zacht">Contact</p>
+        <p class="mt-2"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline">{site.mail}</a></p>
+      </div>
+      <div class="text-sm md:col-span-4">
+        <p class="kicker text-ink-zacht">Over deze site</p>
+        <ul class="mt-2 grid gap-1.5">
+          <li><a href={url('privacy/')} class="underline">Privacyverklaring</a></li>
+          <li><a href={url('algemene-voorwaarden/')} class="underline">Algemene voorwaarden</a></li>
+          <li><button type="button" class="underline" data-cookies-opnieuw>Cookie-instellingen</button></li>
+        </ul>
+      </div>
     </div>
-    {site.voorstel && <p class="wrap pb-10 text-xs text-white/80">Sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door eigen foto's.</p>}
   </footer>
 )}
+<script>
+  // Mobiel menu: open en dicht, en dicht na een klik op een link.
+  const knop = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  if (knop && menu) {
+    const zet = (open: boolean) => { menu.classList.toggle('hidden', !open); knop.setAttribute('aria-expanded', String(open)); knop.textContent = open ? 'Sluit' : 'Menu'; };
+    knop.addEventListener('click', () => zet(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => zet(false)));
+  }
+</script>
