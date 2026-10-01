@@ -12,7 +12,7 @@ const menu = [
   <>
     <!-- Dunne USP-balk: alleen punten die op hun eigen site staan. -->
     <div class="bg-groen text-wit">
-      <ul class="wrap flex h-9 items-center gap-6 overflow-hidden text-xs font-medium sm:text-sm">
+      <ul class="mx-auto flex h-9 max-w-[76rem] items-center gap-6 overflow-hidden px-6 text-xs font-medium leading-none sm:text-sm md:px-9">
         {usps.map((u, i) => <li class={`flex items-center gap-2 whitespace-nowrap ${i > 1 ? 'hidden sm:flex' : ''} ${i > 2 ? 'sm:hidden lg:flex' : ''}`}><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>{u}</li>)}
         <li class="ml-auto hidden md:block"><a href={site.telHref} class="whitespace-nowrap tabular-nums no-underline hover:underline">{site.tel}</a></li>
       </ul>
@@ -70,7 +70,7 @@ const menu = [
         <div class="text-sm md:col-span-3">
           <p class="kicker text-ink-zacht">Contact</p>
           <p class="mt-3"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline">{site.mail}</a></p>
-          <p class="mt-3"><a href={site.maps} target="_blank" rel="noopener" class="underline">Plan route</a></p>
+          <p class="mt-3"><a href={site.maps} target="_blank" rel="noopener" class="inline-block py-1 underline">Plan route</a></p>
         </div>
         <div class="text-sm md:col-span-3">
           <p class="kicker text-ink-zacht">Showroom</p>
@@ -79,8 +79,8 @@ const menu = [
         <div class="text-sm md:col-span-2">
           <p class="kicker text-ink-zacht">Over deze site</p>
           <ul class="mt-3 grid gap-1.5">
-            <li><a href={url('privacy/')} class="underline">Privacyverklaring</a></li>
-            <li><a href={url('algemene-voorwaarden/')} class="underline">Algemene voorwaarden</a></li>
+            <li><a href={url('privacy/')} class="inline-block py-1 underline">Privacyverklaring</a></li>
+            <li><a href={url('algemene-voorwaarden/')} class="inline-block py-1 underline">Algemene voorwaarden</a></li>
           </ul>
         </div>
       </div>

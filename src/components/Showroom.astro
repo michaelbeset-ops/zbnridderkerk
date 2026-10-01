@@ -1,5 +1,5 @@
 ---
-// Showroom: foto, adres, openingstijden met vandaag gemarkeerd, kaart die pas laadt na een klik (geen cookies vooraf).
+// Showroom: foto, adres, openingstijden met vandaag gemarkeerd en een routeknop naar Google Maps.
 import Vlak from './Vlak.astro';
 import { site, tijden } from '../data/site';
 ---
@@ -38,24 +38,4 @@ import { site, tijden } from '../data/site';
       </div>
     </div>
   </div>
-  <!-- Kaart: click-to-load. Pas na de klik laadt Google iets, daarom is er geen cookiebanner nodig. -->
-  <div class="relative mt-8 aspect-[16/9] overflow-hidden rounded-xl bg-ijs ring-1 ring-lijn sm:aspect-[21/9] lg:aspect-[4/1]" data-kaart={site.mapsEmbed}
-    style="background-image: linear-gradient(var(--color-lijn) 1px, transparent 1px), linear-gradient(90deg, var(--color-lijn) 1px, transparent 1px); background-size: 32px 32px;">
-    <div class="flex h-full flex-col items-start justify-center gap-3 p-6 md:p-10">
-      <p class="font-display text-xl font-semibold">{site.straat}, {site.plaats}</p>
-      <p class="max-w-md text-sm text-ink-zacht">De kaart komt van Google Maps en laadt pas als u erop klikt. Tot die tijd plaatst deze pagina niets van Google.</p>
-      <button type="button" class="btn btn-wit text-sm" data-kaart-knop>Kaart laden</button>
-    </div>
-  </div>
 </section>
-<script>
-  // Laad de Google Maps-embed pas na de klik.
-  document.querySelectorAll<HTMLElement>('[data-kaart]').forEach((el) => {
-    el.querySelector('[data-kaart-knop]')?.addEventListener('click', () => {
-      const f = document.createElement('iframe');
-      f.src = el.dataset.kaart ?? ''; f.title = 'Kaart met de locatie van de showroom'; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade';
-      f.className = 'absolute inset-0 h-full w-full border-0';
-      el.replaceChildren(f);
-    });
-  });
-</script>

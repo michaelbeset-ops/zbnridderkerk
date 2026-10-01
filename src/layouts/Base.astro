@@ -10,7 +10,7 @@ interface Props { title: string; description: string; jsonld?: object; }
 const { title, description, jsonld } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 // Alles van de eigen host; alleen de kaart (Google) en het formulier (FormSubmit) gaan naar buiten.
-const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; frame-src https://www.google.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests";
+const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests";
 ---
 <!doctype html>
 <html lang="nl">
