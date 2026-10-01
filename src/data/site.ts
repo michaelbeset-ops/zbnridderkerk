@@ -121,7 +121,7 @@ export const producten: Product[] = [
     punten: ['Sectionaaldeur, geïsoleerd', 'Op maat voor de bestaande opening', 'Elektrisch met afstandsbediening', 'Kleur of houtlook naar keuze', 'Optioneel: loopdeur, ramen'],
   },
   {
-    slug: 'raamdecoratie', naam: 'Raamdecoratie', kort: 'Jaloezieën, rolgordijnen, plissé, shutters en meer.',
+    slug: 'raamdecoratie', naam: 'Raamdecoratie', kort: 'Jaloezieën, rolgordijnen, shutters en meer.',
     intro: 'Voor binnen leveren we raamdecoratie op maat: jaloezieën, rolgordijnen, vouwgordijnen, paneelgordijnen, lamellen en shutters, ook voor Velux-dakramen.',
     tekst: [
       'In de showroom ziet u stalen van alle stoffen en materialen, zodat u kleuren naast uw eigen inrichting kunt leggen. We adviseren over lichtdoorlatend of verduisterend, over bediening en over wat praktisch is in een keuken of badkamer.',
