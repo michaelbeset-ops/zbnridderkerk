@@ -18,7 +18,7 @@ import { site, reviews } from '../data/site';
     </div>
   </div>
   <!-- De slider loopt tot de rand van het scherm; de eerste kaart lijnt uit met de inhoud. -->
-  <ul class="slider mt-10 [--inzet:max(1.25rem,calc((100vw-80rem)/2+2.5rem))] !px-[var(--inzet)] !scroll-pl-[var(--inzet)]" data-slider>
+  <ul class="slider mt-10 !items-start [--inzet:max(1.25rem,calc((100vw-80rem)/2+2.5rem))] !px-[var(--inzet)] !scroll-pl-[var(--inzet)]" data-slider>
     {reviews.map((r) => (
       <li class="flex w-[20rem] flex-col rounded-xl bg-wit p-6 shadow-zacht ring-1 ring-lijn sm:w-[24rem] md:p-7">
         <Sterren />

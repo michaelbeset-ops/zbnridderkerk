@@ -1,5 +1,5 @@
 // Koppelt de fotonaam uit de productdata aan het bestand. Tijdelijke stockbeelden staan in assets/stock
-// (gegenereerd, tot ZBN eigen foto's aanlevert); hero en binnen zijn Unsplash uit het eerste voorstel.
+// (gegenereerd, tot ZBN eigen foto's aanlevert); hero.jpg is ook gegenereerd; binnen.jpg is Unsplash.
 import hero from '../assets/hero.jpg';
 import binnen from '../assets/binnen.jpg';
 import knikarmscherm from '../assets/stock/knikarmscherm.jpg';
@@ -11,4 +11,5 @@ import garagedeur from '../assets/stock/garagedeur.jpg';
 import overkapping from '../assets/stock/overkapping.jpg';
 import jaloezie from '../assets/stock/jaloezie.jpg';
 import showroom from '../assets/stock/showroom.jpg';
-export const fotos = { hero, binnen, knikarmscherm, uitvalscherm, markies, screens, rolluiken, garagedeur, overkapping, jaloezie, showroom };
+import werkplaats from '../assets/stock/werkplaats.jpg';
+export const fotos = { hero, binnen, knikarmscherm, uitvalscherm, markies, screens, rolluiken, garagedeur, overkapping, jaloezie, showroom, werkplaats };

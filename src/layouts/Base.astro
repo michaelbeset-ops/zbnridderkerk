@@ -26,6 +26,7 @@ const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'u
     {site.preview ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content={site.themeColor} />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="icon" type="image/png" sizes="32x32" href={url('favicon-32.png')} />
     <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="nl_NL" />
@@ -38,7 +39,7 @@ const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'u
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
     <meta name="robots" content="max-image-preview:large" />
   </head>
-  <body class="min-h-dvh pb-[4.5rem] md:pb-0">
+  <body class="min-h-dvh pb-[4rem] md:pb-0">
     <a href="#inhoud" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
     <Chrome deel="kop" />
     <main id="inhoud"><slot /></main>
