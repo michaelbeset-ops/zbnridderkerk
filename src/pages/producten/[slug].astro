@@ -17,10 +17,10 @@ const offerte = url(`?product=${p.slug}#offerte`);
 <Base title={`${p.naam} op maat in Ridderkerk | ZBN Zonwering`} description={`${p.intro} Inmeten en montage door de eigen monteurs van ZBN in Ridderkerk.`}>
   <section class="wrap pt-6 lg:pt-10">
     <nav aria-label="Kruimelpad" class="text-sm text-ink-zacht">
-      <ol class="flex flex-wrap gap-2">
-        <li><a href={url('')} class="underline">Home</a></li>
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href={url('')} class="inline-block py-2 underline">Home</a></li>
         <li aria-hidden="true">/</li>
-        <li><a href={url('#producten')} class="underline">Producten</a></li>
+        <li><a href={url('#producten')} class="inline-block py-2 underline">Producten</a></li>
         <li aria-hidden="true">/</li>
         <li aria-current="page">{p.naam}</li>
       </ol>
