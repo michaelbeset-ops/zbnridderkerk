@@ -1,0 +1,36 @@
+---
+// Optie D: kop bovenin naast de navigatie, onderin een donkere glasbalk met de feiten en de producten erin.
+import Foto from './Foto.astro';
+import Sterren from './Sterren.astro';
+import { site, url, producten } from '../data/site';
+import hero from '../assets/hero.jpg';
+---
+<section class="relative -mt-[5.5rem] flex min-h-[min(50rem,94svh)] flex-col bg-groen pt-[5.5rem] text-wit lg:-mt-[6rem] lg:pt-[6rem]">
+  <div class="absolute inset-0"><Foto src={hero} alt="Groot uitgeschoven knikarmscherm met verlichting boven een terras" hero sizes="100vw" class="object-[50%_40%]" /></div>
+  <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/20 to-ink/60"></div>
+  <div class="wrap relative flex flex-1 flex-col justify-between pt-14 lg:pt-20">
+    <div class="grid gap-6 lg:grid-cols-12">
+      <div class="lg:col-span-7">
+        <p class="kicker text-wit/80">Zonweringsbedrijf Noordenweg, Ridderkerk</p>
+        <h1 class="mt-5 text-4xl text-wit">Zonwering en rolluiken op maat.</h1>
+      </div>
+      <div class="lg:col-span-4 lg:col-start-9 lg:pt-10">
+        <p class="text-lg text-wit/90">Buiten- en binnenzonwering, rolluiken, garagedeuren en terrasoverkappingen. Bijna alles assembleren we zelf, en onze eigen monteurs plaatsen het.</p>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <a href={url('#offerte')} class="btn btn-wit">Offerte aanvragen</a>
+          <a href={url('#producten')} class="btn btn-glas">Bekijk producten</a>
+        </div>
+      </div>
+    </div>
+    <div class="mt-16 rounded-t-xl bg-ink/55 ring-1 ring-wit/15 backdrop-blur-md">
+      <dl class="grid divide-y divide-wit/15 px-5 md:grid-cols-3 md:divide-x md:divide-y-0 md:px-0">
+        <div class="py-4 md:px-6"><dt class="text-xs text-wit/70">Showroom vandaag</dt><dd class="mt-0.5 font-display font-semibold" data-vandaag>di t/m vr 8.30 tot 16.30</dd></div>
+        <div class="py-4 md:px-6"><dt class="text-xs text-wit/70">Klanten op Google</dt><dd class="mt-0.5"><a href={site.reviewsUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-display font-semibold no-underline hover:underline"><Sterren /> <span class="tabular-nums">{site.google.score}</span> uit 5</a></dd></div>
+        <div class="py-4 md:px-6"><dt class="text-xs text-wit/70">Direct contact</dt><dd class="mt-0.5"><a href={site.telHref} class="font-display font-semibold tabular-nums no-underline hover:underline">{site.tel}</a></dd></div>
+      </dl>
+      <ul class="slider border-t border-wit/15 py-3 md:flex-wrap md:gap-2 md:overflow-visible md:px-6">
+        {producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="btn btn-glas !px-3.5 !py-1.5 text-sm">{p.naam}</a></li>)}
+      </ul>
+    </div>
+  </div>
+</section>
