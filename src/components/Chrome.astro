@@ -40,7 +40,7 @@ const menu = [
         </nav>
         <div class="flex items-center gap-2">
           <a href={site.telHref} class="btn btn-wit hidden !px-4 !py-2.5 text-sm xl:inline-flex"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg><span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
-          <a href={url('#offerte')} class="btn btn-groen !px-4 !py-2.5 text-sm">Offerte aanvragen</a>
+          <a href={url('#offerte')} class="btn btn-groen hidden !px-4 !py-2.5 text-sm md:inline-flex">Offerte aanvragen</a>
           <button type="button" class="flex h-11 w-11 items-center justify-center rounded-pill ring-1 ring-lijn lg:hidden" aria-expanded="false" aria-controls="menu-mobiel" aria-label="Menu" data-menu-knop>
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" data-open-icoon /><path d="M6 6l12 12M18 6L6 18" class="hidden" data-dicht-icoon /></svg>
           </button>
@@ -83,6 +83,9 @@ const menu = [
             <li><a href={url('algemene-voorwaarden/')} class="inline-block py-1 underline">Algemene voorwaarden</a></li>
           </ul>
         </div>
+      </div>
+      <div class="wrap border-t border-lijn py-5 text-xs text-ink-zacht">
+        <p>Website door <a href="https://www.sitefront.nl" rel="noopener" target="_blank" class="underline">Sitefront</a></p>
       </div>
     </footer>
     <!-- Vaste balk onderaan op mobiel: bellen en offerte altijd binnen handbereik. De body krijgt onderaan ruimte, zodat de footer niet afgedekt wordt. -->
