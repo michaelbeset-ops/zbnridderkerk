@@ -1,35 +1,42 @@
 ---
 import Base from '../layouts/Base.astro';
-import Chrome from '../components/Chrome.astro';
 import { site, url } from '../data/site';
 ---
-<Base title={`Privacyverklaring | ${site.naam}`} description={`Hoe ${site.naam} omgaat met uw gegevens.`}>
-  <Chrome deel="kop" />
-  <main id="inhoud" class="wrap max-w-3xl py-14 lg:py-20">
-    <p><a href={url('')} class="underline underline-offset-2">Terug naar de homepage</a></p>
-    <h1 class="mt-4 text-3xl">Privacyverklaring</h1>
-    <div class="mt-8 space-y-6">
-      <section>
-        <h2 class="text-xl">Wie wij zijn</h2>
-        <p class="mt-2">{site.naam} vof ({site.kort}), {site.straat}, {site.postcode} {site.plaats}. E-mail: <a href={`mailto:${site.mail}`} class="underline">{site.mail}</a>. KvK <span class="text-sm text-ink-soft">[[AANLEVEREN: KvK-nummer]]</span>.</p>
-      </section>
-      <section>
-        <h2 class="text-xl">Welke gegevens</h2>
-        <p class="mt-2">Als u belt, mailt of het offerteformulier invult, krijgen wij uw naam, telefoonnummer of e-mailadres en uw wensen. Die gebruiken we alleen om u te antwoorden en uw vraag of opdracht af te handelen.</p>
-      </section>
-      <section>
-        <h2 class="text-xl">Hoe lang</h2>
-        <p class="mt-2">We bewaren uw gegevens niet langer dan nodig. <span class="text-sm text-ink-soft">[[AANLEVEREN: bevestiging bewaartermijn]]</span></p>
-      </section>
-      <section>
-        <h2 class="text-xl">Cookies</h2>
-        <p class="mt-2">Deze website plaatst geen cookies en gebruikt geen statistieken, advertenties of ingesloten kaarten. Daarom ziet u ook geen cookiemelding. Links naar andere diensten, zoals Google Maps of Facebook, openen een aparte pagina van die dienst.</p>
-      </section>
-      <section>
-        <h2 class="text-xl">Uw rechten</h2>
-        <p class="mt-2">U mag altijd vragen welke gegevens wij van u hebben, en vragen om ze aan te passen of te verwijderen. Mail daarvoor naar {site.mail}. Bent u het niet eens met hoe wij met uw gegevens omgaan, dan kunt u een klacht indienen bij de Autoriteit Persoonsgegevens.</p>
-      </section>
+<Base title="Privacyverklaring | ZBN Ridderkerk" description={`Hoe ${site.naam} omgaat met uw gegevens.`}>
+  <section class="wrap py-12 lg:py-20">
+    <div class="prose">
+      <h1 class="text-3xl">Privacyverklaring</h1>
+      <p class="mt-6 text-ink-zacht">Laatst bijgewerkt: 1 oktober 2026.</p>
+      <p>{site.naam} {site.rechtsvorm} (hierna: ZBN), gevestigd aan de {site.straat}, {site.postcode} {site.plaats}, KvK {site.kvk}, is verantwoordelijk voor de verwerking van persoonsgegevens zoals beschreven in deze verklaring. Vragen? Mail naar <a href={`mailto:${site.mail}`}>{site.mail}</a> of bel <a href={site.telHref} class="whitespace-nowrap tabular-nums">{site.tel}</a>.</p>
+
+      <h2>Welke gegevens we verwerken en waarom</h2>
+      <p>Via het offerteformulier op deze site vraagt u ons om contact op te nemen. Daarvoor verwerken we de gegevens die u invult: uw naam, adres, telefoonnummer, e-mailadres, de foto die u eventueel meestuurt en uw opmerkingen. We gebruiken deze gegevens alleen om uw aanvraag te beantwoorden, een afspraak te maken en een offerte op te stellen. De grondslag is de uitvoering van een overeenkomst, of de stappen daarnaartoe op uw verzoek.</p>
+      <p>Belt of mailt u ons rechtstreeks, dan verwerken we de gegevens die u daarbij geeft voor hetzelfde doel.</p>
+
+      <h2>Hoe lang we gegevens bewaren</h2>
+      <p>Gegevens uit een aanvraag bewaren we zolang dat nodig is om de aanvraag af te handelen. Wordt het een opdracht, dan bewaren we de gegevens die bij de administratie horen zolang de wet dat voorschrijft (zeven jaar voor de fiscale bewaarplicht). Een aanvraag die niet tot een opdracht leidt, verwijderen we binnen een jaar.</p>
+
+      <h2>Met wie we gegevens delen</h2>
+      <ul>
+        <li><strong>FormSubmit</strong> stuurt het ingevulde formulier als e-mail naar ons door. Uw gegevens gaan via hun servers naar onze mailbox en worden daar niet voor andere doelen gebruikt.</li>
+        <li><strong>GitHub</strong> (GitHub, Inc.) host deze website. Bij elk bezoek verwerkt de hostingpartij technische gegevens zoals uw IP-adres in logbestanden, om de site te leveren en te beveiligen.</li>
+        <li><strong>Google</strong> toont de kaart met onze locatie, alleen nadat u daarvoor akkoord geeft (zie Cookies). Google kan daarbij uw IP-adres en cookies verwerken volgens het <a href="https://policies.google.com/privacy?hl=nl" rel="noopener">privacybeleid van Google</a>.</li>
+        <li>Leveranciers en fabrikanten krijgen alleen de gegevens die nodig zijn om uw bestelling te maken en te leveren.</li>
+      </ul>
+      <p>We verkopen uw gegevens niet en delen ze niet met anderen voor marketing.</p>
+
+      <h2>Cookies</h2>
+      <p>Deze website plaatst zelf geen cookies en gebruikt geen statistieken of trackers. Alleen de kaart van Google Maps plaatst cookies van Google. Daarom laden we die kaart pas nadat u op "Kaart tonen" klikt. Uw keuze bewaren we in de lokale opslag van uw browser; dat is geen cookie en bevat alleen "ja" of "nee". Via "Cookie-instellingen" onderaan de pagina kunt u uw keuze aanpassen.</p>
+
+      <h2>Beveiliging</h2>
+      <p>De site is alleen via een beveiligde verbinding (https) bereikbaar. Het formulier gaat versleuteld naar onze mailbox. Toegang tot aanvragen hebben alleen medewerkers die ze afhandelen.</p>
+
+      <h2>Uw rechten</h2>
+      <p>U heeft het recht om uw gegevens in te zien, te laten corrigeren of te laten verwijderen. Ook kunt u bezwaar maken tegen de verwerking of vragen om uw gegevens over te dragen. Stuur uw verzoek naar <a href={`mailto:${site.mail}`}>{site.mail}</a>; we reageren binnen vier weken. Bent u niet tevreden over hoe we met uw gegevens omgaan, dan kunt u een klacht indienen bij de <a href="https://www.autoriteitpersoonsgegevens.nl" rel="noopener">Autoriteit Persoonsgegevens</a>.</p>
+
+      <h2>Wijzigingen</h2>
+      <p>Verandert er iets in hoe we gegevens verwerken, dan passen we deze verklaring aan. De datum bovenaan laat zien wanneer dat voor het laatst gebeurde.</p>
+      <p class="mt-10"><a href={url('')} class="btn btn-lijn text-groen">Terug naar de homepage</a></p>
     </div>
-  </main>
-  <Chrome deel="voet" />
+  </section>
 </Base>

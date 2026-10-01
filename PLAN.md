@@ -11,11 +11,10 @@ KvK 24249059, showroom ma 12.30-16.30, di t/m vr 8.30-16.30, za 9.30-12.30. Goog
 Reviews: letterlijk uit het Google-profiel (aangeleverd door Michael), alleen de 5-sterren met tekst.
 
 ## Richting
-Logogroen #384848 als hoofdkleur, linnen #f5f1e8 als achtergrond, oker #b8862b alleen als decoratie (strepen, lijn,
-sterren), nooit als tekst op wit. Fraunces (koppen, 700-800, negatieve tracking) met Source Sans 3 (tekst).
-Motief: de geschulpte valk van een zonnescherm (het logo heeft die ook), als randje onder de herofoto en op de
-productvlakken. Geen kaarten met schaduw, geen iconenset; de vier werkwijze-stappen zijn grote cijfers in Fraunces.
-Hero: tekst links, foto rechts tot aan de rand, met de openingstijd van vandaag en de Google-score eronder.
+De klant was blij met het eerste voorstel, dus die richting blijft: woudgroen #22433a en ecru doekkleur, roestoranje
+#b4472c als doekbaan, sterren en knop, mint alleen op groen. Space Grotesk (koppen) met DM Sans (tekst). Hero: foto
+onder groene overlay met de openingstijd van vandaag en de Google-score. Het ovale logo in de kop en de voet.
+Werkwijze als vier grote cijfers op groen, reviews als vier blokken plus een rij korte citaten.
 
 ## Zelf gekozen
 - Foto's: de cloudomgeving kan geen stockfoto's ophalen. De vier Unsplash-foto's uit het eerdere voorstel blijven

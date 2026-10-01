@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../data/site';
+---
+<Base title="Pagina niet gevonden | ZBN Ridderkerk" description="Deze pagina bestaat niet.">
+  <section class="wrap py-20 lg:py-32">
+    <div class="max-w-xl">
+      <h1 class="text-4xl">Deze pagina bestaat niet</h1>
+      <p class="mt-6 text-lg text-ink-zacht">Het adres klopt niet meer of is verkeerd getypt.</p>
+      <a href={url('')} class="btn btn-groen mt-8">Naar de homepage</a>
+    </div>
+  </section>
+</Base>

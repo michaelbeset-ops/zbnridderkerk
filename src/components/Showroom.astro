@@ -1,0 +1,44 @@
+---
+import Vlak from './Vlak.astro';
+import { site, tijden, merken } from '../data/site';
+---
+<section id="showroom" class="wrap scroll-mt-20 py-16 lg:py-24">
+  <div class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-6">
+      <h2 class="text-3xl">Showroom en openingstijden</h2>
+      <p class="mt-6 text-lg text-ink-zacht">In de showroom aan de Noordenweg ziet u de producten in het echt en kunt u stalen van doek en stoffen bekijken. U krijgt direct advies, of we maken een afspraak om bij u te komen inmeten.</p>
+      <div class="mt-8 aspect-[3/2] overflow-hidden rounded-xl"><Vlak wat="showroom, liggend" /></div>
+      <p class="mt-6 text-sm text-ink-zacht">{merken}</p>
+    </div>
+    <div class="lg:col-span-5 lg:col-start-8">
+      <div class="rounded-xl bg-wit p-6 ring-1 ring-lijn md:p-8">
+        <h3 class="text-xl">Openingstijden</h3>
+        <table class="mt-4 w-full text-left">
+          <caption class="sr-only">Openingstijden van de showroom</caption>
+          <tbody>
+            {tijden.map((t) => (
+              <tr class="border-b border-lijn last:border-0" data-dag={t.dag}>
+                <th scope="row" class="py-2.5 pr-4 font-medium">{t.naam}</th>
+                <td class="py-2.5 text-right whitespace-nowrap tabular-nums">{t.open ? `${t.open} uur` : 'Gesloten'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <address class="mt-8 not-italic">
+        <p class="font-display text-lg font-semibold">{site.naam} {site.rechtsvorm}</p>
+        <p>{site.straat}, {site.postcode} {site.plaats}</p>
+        <p class="mt-2"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline decoration-roest decoration-2 underline-offset-4">{site.tel}</a> <span class="text-ink-zacht">of</span> <a href={`mailto:${site.mail}`} class="break-all underline decoration-roest decoration-2 underline-offset-4">{site.mail}</a></p>
+      </address>
+      <a href={site.maps} rel="noopener" target="_blank" class="btn btn-groen mt-6">Route plannen<span class="sr-only"> (opent Google Maps in een nieuw tabblad)</span></a>
+    </div>
+  </div>
+  <!-- De kaart laadt pas na akkoord in de cookiemelding; tot die tijd staat hier een knop. -->
+  <div class="relative mt-12 aspect-[16/9] overflow-hidden rounded-xl bg-zand sm:aspect-[21/9] lg:aspect-[4/1]" data-kaart={site.mapsEmbed}>
+    <div class="flex h-full flex-col items-start justify-center gap-3 p-6 md:p-10">
+      <p class="font-display text-xl font-semibold">{site.straat}, {site.plaats}</p>
+      <p class="max-w-md text-sm text-ink-zacht">De kaart van Google Maps tonen we pas na uw akkoord, omdat Google daarbij cookies plaatst.</p>
+      <button type="button" class="btn btn-lijn text-sm" data-cookies-opnieuw>Kaart tonen</button>
+    </div>
+  </div>
+</section>

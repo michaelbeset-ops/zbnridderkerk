@@ -1,0 +1,35 @@
+---
+import Sterren from './Sterren.astro';
+import { site, reviews } from '../data/site';
+// Lange reviews als blokken, de korte als een rij citaten eronder, zodat de kolommen niet scheef lopen.
+const lang = reviews.filter((r) => r.tekst.length > 80);
+const kort = reviews.filter((r) => r.tekst.length <= 80);
+---
+<section id="reviews" class="scroll-mt-20 bg-ecru py-16 lg:py-24">
+  <div class="wrap">
+    <div class="grid gap-6 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <h2 class="text-3xl">Wat klanten zeggen</h2>
+        <p class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold"><Sterren /> <span><span class="tabular-nums">{site.google.score}</span> uit 5 op Google, {site.google.aantal} reviews</span></p>
+      </div>
+      <p class="text-lg text-ink-zacht lg:col-span-6 lg:col-start-7 lg:pt-2">Reviews zoals klanten ze op ons Google-profiel achterlieten, letterlijk overgenomen.</p>
+    </div>
+    <ul class="mt-12 grid gap-6 md:grid-cols-2">
+      {lang.map((r) => (
+        <li class="rounded-xl bg-wit p-6 ring-1 ring-lijn md:p-8">
+          <Sterren />
+          <blockquote class="mt-4 text-lg"><p>{r.tekst}</p></blockquote>
+          <p class="mt-4 text-sm text-ink-zacht"><strong class="font-semibold text-ink">{r.naam}</strong>, via Google, {r.wanneer}</p>
+        </li>
+      ))}
+    </ul>
+    <ul class="mt-6 grid gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+      {kort.map((r) => (
+        <li class="border-l-2 border-roest pl-4">
+          <blockquote><p class="font-display font-medium">{r.tekst}</p></blockquote>
+          <p class="mt-1.5 text-sm text-ink-zacht"><strong class="font-semibold text-ink">{r.naam}</strong>, {r.wanneer}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

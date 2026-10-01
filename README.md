@@ -1,4 +1,4 @@
-# ZBN Ridderkerk, broncode ontwerpvoorstel
+# ZBN Ridderkerk, website
 
     npm install
-    PUBLIC_VOORSTEL=1 npm run build
+    PUBLIC_PREVIEW=1 npm run build
