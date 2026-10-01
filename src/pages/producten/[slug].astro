@@ -9,6 +9,7 @@ import Icoon from '../../components/Icoon.astro';
 import { producten, site, url } from '../../data/site';
 import { details } from '../../data/productdetails';
 import { fotos } from '../../components/Fotos';
+import { getImage } from 'astro:assets';
 
 export function getStaticPaths() {
   return producten.map((p) => ({ params: { slug: p.slug }, props: { p } }));
@@ -18,8 +19,20 @@ const d = details[p.slug];
 const verwant = d.verwant.map((s) => producten.find((x) => x.slug === s)!).filter(Boolean);
 const offerte = url(`?product=${p.slug}#offerte`);
 const naam = p.naam.toLowerCase();
+// Korte meta description (onder 155 tekens) en een eigen deelafbeelding per product.
+const beschrijving = `${p.naam} op maat in Ridderkerk. ${p.kort} Inmeten en montage door de eigen monteurs van ZBN.`;
+const og = p.foto ? (await getImage({ src: fotos[p.foto], width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 })).src : undefined;
+// Gestructureerde data met alleen echte inhoud: kruimelpad en de vragen op deze pagina. Pas als de site op het domein staat.
+const jsonld = site.preview ? undefined : [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL(url(''), Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: 'Producten', item: new URL(url('#producten'), Astro.site).href },
+    { '@type': 'ListItem', position: 3, name: p.naam, item: new URL(url(`producten/${p.slug}/`), Astro.site).href },
+  ] },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: d.vragen.map((v) => ({ '@type': 'Question', name: v.vraag, acceptedAnswer: { '@type': 'Answer', text: v.antwoord } })) },
+];
 ---
-<Base title={`${p.naam} op maat in Ridderkerk | ZBN Zonwering`} description={`${p.intro} Inmeten en montage door de eigen monteurs van ZBN in Ridderkerk.`}>
+<Base title={`${p.naam} op maat in Ridderkerk | ZBN Zonwering`} description={beschrijving} ogImage={og} jsonld={jsonld}>
   <!-- 1. Split hero: tekst links, foto rechts, drie voordeel-labels onder de foto. -->
   <section class="wrap pt-8 lg:pt-14">
     <nav aria-label="Kruimelpad" class="text-sm text-ink-zacht">
@@ -72,7 +85,6 @@ const naam = p.naam.toLowerCase();
       <section class="prose" aria-labelledby="over">
         <h2 id="over" class="text-2xl">Over {naam}</h2>
         {p.tekst.map((t) => <p class="mt-4 text-lg">{t}</p>)}
-        <p class="mt-4 text-sm text-ink-zacht">[[AANLEVEREN: extra info {naam}]]</p>
       </section>
 
       <!-- 3. Varianten als kaarten. -->

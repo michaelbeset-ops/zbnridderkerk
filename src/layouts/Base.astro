@@ -6,8 +6,8 @@ import Chrome from '../components/Chrome.astro';
 import dmSans from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
 import archivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 
-interface Props { title: string; description: string; jsonld?: object; }
-const { title, description, jsonld } = Astro.props;
+interface Props { title: string; description: string; jsonld?: object | object[]; ogImage?: string; }
+const { title, description, jsonld, ogImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 // Alles van de eigen host; alleen de kaart (Google) en het formulier (FormSubmit) gaan naar buiten.
 const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests";
@@ -33,9 +33,10 @@ const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'u
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(url('og.png'), Astro.site).href} />
+    <meta property="og:image" content={new URL(ogImage ?? url('og.png'), Astro.site).href} />
     <meta name="twitter:card" content="summary_large_image" />
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+    <meta name="robots" content="max-image-preview:large" />
   </head>
   <body class="min-h-dvh pb-[4.5rem] md:pb-0">
     <a href="#inhoud" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
