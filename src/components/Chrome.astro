@@ -12,7 +12,7 @@ const menu = [
   <>
     <!-- Dunne USP-balk: alleen punten die op hun eigen site staan. -->
     <div class="bg-groen text-wit">
-      <ul class="wrap flex h-9 items-center gap-6 overflow-hidden text-xs font-medium sm:text-sm">
+      <ul class="mx-auto flex h-9 max-w-[76rem] items-center gap-6 overflow-hidden px-6 text-xs font-medium leading-none sm:text-sm md:px-9">
         {usps.map((u, i) => <li class={`flex items-center gap-2 whitespace-nowrap ${i > 1 ? 'hidden sm:flex' : ''} ${i > 2 ? 'sm:hidden lg:flex' : ''}`}><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>{u}</li>)}
         <li class="ml-auto hidden md:block"><a href={site.telHref} class="whitespace-nowrap tabular-nums no-underline hover:underline">{site.tel}</a></li>
       </ul>

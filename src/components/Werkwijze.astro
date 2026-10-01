@@ -1,15 +1,19 @@
 ---
-// Vier stappen met eigen getekende iconen. Op desktop naast elkaar met een verbindende lijn, op mobiel onder elkaar.
+// Vijf stappen met eigen getekende iconen, op desktop naast elkaar met een lijn die bij het laatste icoon stopt,
+// op mobiel onder elkaar. Daaronder ruimte voor een foto van de werkplaats of een monteur.
+import Vlak from './Vlak.astro';
 import { site, url } from '../data/site';
 const stappen = [
-  { kop: 'Showroom of aanvraag', tekst: 'Kom langs in de showroom aan de Noordenweg, of vraag een offerte aan via de website. Dan nemen wij contact met u op.',
-    icoon: 'M3 10l9-6 9 6v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM9 21v-6h6v6' },
-  { kop: 'Afspraak inmeten', tekst: 'We komen bij u thuis of op het bedrijf, meten alles in en adviseren wat past bij de gevel of het kozijn.',
-    icoon: 'M3 7h18M3 17h18M7 7v3M12 7v5M17 7v3M7 17v-3M12 17v-5M17 17v-3' },
-  { kop: 'Definitieve offerte', tekst: 'Op basis van de maten en uw keuzes ontvangt u een definitieve offerte, zonder verrassingen achteraf.',
-    icoon: 'M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM14 3v5h5M9 13h6M9 17h6' },
-  { kop: 'Montage', tekst: 'Onze eigen monteurs plaatsen het product op de voorgeschreven manier en leggen uit hoe het werkt.',
+  { kop: 'Advies in de showroom', tekst: 'Kom langs aan de Noordenweg of vraag een offerte aan via de website. We bespreken wat u zoekt en wat er past.',
+    icoon: 'M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6' },
+  { kop: 'Inmeten bij u thuis', tekst: 'We komen langs, meten alles nauwkeurig in en bekijken de gevel of het kozijn. Daarna ontvangt u een definitieve offerte.',
+    icoon: 'M3 8h18v8H3zM7 8v3M11 8v4M15 8v3M19 8v4' },
+  { kop: 'Maatwerk uit eigen werkplaats', tekst: 'Bijna alles assembleren we zelf in onze werkplaats in Ridderkerk. Zo weten we precies wat we leveren.',
+    icoon: 'M4 20l4-4M14 4l6 6-9 9H5v-6zM12 6l6 6' },
+  { kop: 'Montage door eigen monteurs', tekst: 'Onze eigen monteurs plaatsen het product volgens de voorschriften van de fabrikant en leggen uit hoe het werkt.',
     icoon: 'M14.5 4.5a4 4 0 0 0-5 5L3 16v5h5l6.5-6.5a4 4 0 0 0 5-5l-2.5 2.5-2-2 2.5-2.5z' },
+  { kop: 'Service en onderhoud', tekst: 'Ook daarna kunt u bij ons terecht, voor onderhoud of als er iets kapot is.',
+    icoon: 'M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 15.6 7.1 18.2l.9-5.5-4-3.9 5.5-.8z' },
 ];
 ---
 <section id="werkwijze" class="scroll-mt-24 bg-ijs py-16 lg:py-24">
@@ -17,29 +21,36 @@ const stappen = [
     <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
       <div class="lg:col-span-7">
         <p class="kicker text-ink-zacht">Hoe werken wij</p>
-        <h2 class="mt-3 text-3xl">Van eerste gesprek tot montage, in vier stappen.</h2>
+        <h2 class="mt-3 text-3xl">Van eerste gesprek tot montage, in eigen hand.</h2>
       </div>
-      <p class="text-lg text-ink-zacht lg:col-span-5 lg:pb-1">We houden het in eigen hand: advies, inmeten, maken en plaatsen. Zo weet u wat u krijgt.</p>
+      <p class="text-lg text-ink-zacht lg:col-span-5 lg:pb-1">Advies, inmeten, maken en plaatsen doen we zelf. Zo weet u precies wat u krijgt.</p>
     </div>
-    <ol class="relative mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-      <!-- De verbindende lijn loopt op desktop door de iconen heen. -->
-      <li aria-hidden="true" class="absolute left-7 top-0 hidden h-full w-px bg-lijn md:block lg:left-0 lg:top-7 lg:h-px lg:w-full"></li>
+    <ol class="relative mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-5 lg:gap-6">
       {stappen.map((s, i) => (
         <li class="relative flex gap-5 lg:block">
-          <div class="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-pill bg-wit text-groen shadow-zacht ring-1 ring-lijn">
-            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={s.icoon}/></svg>
-            <span class="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-pill bg-groen font-display text-xs font-bold text-wit">{i + 1}</span>
+          <!-- Lijn naar de volgende stap: op mobiel omlaag, op desktop naar rechts. Niet bij de laatste stap. -->
+          {i < stappen.length - 1 && <span aria-hidden="true" class="absolute left-8 top-16 h-[calc(100%+2.5rem-4rem)] w-px bg-groen/30 md:hidden lg:left-[4.5rem] lg:top-8 lg:block lg:h-px lg:w-[calc(100%-4.5rem+1.5rem)]"></span>}
+          <div class="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-pill bg-wit text-groen shadow-zacht ring-1 ring-lijn">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d={s.icoon}/></svg>
+            <span class="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-pill bg-groen font-display text-xs font-bold text-wit">{i + 1}</span>
           </div>
           <div class="lg:mt-6">
-            <h3 class="text-xl"><span class="sr-only">Stap {i + 1}: </span>{s.kop}</h3>
-            <p class="mt-2 text-ink-zacht">{s.tekst}</p>
+            <h3 class="text-lg"><span class="sr-only">Stap {i + 1}: </span>{s.kop}</h3>
+            <p class="mt-2 text-sm text-ink-zacht">{s.tekst}</p>
           </div>
         </li>
       ))}
     </ol>
-    <div class="mt-12 flex flex-wrap items-center gap-3">
-      <a href={url('#offerte')} class="btn btn-groen">Offerte aanvragen</a>
-      <a href={site.telHref} class="btn btn-wit">Bel <span class="tabular-nums">{site.tel}</span></a>
+    <div class="mt-14 grid gap-8 lg:grid-cols-12 lg:items-center">
+      <div class="aspect-[16/9] overflow-hidden rounded-xl lg:col-span-7 lg:aspect-[2/1]"><Vlak wat="werkplaats of monteur aan het werk, liggend" /></div>
+      <div class="lg:col-span-5">
+        <h3 class="text-xl">Zelf gemaakt, zelf geplaatst.</h3>
+        <p class="mt-3 text-ink-zacht">Geen webshop die ergens anders laat produceren. ZBN assembleert bijna alles in de eigen werkplaats en plaatst het met eigen monteurs.</p>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <a href={url('#offerte')} class="btn btn-groen">Offerte aanvragen</a>
+          <a href={site.telHref} class="btn btn-wit">Bel <span class="tabular-nums">{site.tel}</span></a>
+        </div>
+      </div>
     </div>
   </div>
 </section>

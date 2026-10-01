@@ -28,7 +28,7 @@ import hero from '../assets/hero.jpg';
 </section>
 <!-- Snelkeuze onder de hero: alle producten in een rij, op mobiel swipebaar. -->
 <nav aria-label="Snel naar een product" class="border-b border-lijn bg-wit">
-  <ul class="slider wrap py-4 md:flex-wrap md:gap-2 md:overflow-visible">
-    {producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="btn btn-wit !px-4 !py-2 text-sm !shadow-none ring-1 ring-lijn hover:ring-groen">{p.naam}</a></li>)}
+  <ul class="slider wrap !gap-2 py-4 lg:justify-between">
+    {producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="btn btn-wit !px-3 !py-1.5 text-[0.85rem] !shadow-none ring-1 ring-lijn hover:ring-groen xl:!px-3.5 xl:text-sm">{p.naam}</a></li>)}
   </ul>
 </nav>
