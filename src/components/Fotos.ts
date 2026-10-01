@@ -10,4 +10,5 @@ import rolluiken from '../assets/stock/rolluiken.jpg';
 import garagedeur from '../assets/stock/garagedeur.jpg';
 import overkapping from '../assets/stock/overkapping.jpg';
 import jaloezie from '../assets/stock/jaloezie.jpg';
-export const fotos = { hero, binnen, knikarmscherm, uitvalscherm, markies, screens, rolluiken, garagedeur, overkapping, jaloezie };
+import showroom from '../assets/stock/showroom.jpg';
+export const fotos = { hero, binnen, knikarmscherm, uitvalscherm, markies, screens, rolluiken, garagedeur, overkapping, jaloezie, showroom };
