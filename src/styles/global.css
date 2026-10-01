@@ -100,6 +100,9 @@
 
   /* Horizontale slider met snap-scroll (reviews, foto's op mobiel). */
   .slider { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 1.25rem; padding-inline: 1.25rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  /* Op grotere schermen kan een slider een gewoon grid in de container worden: dan geldt de padding van .wrap. */
+  @media (min-width: 640px) { .slider.wrap { padding-inline: 2.5rem; scroll-padding-inline: 0; } }
+  @media (min-width: 640px) and (max-width: 767px) { .slider.wrap { padding-inline: 1.25rem; } }
   .slider::-webkit-scrollbar { display: none; }
   .slider > * { scroll-snap-align: start; flex: 0 0 auto; }
 
