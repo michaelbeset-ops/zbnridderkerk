@@ -1,0 +1,34 @@
+---
+import { site, url } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="flex items-baseline gap-2 no-underline">
+        <span class="font-display text-2xl font-bold tracking-[-0.05em] text-woud">ZBN</span>
+        <span class="hidden font-display text-sm font-medium text-ink-soft sm:inline">zonwering, Ridderkerk</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-6 text-sm font-medium">
+          <li><a href={url('#assortiment')} class="no-underline transition-colors hover:text-roest">Assortiment</a></li>
+          <li><a href={url('#werkwijze')} class="no-underline transition-colors hover:text-roest">Werkwijze</a></li>
+          <li><a href={url('#showroom')} class="no-underline transition-colors hover:text-roest">Showroom</a></li>
+          <li><a href={url('#offerte')} class="no-underline transition-colors hover:text-roest">Offerte</a></li>
+        </ul>
+      </nav>
+      <a href={site.telHref} class="btn btn-woud !px-4 !py-2 text-sm"><span class="hidden sm:inline">Bel</span> <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="bg-woud text-white/85">
+    <div class="baan h-2" aria-hidden="true"></div>
+    <div class="wrap grid gap-8 py-12 text-sm md:grid-cols-12">
+      <p class="md:col-span-5"><strong class="font-display text-lg font-semibold text-white">{site.naam} vof</strong><br />{site.straat}, {site.postcode} {site.plaats}<br />KvK <span class="text-xs text-white/80">[[AANLEVEREN: KvK-nummer]]</span></p>
+      <p class="md:col-span-4"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline decoration-mint underline-offset-4">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline decoration-mint underline-offset-4">{site.mail}</a></p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-4">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-10 text-xs text-white/80">Sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door eigen foto's.</p>}
+  </footer>
+)}
