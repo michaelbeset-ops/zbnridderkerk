@@ -1,18 +1,9 @@
 ---
-// Sfeerfoto via Astro's beeldoptimalisatie: WebP in meerdere breedtes, lazy tenzij het de hero is.
+// Foto via Astro's beeldoptimalisatie: WebP in meerdere breedtes, lazy tenzij het de hero is.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 interface Props { src: ImageMetadata; alt: string; class?: string; hero?: boolean; sizes?: string; }
 const { src, alt, class: cls = '', hero = false, sizes = '(min-width: 1024px) 50vw, 100vw' } = Astro.props;
 ---
-<Image
-  src={src}
-  alt={alt}
-  widths={[480, 800, 1200, 1800]}
-  sizes={sizes}
-  format="webp"
-  quality={70}
-  loading={hero ? 'eager' : 'lazy'}
-  fetchpriority={hero ? 'high' : 'auto'}
-  class={`block h-full w-full object-cover ${cls}`}
-/>
+<Image src={src} alt={alt} widths={[480, 800, 1200, 1800]} sizes={sizes} format="webp" quality={72}
+  loading={hero ? 'eager' : 'lazy'} fetchpriority={hero ? 'high' : 'auto'} class={`block h-full w-full object-cover ${cls}`} />
