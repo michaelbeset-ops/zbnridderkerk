@@ -50,7 +50,7 @@ const plekken = 4;
     const toon = (n: number) => {
       i = (n + knoppen.length) % knoppen.length;
       img.src = knoppen[i].dataset.foto ?? ''; img.alt = knoppen[i].dataset.alt ?? '';
-      teller.textContent = `${i + 1} van ${knoppen.length}`;
+      teller.textContent = knoppen.length > 1 ? `${i + 1} van ${knoppen.length}` : '';
       // Pijlen alleen tonen als er iets te bladeren valt.
       box.querySelectorAll('[data-lightbox-vorige],[data-lightbox-volgende]').forEach((b) => b.classList.toggle('md:flex', knoppen.length > 1));
     };
