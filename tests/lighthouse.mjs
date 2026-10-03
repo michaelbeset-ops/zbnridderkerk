@@ -12,9 +12,9 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const fouten = [];
 page.on('pageerror', (e) => fouten.push(e.message));
 await page.goto(url, { waitUntil: 'networkidle' });
-if (await page.locator('details summary').count()) {
-  await page.click('details summary');
-  console.log('faq open:', await page.locator('details[open]').count());
+if (await page.locator('main details summary').count()) {
+  await page.click('main details summary');
+  console.log('faq open:', await page.locator('main details[open]').count());
 }
 if (await page.locator('aside > div').count()) {
   await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, 2200); });
