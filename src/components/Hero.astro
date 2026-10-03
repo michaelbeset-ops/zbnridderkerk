@@ -3,7 +3,7 @@
 // De navigatie zweeft over de foto (de sectie schuift onder de header door).
 import Foto from './Foto.astro';
 import Sterren from './Sterren.astro';
-import { site, url, producten } from '../data/site';
+import { site, url } from '../data/site';
 import hero from '../assets/hero.jpg';
 ---
 <section class="relative -mt-[4.75rem] flex min-h-[min(38rem,78svh)] flex-col justify-end bg-groen pt-[4.75rem] text-wit lg:-mt-[5.25rem] lg:min-h-[min(52rem,92svh)] lg:pt-[5.25rem]">
@@ -26,9 +26,3 @@ import hero from '../assets/hero.jpg';
     </ul>
   </div>
 </section>
-<!-- Snelkeuze onder de hero: alle producten in een rij, op mobiel swipebaar. -->
-<nav aria-label="Snel naar een product" class="border-b border-lijn bg-wit">
-  <ul class="slider wrap !gap-2 py-4 [scroll-snap-type:x_proximity] lg:justify-between">
-    {producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="btn btn-wit !px-3 !py-1.5 text-[0.85rem] !shadow-none ring-1 ring-lijn hover:ring-groen xl:!px-3.5 xl:text-sm">{p.naam}</a></li>)}
-  </ul>
-</nav>
