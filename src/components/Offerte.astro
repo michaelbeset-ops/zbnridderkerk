@@ -58,7 +58,7 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
           <label for="product" class="text-sm font-medium">Product</label>
           <select id="product" name="Product" class="veld mt-1.5">
             <option value="">Kies een product</option>
-            {offerteOpties.map((o) => <option>{o}</option>)}
+            {offerteOpties.map((g) => <optgroup label={g.groep}>{g.opties.map((o) => <option>{o}</option>)}</optgroup>)}
           </select>
         </div>
         <div class="sm:col-span-2">
