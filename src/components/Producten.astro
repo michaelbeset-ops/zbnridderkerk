@@ -1,36 +1,39 @@
 ---
-// Productsectie: op desktop een grid van 3 x 3 met alle negen producten in beeld, op tablet 2 kolommen,
-// op mobiel een swipe-rij met snap-scroll (kaart ongeveer 80 procent breed, zodat de volgende al zichtbaar is).
-// Kaart: scherpe foto 4:3, label Buiten of Binnen, naam met pijl, een regel uitleg.
+// Productsectie op de homepage: twee grote fototegels (buiten en binnen) die naar de categoriepagina's gaan,
+// met onder elke tegel alle productnamen van die categorie als links. Zo is het hele assortiment in een keer zichtbaar.
+// Mobiel: de tegels onder elkaar, de namen als pillen die doorlopen.
 import Foto from './Foto.astro';
-import Vlak from './Vlak.astro';
-import { producten, url } from '../data/site';
+import { categorieen, perCategorie, url } from '../data/site';
 import { fotos } from './Fotos';
-const binnenSlugs = ['raamdecoratie', 'binnenzonwering'];
-const lijst = [...producten.filter((p) => !binnenSlugs.includes(p.slug)), ...producten.filter((p) => binnenSlugs.includes(p.slug))];
 ---
-<section id="producten" class="scroll-mt-24 overflow-hidden py-16 lg:py-24">
-  <div class="wrap grid gap-6 lg:grid-cols-12 lg:items-end">
+<section id="producten" class="wrap scroll-mt-24 py-16 lg:py-24">
+  <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
     <div class="lg:col-span-7">
       <p class="kicker text-ink-zacht">Wat doen wij</p>
       <h2 class="mt-3 text-[1.65rem] [text-wrap:wrap] min-[370px]:text-[1.85rem] sm:text-3xl">Alles voor buiten<br />en binnen,<br />op maat gemaakt.</h2>
     </div>
-    <p class="text-lg text-ink-zacht lg:col-span-5 lg:pb-1">Negen producten, allemaal op maat en door ons gemonteerd. Kies een product voor uitleg en foto's.</p>
+    <p class="text-lg text-ink-zacht lg:col-span-5 lg:pb-1">Twintig producten in twee groepen, allemaal op maat en door ons gemonteerd. Kies een product voor uitleg, uitvoeringen en foto's.</p>
   </div>
-  <ul class="slider mt-10 [--inzet:max(1.25rem,calc((100vw-80rem)/2+2.5rem))] !px-[var(--inzet)] !scroll-pl-[var(--inzet)] sm:wrap sm:mt-12 sm:grid sm:grid-cols-2 sm:!gap-6 sm:!overflow-visible lg:grid-cols-3 lg:!gap-x-8 lg:!gap-y-12">
-    {lijst.map((p) => (
-      <li class="group w-[80vw] max-w-[22rem] sm:w-auto sm:max-w-none">
-        <a href={url(`producten/${p.slug}/`)} class="block no-underline">
-          <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
-            {p.foto ? <Foto src={fotos[p.foto]} alt="" sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 80vw" class="transition-transform duration-500 group-hover:scale-[1.04]" /> : <Vlak wat={p.naam.toLowerCase()} />}
-          </div>
-          <div class="mt-4 px-1">
-            <p class="kicker text-ink-zacht">{binnenSlugs.includes(p.slug) ? 'Binnen' : 'Buiten'}</p>
-            <h3 class="mt-2 flex items-center justify-between gap-3 text-lg sm:text-xl"><span class="min-w-0 break-words">{p.naam}</span><span aria-hidden="true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-pill ring-1 ring-lijn transition-colors group-hover:bg-groen group-hover:text-wit group-hover:ring-groen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></h3>
-            <p class="mt-2 text-ink-zacht">{p.kort}</p>
-          </div>
+  <div class="mt-10 grid gap-10 md:grid-cols-2 md:gap-6 lg:mt-14 lg:gap-8">
+    {categorieen.map((c) => (
+      <div>
+        <a href={url(`${c.slug}/`)} class="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-groen text-wit no-underline shadow-kaart md:aspect-[5/4] lg:aspect-[4/3]">
+          <Foto src={fotos[c.foto]} alt={c.fotoAlt} sizes="(min-width: 768px) 50vw, 100vw" class="transition-transform duration-700 group-hover:scale-[1.04]" />
+          <span aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/25 to-transparent"></span>
+          <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
+            <span>
+              <span class="kicker block text-wit/75">{c.categorie === 'buiten' ? 'Buiten' : 'Binnen'}</span>
+              <span class="mt-2 block font-display text-2xl font-extrabold leading-none tracking-tight sm:text-3xl lg:text-[2.4rem]">{c.naam}</span>
+              <span class="mt-2 block max-w-sm text-sm text-wit/85 sm:text-base">{c.kort}</span>
+            </span>
+            <span aria-hidden="true" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-pill bg-wit text-ink transition-transform group-hover:translate-x-1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </span>
         </a>
-      </li>
+        <ul class="mt-5 flex flex-wrap gap-2" aria-label={`Producten ${c.naam.toLowerCase()}`}>
+          {perCategorie(c.categorie).map((p) => <li><a href={url(`producten/${p.slug}/`)} class="btn btn-wit !px-3.5 !py-2 text-[0.9rem] !shadow-none ring-1 ring-lijn hover:ring-groen">{p.naam}</a></li>)}
+          <li><a href={url(`${c.slug}/`)} class="btn btn-lijn !px-3.5 !py-2 text-[0.9rem]">Alle {c.naam.toLowerCase()} &rarr;</a></li>
+        </ul>
+      </div>
     ))}
-  </ul>
+  </div>
 </section>

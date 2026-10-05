@@ -11,6 +11,5 @@
 ## Testen (na `npm run build`)
 
     node tests/interacties.mjs     # alle links en knoppen, mobiel en desktop (286 controles)
-    node tests/pills-swipe.mjs     # productpills swipen en tikken op mobiel
     node tests/lighthouse.mjs /    # gedrag en Lighthouse van een pagina
     node tests/screenshots.mjs / home   # screenshots op 1440, 390 en 320 in shots/

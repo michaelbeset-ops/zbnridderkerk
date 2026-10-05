@@ -1,12 +1,12 @@
 ---
 import { Image } from 'astro:assets';
-import { site, url, producten, usps, tijden } from '../data/site';
+import { site, url, categorieen, perCategorie, usps, tijden } from '../data/site';
 import logo from '../assets/logo.png';
 interface Props { deel: 'kop' | 'voet' }
 const { deel } = Astro.props;
-const menu = [
-  ['Producten', '#producten'], ['Werkwijze', '#werkwijze'], ['Showroom', '#showroom'], ['Reviews', '#reviews'],
-];
+// Twee hoofditems met een uitklapmenu (Buiten en Binnen), daarna de secties van de homepage.
+const groepen = categorieen.map((c) => ({ ...c, label: c.categorie === 'buiten' ? 'Buiten' : 'Binnen', lijst: perCategorie(c.categorie) }));
+const menu = [['Werkwijze', '#werkwijze'], ['Showroom', '#showroom'], ['Reviews', '#reviews']];
 ---
 {deel === 'kop' ? (
   <>
@@ -26,16 +26,18 @@ const menu = [
         </a>
         <nav aria-label="Hoofdmenu" class="hidden lg:block">
           <ul class="flex gap-1 font-display text-[0.95rem] font-semibold">
-            {menu.map(([n, h]) => (
-              <li class={n === 'Producten' ? 'group relative' : ''}>
-                <a href={url(h)} class="block rounded-pill px-4 py-2 no-underline transition-colors hover:bg-ijs">{n}</a>
-                {n === 'Producten' && (
-                  <ul class="invisible absolute left-1/2 top-full z-50 mt-2 grid w-[30rem] -translate-x-1/2 grid-cols-2 gap-x-4 rounded-xl bg-wit p-3 opacity-0 shadow-kaart ring-1 ring-lijn transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 before:absolute before:-top-3 before:left-0 before:h-3 before:w-full">
-                    {producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="flex items-center justify-between rounded-sm px-3 py-2 text-sm font-medium no-underline hover:bg-ijs">{p.naam}<span aria-hidden="true" class="text-ink-zacht">&rarr;</span></a></li>)}
+            {groepen.map((g) => (
+              <li class="group relative">
+                <a href={url(`${g.slug}/`)} class="flex items-center gap-1.5 rounded-pill px-4 py-2 no-underline transition-colors hover:bg-ijs">{g.label}<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-ink-zacht transition-transform group-hover:rotate-180"><path d="M6 9l6 6 6-6"/></svg></a>
+                <div class="invisible absolute left-1/2 top-full z-50 mt-2 w-[32rem] -translate-x-1/2 rounded-xl bg-wit p-3 opacity-0 shadow-kaart ring-1 ring-lijn transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 before:absolute before:-top-3 before:left-0 before:h-3 before:w-full">
+                  <ul class="grid grid-cols-2 gap-x-4">
+                    {g.lijst.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="flex items-center justify-between rounded-sm px-3 py-2 text-sm font-medium no-underline hover:bg-ijs">{p.naam}<span aria-hidden="true" class="text-ink-zacht">&rarr;</span></a></li>)}
                   </ul>
-                )}
+                  <a href={url(`${g.slug}/`)} class="mt-2 flex items-center justify-between rounded-sm border-t border-lijn px-3 pb-1 pt-3 text-sm font-semibold no-underline hover:underline">Alle {g.naam.toLowerCase()}<span aria-hidden="true">&rarr;</span></a>
+                </div>
               </li>
             ))}
+            {menu.map(([n, h]) => <li><a href={url(h)} class="block rounded-pill px-4 py-2 no-underline transition-colors hover:bg-ijs">{n}</a></li>)}
           </ul>
         </nav>
         <div class="flex items-center gap-2">
@@ -49,12 +51,20 @@ const menu = [
       <div class="fixed inset-0 z-[-1] hidden bg-ink/40 lg:!hidden" data-menu-sluier aria-hidden="true"></div>
       <nav id="menu-mobiel" aria-label="Menu" class="mx-auto mt-2 hidden max-h-[calc(100dvh-6rem)] max-w-[76rem] overflow-y-auto rounded-xl bg-wit p-4 shadow-kaart ring-1 ring-lijn lg:!hidden" data-menu>
         <ul class="grid font-display text-lg font-semibold">
-          {menu.map(([n, h]) => (
-            <li class="border-b border-lijn last:border-0">
-              <a href={url(h)} class="block py-3 no-underline">{n}</a>
-              {n === 'Producten' && <ul class="mb-3 grid grid-cols-2 gap-x-4 font-body text-base font-normal">{producten.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="block py-1.5 no-underline">{p.naam}</a></li>)}</ul>}
+          {groepen.map((g) => (
+            <li class="border-b border-lijn">
+              <!-- Uitklapbare groep: de knop opent de lijst, de link onderaan gaat naar de categoriepagina. -->
+              <details class="group/groep">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-3 [&::-webkit-details-marker]:hidden">
+                  <span>{g.label}<span class="ml-2 font-body text-sm font-normal text-ink-zacht">{g.lijst.length} producten</span></span>
+                  <span aria-hidden="true" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-pill ring-1 ring-lijn transition-transform group-open/groep:rotate-180"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                </summary>
+                <ul class="mb-2 grid grid-cols-2 gap-x-4 font-body text-base font-normal">{g.lijst.map((p) => <li><a href={url(`producten/${p.slug}/`)} class="block py-2 no-underline">{p.naam}</a></li>)}</ul>
+                <a href={url(`${g.slug}/`)} class="mb-3 inline-block py-1 font-body text-base font-semibold underline">Alle {g.naam.toLowerCase()}</a>
+              </details>
             </li>
           ))}
+          {menu.map(([n, h]) => <li class="border-b border-lijn last:border-0"><a href={url(h)} class="block py-3 no-underline">{n}</a></li>)}
         </ul>
         <a href={site.telHref} class="btn btn-wit mt-4 w-full">Bel <span class="tabular-nums">{site.tel}</span></a>
       </nav>

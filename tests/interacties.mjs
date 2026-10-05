@@ -24,7 +24,7 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
     await p.waitForTimeout(1500); await p.waitForLoadState('load'); };
 
   // Elke interne link op elke pagina: bestaat het doel en, bij een anker, het id?
-  const paginas = ['', 'producten/screens/', 'producten/binnenzonwering/', 'privacy/', 'algemene-voorwaarden/'];
+  const paginas = ['', 'buitenzonwering/', 'binnenzonwering/', 'producten/screens/', 'producten/shutters/', 'privacy/', 'algemene-voorwaarden/'];
   for (const pad of paginas) {
     await p.goto(base + pad, { waitUntil: 'load' });
     const links = await p.evaluate(() => Array.from(document.querySelectorAll('a[href]')).map((a) => a.getAttribute('href')));
@@ -43,15 +43,26 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
     ok(`${tag} menu opent`, await p.evaluate(() => !document.querySelector('[data-menu]').classList.contains('hidden')));
     ok(`${tag} menu: aria-expanded`, (await p.getAttribute('[data-menu-knop]', 'aria-expanded')) === 'true');
     ok(`${tag} menu: knop toont kruis`, await p.evaluate(() => !document.querySelector('[data-dicht-icoon]').classList.contains('hidden')));
-    for (const [naam, sel] of [['Werkwijze', 'a[href$="#werkwijze"]'], ['Showroom', 'a[href$="#showroom"]'], ['Reviews', 'a[href$="#reviews"]'], ['Producten', '[data-menu] > ul > li:first-child > a']]) {
+    for (const [naam, sel] of [['Werkwijze', 'a[href$="#werkwijze"]'], ['Showroom', 'a[href$="#showroom"]'], ['Reviews', 'a[href$="#reviews"]']]) {
       await p.goto(base, { waitUntil: 'load' }); await tik('[data-menu-knop]'); await p.waitForTimeout(200);
       await p.locator('[data-menu] ' + (sel.startsWith('[data-menu]') ? sel.replace('[data-menu] ', '') : sel)).first().tap(); await p.waitForTimeout(1200);
       const id = naam.toLowerCase(); const t = await top('#' + id); const hb = await headerBottom();
       ok(`${tag} menu ${naam}: sluit en landt onder header`, await p.evaluate(() => document.querySelector('[data-menu]').classList.contains('hidden')) && t >= hb - 1 && t < hb + 60, `top ${t} header ${Math.round(hb)}`);
     }
+    // Uitklapgroepen Buiten en Binnen: groep opent, product en categorielink werken.
     await p.goto(base, { waitUntil: 'load' }); await tik('[data-menu-knop]'); await p.waitForTimeout(200);
-    await p.locator('[data-menu] a[href*="producten/markiezen"]').tap(); await p.waitForTimeout(300); await p.waitForLoadState('load');
-    ok(`${tag} menu product Markiezen`, p.url().includes('markiezen'));
+    await p.locator('[data-menu] details summary').first().tap(); await p.waitForTimeout(300);
+    ok(`${tag} menu groep Buiten opent`, await p.evaluate(() => document.querySelector('[data-menu] details').open));
+    await p.locator('[data-menu] a[href*="producten/zipscreens"]').tap(); await p.waitForTimeout(300); await p.waitForLoadState('load');
+    ok(`${tag} menu product Zipscreens`, p.url().includes('zipscreens'));
+    await p.goto(base, { waitUntil: 'load' }); await tik('[data-menu-knop]'); await p.waitForTimeout(200);
+    await p.locator('[data-menu] details summary').nth(1).tap(); await p.waitForTimeout(300);
+    await p.locator('[data-menu] a[href*="producten/shutters"]').tap(); await p.waitForTimeout(300); await p.waitForLoadState('load');
+    ok(`${tag} menu product Shutters (Binnen)`, p.url().includes('shutters'));
+    await p.goto(base, { waitUntil: 'load' }); await tik('[data-menu-knop]'); await p.waitForTimeout(200);
+    await p.locator('[data-menu] details summary').first().tap(); await p.waitForTimeout(300);
+    await p.locator('[data-menu] details a[href*="buitenzonwering/"]').tap(); await p.waitForTimeout(300); await p.waitForLoadState('load');
+    ok(`${tag} menu Alle buitenzonwering`, p.url().includes('buitenzonwering/'));
     await p.goto(base, { waitUntil: 'load' }); await tik('[data-menu-knop]'); await p.waitForTimeout(200);
     const belHref = await p.getAttribute('[data-menu] a[href^="tel"]', 'href'); ok(`${tag} menu belknop`, belHref === 'tel:+31180430211', belHref);
     await p.touchscreen.tap(195, 820); await p.waitForTimeout(250);
@@ -63,7 +74,10 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
     // Desktop: dropdown op hover, menulinks, knoppen in de navigatie
     await p.hover('nav[aria-label="Hoofdmenu"] li.group > a'); await p.waitForTimeout(300);
     ok(`${tag} productdropdown zichtbaar op hover`, await p.evaluate(() => getComputedStyle(document.querySelector('nav[aria-label="Hoofdmenu"] li.group ul')).visibility === 'visible'));
-    await p.click('nav[aria-label="Hoofdmenu"] li.group ul a[href*="markiezen"]'); await p.waitForLoadState('load'); ok(`${tag} dropdown Markiezen`, p.url().includes('markiezen'));
+    await p.click('nav[aria-label="Hoofdmenu"] li.group ul a[href*="zipscreens"]'); await p.waitForLoadState('load'); ok(`${tag} dropdown Zipscreens`, p.url().includes('zipscreens'));
+    await p.goto(base, { waitUntil: 'load' }); await p.hover('nav[aria-label="Hoofdmenu"] li.group:nth-child(2) > a'); await p.waitForTimeout(300);
+    await p.click('nav[aria-label="Hoofdmenu"] li.group:nth-child(2) ul a[href*="shutters"]'); await p.waitForLoadState('load'); ok(`${tag} dropdown Binnen Shutters`, p.url().includes('shutters'));
+    await p.goto(base, { waitUntil: 'load' }); await p.click('nav[aria-label="Hoofdmenu"] li.group:nth-child(2) > a'); await p.waitForLoadState('load'); ok(`${tag} nav Binnen -> categoriepagina`, p.url().includes('binnenzonwering/'));
     await p.goto(base, { waitUntil: 'load' });
     await p.keyboard.press('Tab'); for (let i = 0; i < 4; i++) await p.keyboard.press('Tab');
     ok(`${tag} dropdown opent met toetsenbord (focus-within)`, await p.evaluate(() => getComputedStyle(document.querySelector('nav[aria-label="Hoofdmenu"] li.group ul')).visibility === 'visible'));
@@ -88,12 +102,15 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await p.goto(base, { waitUntil: 'load' });
   await tik('main a[href$="#producten"]'); await p.waitForTimeout(900); ok(`${tag} hero Bekijk producten`, Math.abs((await top('#producten')) - (await headerBottom())) < 60);
   ok(`${tag} hero Google-link`, (await p.getAttribute('main a[href*="google.com/maps"]', 'target')) === '_blank' && (await p.getAttribute('main a[href*="google.com/maps"]', 'rel')) === 'noopener');
-  // Pills: elke pill naar de juiste pagina
-  for (const slug of ['knikarmschermen', 'rolluiken', 'binnenzonwering']) {
-    await p.goto(base, { waitUntil: 'load' }); await tik(`nav[aria-label="Snel naar een product"] a[href*="${slug}"]`); await p.waitForLoadState('load'); ok(`${tag} pill ${slug}`, p.url().includes(slug));
+  // Tegels en productpillen op de homepage
+  for (const [naam, sel, verwacht] of [['tegel Buiten', '#producten a[href*="buitenzonwering/"]', 'buitenzonwering/'], ['tegel Binnen', '#producten a[href*="binnenzonwering/"]', 'binnenzonwering/'], ['pill garagedeuren', '#producten li a[href*="garagedeuren"]', 'garagedeuren'], ['pill horren', '#producten li a[href*="producten/horren"]', 'horren'], ['Alle binnenzonwering', '#producten li a[href*="binnenzonwering/"]', 'binnenzonwering/']]) {
+    await p.goto(base, { waitUntil: 'load' }); await tik(sel); await p.waitForLoadState('load'); ok(`${tag} ${naam}`, p.url().includes(verwacht), p.url().replace(base, '/'));
   }
-  // Productkaarten
-  await p.goto(base, { waitUntil: 'load' }); await tik('#producten li a[href*="garagedeuren"]'); await p.waitForLoadState('load'); ok(`${tag} productkaart garagedeuren`, p.url().includes('garagedeuren'));
+  // Categoriepagina: kaart naar product, offerteknop op de kaart, link naar de andere categorie
+  await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('ul li h3 a[href*="rolpoorten"]'); await p.waitForLoadState('load'); ok(`${tag} categorie kaart rolpoorten`, p.url().includes('rolpoorten'));
+  await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('ul li a.btn-lijn[href*="product=rolpoorten"]'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} categorie kaart Offerte -> ingevuld`, (await p.inputValue('#product')) === 'Rolpoorten');
+  await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('main a[href*="binnenzonwering/"]'); await p.waitForLoadState('load'); ok(`${tag} categorie -> andere categorie`, p.url().includes('binnenzonwering/'));
+  await p.goto(base + 'binnenzonwering/', { waitUntil: 'load' }); ok(`${tag} binnenzonwering 10 kaarten`, (await p.locator('main ul li h3').count()) === 10);
   // Werkwijze knoppen
   await p.goto(base, { waitUntil: 'load' }); await tik('#werkwijze a.btn-groen'); await p.waitForTimeout(900); ok(`${tag} werkwijze Offerte`, Math.abs((await top('#offerte')) - (await headerBottom())) < 60);
   ok(`${tag} werkwijze Bel`, (await p.getAttribute('#werkwijze a[href^="tel"]', 'href')) === 'tel:+31180430211');
@@ -130,14 +147,14 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   ok(`${tag} footer Sitefront`, (await p.getAttribute('footer a[href*="sitefront"]', 'target')) === '_blank');
   // Productpagina
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
-  for (const [naam, sel, verwacht] of [['kruimel Home', 'nav[aria-label="Kruimelpad"] a[href$="/zbnridderkerk/"]', base], ['kruimel Producten', 'nav[aria-label="Kruimelpad"] a[href*="#producten"]', '#producten']]) {
+  for (const [naam, sel, verwacht] of [['kruimel Home', 'nav[aria-label="Kruimelpad"] a[href$="/zbnridderkerk/"]', base], ['kruimel Buitenzonwering', 'nav[aria-label="Kruimelpad"] a[href*="buitenzonwering/"]', 'buitenzonwering/']]) {
     await p.goto(base + 'producten/screens/', { waitUntil: 'load' }); await tik(sel); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} ${naam}`, p.url().includes(verwacht));
   }
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
   ok(`${tag} product hero Offerte`, (await p.getAttribute('h1 ~ * a.btn-groen, section a.btn-groen', 'href')).includes('product=screens#offerte'));
   ok(`${tag} product Bel`, (await p.getAttribute('section a[href^="tel"]', 'href')) === 'tel:+31180430211');
-  await tik('details summary'); await p.waitForTimeout(200); ok(`${tag} FAQ opent`, (await p.locator('details[open]').count()) === 1);
-  await tik('details summary'); await p.waitForTimeout(200); ok(`${tag} FAQ sluit`, (await p.locator('details[open]').count()) === 0);
+  await tik('main details summary'); await p.waitForTimeout(200); ok(`${tag} FAQ opent`, (await p.locator('main details[open]').count()) === 1);
+  await tik('main details summary'); await p.waitForTimeout(200); ok(`${tag} FAQ sluit`, (await p.locator('main details[open]').count()) === 0);
   await tik('a.btn-wit[href$="#showroom"]'); await p.waitForLoadState('load'); await p.waitForTimeout(700); ok(`${tag} doek -> showroom`, p.url().includes('#showroom') && Math.abs((await top('#showroom')) - (await headerBottom())) < 60);
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
   await tik('aside a.btn-wit'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} zijblok Offerte -> ingevuld`, (await p.inputValue('#product')) === 'Screens');
@@ -148,8 +165,8 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
   const brede = p.locator('section.wrap.pb-14 a.btn-wit, section a.btn-wit[href*="product=screens"]').last();
   ok(`${tag} brede offertebalk href`, (await brede.getAttribute('href')).includes('product=screens#offerte'));
-  await tik('section[aria-labelledby="verwant"] li a'); await p.waitForLoadState('load'); ok(`${tag} verwant product`, /producten\/(rolluiken|uitvalschermen|knikarmschermen)/.test(p.url()), p.url().replace(base, '/'));
-  await p.goto(base + 'producten/screens/', { waitUntil: 'load' }); await tik('section[aria-labelledby="verwant"] a[href*="#producten"]'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} Alle producten`, p.url().includes('#producten'));
+  await tik('section[aria-labelledby="verwant"] li a'); await p.waitForLoadState('load'); ok(`${tag} verwant product`, /producten\/(zipscreens|rolluiken|uitvalschermen)/.test(p.url()), p.url().replace(base, '/'));
+  await p.goto(base + 'producten/screens/', { waitUntil: 'load' }); await tik('section[aria-labelledby="verwant"] a[href*="buitenzonwering/"]'); await p.waitForLoadState('load'); ok(`${tag} Alle buitenzonwering`, p.url().includes('buitenzonwering/'));
   // 404
   const r404 = await p.goto(base + 'bestaat-niet/', { waitUntil: 'load' }); ok(`${tag} 404 pagina`, r404.status() === 404 && (await p.locator('h1').textContent()).includes('bestaat niet'));
   await tik('main a.btn-groen'); await p.waitForLoadState('load'); ok(`${tag} 404 -> home`, p.url() === base);

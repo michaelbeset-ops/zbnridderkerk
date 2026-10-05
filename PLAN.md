@@ -11,13 +11,13 @@ showroom ma 12.30-16.30, di t/m vr 8.30-16.30, za 9.30-12.30. Google 4,7 uit 5 (
 Wit en een heel licht groenwit (#f5f8f7), het exacte logogroen #3b4a47 als merkkleur, diep groen-zwart voor tekst.
 Geen bruin of grijs. Archivo (breed, zwaar) voor koppen, DM Sans voor tekst. Dunne lijnen met kruisjes op de hoeken,
 pill-knoppen met zachte schaduw, zwevende witte navigatiekaart, dunne USP-balk bovenaan.
-Hero: foto over de volle breedte, grote witte kop onderin, de feiten rechts los op de foto, productpills eronder.
+Hero: foto over de volle breedte, grote witte kop onderin, de feiten rechts los op de foto.
 Productkaarten met foto die in wit overloopt, nummer, kop, zin en pijl. Werkwijze met iconen en verbindende lijn.
 Reviews als snap-slider. Offerte als groene kaart met het formulier rechts. Afsluiter met grote vraag.
 Mobiel: vaste balk met Bellen en Offerte.
 
 ## Zelf gekozen
-- Producten: de negen uit de intake. Serrezonwering en horren staan wel op de oude site, niet toegevoegd (gemeld).
+- Producten: twintig, in twee categorieën met een eigen pagina (buitenzonwering en binnenzonwering). Lijst van Michael op 3 oktober 2026; markiezen vervallen. Homepage toont twee fototegels met alle productnamen eronder; menu heeft Buiten en Binnen als uitklapmenu.
 - Reviews: de echte Google-reviews uit de chat, niet [[AANLEVEREN]].
 - Foto's: alleen de vier Unsplash-foto's uit het eerste voorstel; de omgeving kan geen nieuwe ophalen. De rest is
   een licht vlak met raster en markering.
