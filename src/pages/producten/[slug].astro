@@ -8,7 +8,7 @@ import Galerij from '../../components/Galerij.astro';
 import Icoon from '../../components/Icoon.astro';
 import { producten, categorieen, site, url, inZin } from '../../data/site';
 import { details } from '../../data/productdetails';
-import { fotos } from '../../components/Fotos';
+import { productFotos } from '../../components/Fotos';
 import { getImage } from 'astro:assets';
 
 export function getStaticPaths() {
@@ -20,9 +20,11 @@ const cat = categorieen.find((c) => c.categorie === p.categorie)!;
 const verwant = d.verwant.map((s) => producten.find((x) => x.slug === s)!).filter(Boolean);
 const offerte = url(`?product=${p.slug}#offerte`);
 const naam = inZin(p.naam);
+const eigen = productFotos(p);
+const hoofd = eigen[0];
 // Korte meta description (onder 155 tekens) en een eigen deelafbeelding per product.
 const beschrijving = `${p.naam} op maat in Ridderkerk. ${p.kort} Inmeten en montage door de eigen monteurs van ZBN.`;
-const og = p.foto ? (await getImage({ src: fotos[p.foto], width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 })).src : undefined;
+const og = hoofd ? (await getImage({ src: hoofd.src, width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 })).src : undefined;
 // Gestructureerde data met alleen echte inhoud: kruimelpad en de vragen op deze pagina. Pas als de site op het domein staat.
 const jsonld = site.preview ? undefined : [
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -57,7 +59,7 @@ const jsonld = site.preview ? undefined : [
       </div>
       <div class="lg:col-span-6 xl:col-span-7">
         <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-kaart xl:aspect-[3/2]">
-          {p.foto ? <Foto src={fotos[p.foto]} alt={p.fotoAlt ?? ''} hero sizes="(min-width: 1024px) 760px, 100vw" /> : <Vlak wat={`${naam}, hoofdfoto liggend`} />}
+          {hoofd ? <Foto src={hoofd.src} alt={hoofd.alt} hero sizes="(min-width: 1024px) 760px, 100vw" /> : <Vlak wat={`${naam}, hoofdfoto liggend`} />}
         </div>
         <ul class="mt-4 flex flex-wrap gap-2">
           {p.punten.slice(0, 3).map((x) => <li class="inline-flex items-center gap-2 rounded-pill bg-ijs px-3.5 py-1.5 text-sm font-medium ring-1 ring-lijn"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-groen"><path d="M4 12.5l5 5L20 6.5"/></svg>{x}</li>)}
@@ -151,7 +153,7 @@ const jsonld = site.preview ? undefined : [
   </div>
 
   <!-- 6. Fotogalerij met plekken voor foto's. -->
-  <div class="mt-14 lg:mt-20"><Galerij naam={p.naam} foto={p.foto} fotoAlt={p.fotoAlt} /></div>
+  <div class="mt-14 lg:mt-20"><Galerij naam={p.naam} fotos={eigen} /></div>
 
   <!-- 7. Veelgestelde vragen als accordeon. -->
   <section class="wrap py-14 lg:py-20" aria-labelledby="vragen">
@@ -199,7 +201,7 @@ const jsonld = site.preview ? undefined : [
         <li class="group">
           <a href={url(`producten/${a.slug}/`)} class="block no-underline">
             <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
-              {a.foto ? <Foto src={fotos[a.foto]} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" /> : <Vlak wat={inZin(a.naam)} />}
+              {productFotos(a)[0] ? <Foto src={productFotos(a)[0].src} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" /> : <Vlak wat={inZin(a.naam)} />}
             </div>
             <h3 class="mt-4 flex items-center justify-between gap-3 px-1 text-lg"><span>{a.naam}</span><span aria-hidden="true" class="text-ink-zacht transition-transform group-hover:translate-x-1">&rarr;</span></h3>
             <p class="mt-1 px-1 text-sm text-ink-zacht">{a.kort}</p>

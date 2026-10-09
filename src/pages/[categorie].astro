@@ -6,7 +6,7 @@ import Foto from '../components/Foto.astro';
 import Vlak from '../components/Vlak.astro';
 import Afsluiter from '../components/Afsluiter.astro';
 import { categorieen, perCategorie, site, url } from '../data/site';
-import { fotos } from '../components/Fotos';
+import { fotos, productFotos } from '../components/Fotos';
 import { getImage } from 'astro:assets';
 
 export function getStaticPaths() {
@@ -53,7 +53,7 @@ const jsonld = site.preview ? undefined : {
       {lijst.map((p) => (
         <li class="group relative flex flex-col">
           <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
-            {p.foto ? <Foto src={fotos[p.foto]} alt="" sizes="(min-width: 1024px) 400px, (min-width: 480px) 50vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.04]" /> : <Vlak wat={`${p.naam.toLowerCase()}, liggend`} />}
+            {productFotos(p)[0] ? <Foto src={productFotos(p)[0].src} alt="" sizes="(min-width: 1024px) 400px, (min-width: 480px) 50vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.04]" /> : <Vlak wat={`${p.naam.toLowerCase()}, liggend`} />}
           </div>
           <h3 class="mt-4 flex items-center justify-between gap-3 px-1 text-lg sm:text-xl">
             <a href={url(`producten/${p.slug}/`)} class="min-w-0 break-words no-underline after:absolute after:inset-0 after:rounded-xl">{p.naam}</a>

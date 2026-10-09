@@ -42,3 +42,8 @@ Mobiel: vaste balk met Bellen en Offerte.
   - Zelf assembleren en de eigen werkplaats zijn overal weg. Werkwijze stap 3 is nu "Op maat besteld"; de
     werkplaatsfoto (gegenereerd) is vervangen door een eigen showroomfoto. USP "Bijna alles zelf geassembleerd"
     vervangen door "Inmeten aan huis".
+- Productfoto's van ZBN (WeTransfer, 9 okt 2026): 134 foto's bekeken, 83 gebruikt voor 19 producten
+  (src/assets/producten/<slug>/, beschrijvingen in src/data/productfotos.ts). Verkleind tot 1600 px, EXIF en GPS eruit.
+  Hero en categorietegels nu met eigen foto's. Alleen screens en garagedeuren hebben nog een gegenereerd stockbeeld.
+  Niet gebruikt: twee beschadigde bestanden (Plissé (1), Rolgordijn (1)), foto's met een kenteken of bedrijfsnaam,
+  Balkonscherm en Glijarmscherm (geen product op de site), losse showroomfoto's (staan al in de rondloop).

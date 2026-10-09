@@ -1,15 +1,24 @@
-// Koppelt de fotonaam uit de productdata aan het bestand. Tijdelijke stockbeelden staan in assets/stock
-// (gegenereerd, tot ZBN eigen foto's aanlevert); hero.jpg is ook gegenereerd; binnen.jpg is Unsplash.
-import hero from '../assets/hero.jpg';
-import binnen from '../assets/binnen.jpg';
-import knikarmscherm from '../assets/stock/knikarmscherm.jpg';
-import uitvalscherm from '../assets/stock/uitvalscherm.jpg';
+// Foto's van de site. Eigen foto's van ZBN staan per product in assets/producten/<slug>/1.jpg, 2.jpg, ...
+// (beschrijvingen in data/productfotos.ts). Voor screens en garagedeuren is er nog geen eigen foto: daar staat
+// tijdelijk een gegenereerd stockbeeld uit assets/stock.
+import type { ImageMetadata } from 'astro';
+import { fotoAlts } from '../data/productfotos';
+import knikarmscherm from '../assets/producten/knikarmschermen/3.jpg';
+import binnen from '../assets/producten/jaloezieen/2.jpg';
 import screens from '../assets/stock/screens.jpg';
-import rolluiken from '../assets/stock/rolluiken.jpg';
 import garagedeur from '../assets/stock/garagedeur.jpg';
-import overkapping from '../assets/stock/overkapping.jpg';
-import jaloezie from '../assets/stock/jaloezie.jpg';
-import zipscreens from '../assets/stock/zipscreens.jpg';
-import serrezonwering from '../assets/stock/serrezonwering.jpg';
-import pergola from '../assets/stock/pergola.jpg';
-export const fotos = { hero, binnen, knikarmscherm, uitvalscherm, screens, rolluiken, garagedeur, overkapping, jaloezie, zipscreens, serrezonwering, pergola };
+export const fotos = { knikarmscherm, binnen, screens, garagedeur };
+
+const eigen = import.meta.glob<{ default: ImageMetadata }>('../assets/producten/*/*.jpg', { eager: true });
+export interface ProductFoto { src: ImageMetadata; alt: string }
+
+// Alle foto's van een product, hoofdfoto eerst. Geen eigen foto's: dan het stockbeeld, als dat er is.
+export const productFotos = (p: { slug: string; foto?: keyof typeof fotos; fotoAlt?: string }): ProductFoto[] => {
+  const nummer = (pad: string) => parseInt(pad.split('/').at(-1)!, 10);
+  const lijst = Object.entries(eigen)
+    .filter(([pad]) => pad.split('/').at(-2) === p.slug)
+    .sort(([a], [b]) => nummer(a) - nummer(b))
+    .map(([, m], i) => ({ src: m.default, alt: fotoAlts[p.slug]?.[i] ?? '' }));
+  if (lijst.length) return lijst;
+  return p.foto ? [{ src: fotos[p.foto], alt: p.fotoAlt ?? '' }] : [];
+};

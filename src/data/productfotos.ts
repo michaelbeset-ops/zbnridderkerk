@@ -1,0 +1,126 @@
+// Beschrijving per eigen foto, in dezelfde volgorde als de bestanden in src/assets/producten/<slug>/1.jpg, 2.jpg, ...
+// De foto's zijn aangeleverd door ZBN (WeTransfer, 9 oktober 2026): montages bij klanten. EXIF (ook GPS) is eruit gehaald.
+// De eerste foto is de hoofdfoto van het product. Alleen beschreven wat op de foto te zien is.
+export const fotoAlts: Record<string, string[]> = {
+  knikarmschermen: [
+    'Twee antracietgrijze knikarmschermen boven het terras van een bakstenen woning met zonnepanelen',
+    'Grijs knikarmscherm boven de tuindeuren van een rijtjeswoning met rolluiken op de verdieping',
+    'Knikarmscherm met geel-wit gestreept doek boven het terras van een bakstenen woning',
+    'Knikarmscherm met grijs gestreept doek, van onderen gezien, boven een terras met kunstgras',
+    'Drie grijze knikarmschermen naast elkaar aan de achtergevel van rijtjeswoningen',
+  ],
+  uitvalschermen: [
+    'Grijze uitvalschermen boven de ramen op de hoek van een gele bakstenen woning',
+    'Uitvalscherm met zwart-wit gestreept doek boven een raam naast de voordeur',
+    'Twee grijze uitvalschermen boven ramen in een bakstenen gevel',
+    'Blauwe uitvalschermen boven de ramen van een bedrijfspand, op beide verdiepingen',
+    'Gele uitvalschermen boven ramen van een appartementengebouw',
+  ],
+  markiezen: [
+    'Twee markiezen met blauw-wit gestreept doek boven de ramen van een bakstenen woning',
+    'Markies met groen-wit gestreept doek boven een raam naast de voordeur',
+    'Brede markies met groen-wit gestreept doek boven het raam van een woning',
+    'Groene markies met geschulpte rand boven een raam, van opzij gezien',
+    'Markies met zwart-wit gestreept doek boven de ramen van een hoekwoning',
+  ],
+  rolluiken: [
+    'Antracietgrijze rolluiken voor twee ramen in een donkere bakstenen gevel',
+    'Donkerblauwe rolluiken gesloten voor de ramen van een ronde aanbouw',
+    'Grijze rolluiken met opbouwkast op de ramen van een rode bakstenen woning',
+    'Lange rij antracietgrijze rolluiken aan de gevel van een bedrijfspand',
+    'Witte rolluiken half neergelaten voor de ramen van een appartement',
+  ],
+  zipscreens: [
+    'Antracietgrijs zipscreen voor een groot raam, met een olijfboom op de voorgrond',
+    'Grijze zipscreens voor de ramen en de pui van een gele bakstenen woning',
+    'Zipscreen voor een breed raam van een laag bakstenen gebouw',
+    'Blauwe zipscreens rondom de glazen gevel van een kantoorgebouw',
+    'Lichtgrijs zipscreen omlaag voor een raam in een rode bakstenen gevel',
+  ],
+  serrezonwering: [
+    'Grijze zonwering over het glazen dak van een serre met schuifpui',
+    'Blauw doek over het dak van een donkere serre',
+    'Taupe doek half uitgerold over het glazen dak van een serre',
+    'Zonwering over het dak van een aanbouw achter een bakstenen woning, gezien vanuit de tuin',
+  ],
+  pergolazonwering: [
+    'Witte pergolazonwering op palen boven een tuintafel in een groene tuin',
+    'Antracietgrijze pergolazonwering op palen naast een balkon met glazen balustrade',
+    'Pergolazonwering met zijscreen aan de achtergevel van een woning met zonnepanelen',
+    'Witte pergolazonwering boven een terras aan een gele bakstenen woning',
+    'Pergolazonwering van boven gezien, met lichtgrijs doek en grijs frame',
+  ],
+  rolpoorten: [
+    'Antracietgrijze rolpoort in een garage van gele baksteen',
+    'Antracietgrijze rolpoort in een witte garage met puntdak',
+    'Gesloten antracietgrijze rolpoort, van voren gezien',
+    'Lichtgrijze rolpoort in een garage van donkere baksteen',
+  ],
+  overkappingen: [
+    'Antracietgrijze terrasoverkapping met loungeset en plantenbakken',
+    'Overkapping met loungeset op een terras naast een aanbouw met rolluik',
+    'Overkapping met glazen wanden aan een woning, met een houten vlonder',
+    'Witte overkapping met een doek aan de zijkant, in een nieuw aangelegde tuin',
+    'Onder een overkapping gezien: loungeset en kunstgras in de tuin',
+  ],
+  zonweringsdoek: [
+    'Lange kast vol hangende doekstalen in de showroom van ZBN',
+  ],
+  jaloezieen: [
+    'Houten jaloezieën voor twee ramen in een eetkamer met hanglampen',
+    'Witte jaloezieën voor een hoekraam in een woonkamer met loungebank',
+    'Houten jaloezieën voor hoge ramen in een open keuken',
+    'Zwarte jaloezieën half opgetrokken voor een breed raam in de woonkamer',
+    'Zwarte jaloezieën voor twee hoge ramen in een slaapkamer',
+  ],
+  rolgordijnen: [
+    'Twee donkergrijze rolgordijnen in de ramen van een woning',
+    'Donkergrijs rolgordijn voor een breed raam in een speelkamer',
+    'Grijze rolgordijnen voor de ramen van een leslokaal',
+  ],
+  plissegordijnen: [
+    'Witte plissés half dicht voor drie ramen, met uitzicht op een patio',
+    'Lichte plissés in de ramen van een woonkamer met hoekbank',
+    'Aubergine plissés in de ramen van een zolderkamer',
+    'Zwarte plissés voor een hoekraam',
+    'Zwarte plissés voor vier ramen in een slaapkamer',
+  ],
+  lamelgordijnen: [
+    'Witte lamelgordijnen voor een groot raam, deels gekanteld',
+    'Lamelgordijn op maat voor een raam met schuine bovenkant',
+    'Lamelgordijn voor een raam met schuine bovenkant onder een balkenplafond',
+    'Witte lamelgordijnen gesloten voor een breed raam',
+  ],
+  'duo-rolgordijnen': [
+    'Lichte duo rolgordijnen in de ramen van een erker',
+    'Duo rolgordijnen voor een breed raam in een woonkamer',
+    'Gele duo rolgordijnen voor een lange raampartij',
+    'Duo rolgordijn met zwarte en witte banen voor een breed raam',
+  ],
+  shutters: [
+    'Witte shutters voor een hoge raampartij, deels geopend',
+    'Witte shutters met gekantelde lamellen voor een breed raam',
+    'Witte shutters in de ramen van een woonkamer met grijze bank',
+    'Witte shutters achter het raam, van buiten gezien',
+  ],
+  fractions: [
+    'Witte vouwpanelen met uitgesneden ruitpatroon voor een erkerraam',
+    'Rij witte panelen met uitgesneden ruitpatroon voor een breed raam',
+    'Witte panelen met ruitpatroon opengevouwen in een betegelde ruimte',
+    'Witte panelen met ruitpatroon deels opengevouwen in een slaapkamer',
+    'Zwarte panelen met horizontale openingen voor openslaande deuren',
+  ],
+  hordeuren: [
+    'Hordeur in een grote schuifpui aan een aanbouw',
+    'Openslaande tuindeuren met hordeuren ervoor',
+    'Hordeuren in de schuifwanden van een tuinkamer',
+    'Hordeur voor een schuifpui naar de tuin, van binnen gezien',
+  ],
+  'dakramen-velux': [
+    'Donkerblauw plissé in een houten Velux-dakraam',
+    'Zwart plissé halverwege een wit dakraam',
+    'Donker gordijn in een dakraam met zwart kozijn',
+    'Bruin plissé in een wit dakraam',
+    'Zonwering in een dakraam, met een plant op de voorgrond',
+  ],
+};
