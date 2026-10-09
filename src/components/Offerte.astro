@@ -25,24 +25,26 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
       <p class="mt-10 text-wit/80">Liever direct iemand spreken?</p>
       <a href={site.telHref} class="mt-1 inline-block font-display text-2xl font-bold tabular-nums text-wit no-underline hover:underline">{site.tel}</a>
     </div>
-    <form class="bg-wit p-6 text-ink md:p-10 lg:col-span-7 lg:p-14" novalidate data-offerte data-key={key} data-slugs={JSON.stringify(slugs)}>
-      <div class="grid gap-5 sm:grid-cols-2">
+    <form class="min-w-0 bg-wit p-6 text-ink md:p-10 lg:col-span-7 lg:p-14" novalidate data-offerte data-key={key} data-slugs={JSON.stringify(slugs)}>
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div class="sm:col-span-2">
           <label for="naam" class="text-sm font-medium">Naam <span class="text-fout" aria-hidden="true">*</span></label>
           <input id="naam" name="Naam" autocomplete="name" required maxlength="100" class="veld mt-1.5" aria-describedby="naam-fout" />
           <p id="naam-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul uw naam in.</p>
         </div>
         <div class="sm:col-span-2">
-          <label for="straat" class="text-sm font-medium">Straat en huisnummer</label>
-          <input id="straat" name="Straat en huisnummer" autocomplete="street-address" maxlength="120" class="veld mt-1.5" />
+          <label for="straat" class="text-sm font-medium">Straat en huisnummer <span class="text-fout" aria-hidden="true">*</span></label>
+          <input id="straat" name="Straat en huisnummer" autocomplete="street-address" required maxlength="120" class="veld mt-1.5" aria-describedby="straat-fout" />
+          <p id="straat-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul uw straat en huisnummer in.</p>
         </div>
         <div>
           <label for="postcode" class="text-sm font-medium">Postcode</label>
           <input id="postcode" name="Postcode" autocomplete="postal-code" maxlength="10" class="veld mt-1.5" />
         </div>
         <div>
-          <label for="plaats" class="text-sm font-medium">Plaats</label>
-          <input id="plaats" name="Plaats" autocomplete="address-level2" maxlength="60" class="veld mt-1.5" />
+          <label for="plaats" class="text-sm font-medium">Plaats <span class="text-fout" aria-hidden="true">*</span></label>
+          <input id="plaats" name="Plaats" autocomplete="address-level2" required maxlength="60" class="veld mt-1.5" aria-describedby="plaats-fout" />
+          <p id="plaats-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul uw plaats in.</p>
         </div>
         <div>
           <label for="tel" class="text-sm font-medium">Telefoon <span class="text-fout" aria-hidden="true">*</span></label>
@@ -50,16 +52,29 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
           <p id="tel-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul een telefoonnummer in.</p>
         </div>
         <div>
-          <label for="mail" class="text-sm font-medium">E-mail <span class="text-fout" aria-hidden="true">*</span></label>
-          <input id="mail" name="email" type="email" autocomplete="email" required maxlength="120" class="veld mt-1.5" aria-describedby="mail-fout" />
+          <label for="mail" class="text-sm font-medium">E-mail</label>
+          <input id="mail" name="email" type="email" autocomplete="email" maxlength="120" class="veld mt-1.5" aria-describedby="mail-fout" />
           <p id="mail-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul een geldig e-mailadres in.</p>
         </div>
         <div class="sm:col-span-2">
-          <label for="product" class="text-sm font-medium">Product</label>
-          <select id="product" name="Product" class="veld mt-1.5">
-            <option value="">Kies een product</option>
-            {offerteOpties.map((g) => <optgroup label={g.groep}>{g.opties.map((o) => <option>{o}</option>)}</optgroup>)}
-          </select>
+          <!-- Meerdere producten tegelijk: aanvinken in een uitklaplijst, de keuze staat in de samenvatting. -->
+          <p id="product-kop" class="text-sm font-medium">Product(en)</p>
+          <details class="mt-1.5 min-w-0" data-producten>
+            <summary class="veld flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden" aria-describedby="product-kop">
+              <span class="min-w-0 truncate" data-keuze-tekst>Kies een of meer producten</span>
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 transition-transform [details[open]_&]:rotate-180"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="mt-2 grid gap-5 rounded-md bg-ijs p-4 sm:grid-cols-2">
+              {offerteOpties.map((g) => (
+                <fieldset class={g.groep === 'Anders' ? 'sm:col-span-2' : ''}>
+                  <legend class="kicker text-ink-zacht">{g.groep}</legend>
+                  <div class="mt-2 grid gap-0.5">
+                    {g.opties.map((o) => <label class="flex cursor-pointer items-center gap-2.5 py-1.5 text-sm"><input type="checkbox" name="product-keuze" value={o} class="h-4 w-4 shrink-0 accent-groen" />{o}</label>)}
+                  </div>
+                </fieldset>
+              ))}
+            </div>
+          </details>
         </div>
         <div class="sm:col-span-2">
           <label for="fotos" class="text-sm font-medium">Foto's van de situatie</label>
@@ -110,12 +125,23 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
     const knop = form.querySelector<HTMLButtonElement>('[data-verstuur]')!;
     const fotos = form.querySelector<HTMLInputElement>('#fotos')!;
     const previews = form.querySelector<HTMLElement>('[data-previews]')!;
-    const select = form.querySelector<HTMLSelectElement>('#product')!;
+    const keuzes = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="product-keuze"]'));
+    const keuzeTekst = form.querySelector<HTMLElement>('[data-keuze-tekst]')!;
+    const keuzeLijst = form.querySelector<HTMLDetailsElement>('[data-producten]')!;
+    const werkKeuzeBij = () => {
+      const lijst = keuzes.filter((k) => k.checked).map((k) => k.value);
+      keuzeTekst.textContent = lijst.length ? lijst.join(', ') : 'Kies een of meer producten';
+      return lijst;
+    };
+    keuzes.forEach((k) => k.addEventListener('change', werkKeuzeBij));
+    // Klik buiten de lijst klapt hem dicht.
+    document.addEventListener('click', (e) => { if (keuzeLijst.open && !keuzeLijst.contains(e.target as Node)) keuzeLijst.open = false; });
 
     // Product vooraf kiezen via ?product=slug (vanaf een productpagina).
     const slugs = JSON.parse(form.dataset.slugs ?? '{}') as Record<string, string>;
     const gekozen = slugs[new URLSearchParams(location.search).get('product') ?? ''];
-    if (gekozen) select.value = gekozen;
+    const vink = () => { const k = keuzes.find((x) => x.value === gekozen); if (k) k.checked = true; werkKeuzeBij(); };
+    if (gekozen) vink();
 
     const toon = (el: HTMLElement, tekst: string, soort: 'fout' | 'ok' | 'bezig') => {
       el.textContent = tekst; el.classList.remove('hidden');
@@ -123,15 +149,16 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
       el.classList.toggle('bg-groen', soort === 'ok'); el.classList.toggle('text-wit', soort === 'ok'); el.classList.toggle('bg-ijs', soort !== 'ok');
     };
 
-    // Inline controle per veld: fout tonen bij verlaten of bij versturen.
-    const velden = Array.from(form.querySelectorAll<HTMLInputElement>('input[required]'));
+    // Inline controle per veld: bij verlaten alleen als er iets is ingevuld (anders schuift de knop weg onder de muis),
+    // lege verplichte velden pas bij versturen.
+    const velden = Array.from(form.querySelectorAll<HTMLInputElement>('input[required], input[type="email"]'));
     const controleer = (v: HTMLInputElement) => {
       const ok = v.checkValidity();
       v.setAttribute('aria-invalid', String(!ok));
       v.parentElement?.querySelector('[data-fout]')?.classList.toggle('hidden', ok);
       return ok;
     };
-    velden.forEach((v) => { v.addEventListener('blur', () => controleer(v)); v.addEventListener('input', () => { if (v.getAttribute('aria-invalid') === 'true') controleer(v); }); });
+    velden.forEach((v) => { v.addEventListener('blur', () => { if (v.value || v.getAttribute('aria-invalid') === 'true') controleer(v); }); v.addEventListener('input', () => { if (v.getAttribute('aria-invalid') === 'true') controleer(v); }); });
 
     // Foto's: alleen afbeeldingen, maximaal 5 stuks en 5 MB per stuk, met previews.
     const MAX = 5 * 1024 * 1024;
@@ -170,14 +197,17 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
       if (!key) { toon(status, 'Het formulier is nog niet gekoppeld. Bel ons of stuur een e-mail, dan helpen we u direct.', 'fout'); status.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
       knop.disabled = true; toon(status, 'Bezig met versturen…', 'bezig');
       const data = new FormData(form);
+      const lijst = werkKeuzeBij();
+      data.delete('product-keuze');
+      if (lijst.length) data.append('Product', lijst.join(', '));
       data.append('access_key', key);
-      data.append('subject', `Offerteaanvraag via de website${select.value ? `: ${select.value}` : ''}`);
+      data.append('subject', `Offerteaanvraag via de website${lijst.length ? `: ${lijst.join(', ')}` : ''}`);
       data.append('from_name', 'Website ZBN');
       try {
         const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data, headers: { Accept: 'application/json' } });
         const j = await r.json();
         if (r.ok && j.success) {
-          form.reset(); previews.replaceChildren(); if (gekozen) select.value = gekozen;
+          form.reset(); previews.replaceChildren(); if (gekozen) vink(); else werkKeuzeBij();
           status.classList.add('hidden');
           toonKlaar(true);
         } else throw new Error(j.message || 'fout');

@@ -24,7 +24,7 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
     await p.waitForTimeout(1500); await p.waitForLoadState('load'); };
 
   // Elke interne link op elke pagina: bestaat het doel en, bij een anker, het id?
-  const paginas = ['', 'buitenzonwering/', 'binnenzonwering/', 'producten/screens/', 'producten/shutters/', 'privacy/', 'algemene-voorwaarden/'];
+  const paginas = ['', 'buitenzonwering/', 'binnenzonwering/', 'producten/screens/', 'producten/shutters/', 'producten/markiezen/', 'producten/motoren/', 'producten/zonweringsdoek/', 'producten/dakramen-velux/', 'privacy/', 'algemene-voorwaarden/'];
   for (const pad of paginas) {
     await p.goto(base + pad, { waitUntil: 'load' });
     const links = await p.evaluate(() => Array.from(document.querySelectorAll('a[href]')).map((a) => a.getAttribute('href')));
@@ -108,9 +108,9 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   }
   // Categoriepagina: kaart naar product, offerteknop op de kaart, link naar de andere categorie
   await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('ul li h3 a[href*="rolpoorten"]'); await p.waitForLoadState('load'); ok(`${tag} categorie kaart rolpoorten`, p.url().includes('rolpoorten'));
-  await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('ul li a.btn-lijn[href*="product=rolpoorten"]'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} categorie kaart Offerte -> ingevuld`, (await p.inputValue('#product')) === 'Rolpoorten');
+  await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('ul li a.btn-lijn[href*="product=rolpoorten"]'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} categorie kaart Offerte -> ingevuld`, await p.isChecked('input[name="product-keuze"][value="Rolpoorten"]'));
   await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('main a[href*="binnenzonwering/"]'); await p.waitForLoadState('load'); ok(`${tag} categorie -> andere categorie`, p.url().includes('binnenzonwering/'));
-  await p.goto(base + 'binnenzonwering/', { waitUntil: 'load' }); ok(`${tag} binnenzonwering 10 kaarten`, (await p.locator('main ul li h3').count()) === 10);
+  await p.goto(base + 'binnenzonwering/', { waitUntil: 'load' }); ok(`${tag} binnenzonwering 12 kaarten`, (await p.locator('main ul li h3').count()) === 12);
   // Werkwijze knoppen
   await p.goto(base, { waitUntil: 'load' }); await tik('#werkwijze a.btn-groen'); await p.waitForTimeout(900); ok(`${tag} werkwijze Offerte`, Math.abs((await top('#offerte')) - (await headerBottom())) < 60);
   ok(`${tag} werkwijze Bel`, (await p.getAttribute('#werkwijze a[href^="tel"]', 'href')) === 'tel:+31180430211');
@@ -122,14 +122,19 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   // Reviews link
   ok(`${tag} reviews Google-link`, (await p.getAttribute('#reviews a[href*="google"]', 'target')) === '_blank');
   // Formulier compleet: validatie, foto, verzenden (gemockt), bevestiging, nog een aanvraag
-  await p.route('https://api.web3forms.com/submit', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' }));
+  let verstuurd = '';
+  await p.route('https://api.web3forms.com/submit', (r) => { verstuurd = r.request().postData() ?? ''; return r.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' }); });
   await p.goto(base + '?product=screens#offerte', { waitUntil: 'load' }); await p.waitForTimeout(400);
-  ok(`${tag} formulier product vooringevuld`, (await p.inputValue('#product')) === 'Screens');
+  ok(`${tag} formulier product vooringevuld`, await p.isChecked('input[name="product-keuze"][value="Screens"]') && (await p.textContent('[data-keuze-tekst]')) === 'Screens');
+  await tik('[data-producten] summary'); await p.waitForTimeout(200);
+  await p.locator('input[name="product-keuze"][value="Rolluiken"]').check(); await p.locator('input[name="product-keuze"][value="Horren"]').check();
+  ok(`${tag} formulier meerdere producten`, (await p.textContent('[data-keuze-tekst]')) === 'Rolluiken, Screens, Horren');
+  await tik('#naam'); ok(`${tag} productlijst klapt dicht bij klik buiten`, !(await p.evaluate(() => document.querySelector('[data-producten]').open)));
   await tik('[data-verstuur]'); await p.waitForTimeout(400);
-  ok(`${tag} formulier leeg: 3 fouten, focus Naam`, (await p.locator('[data-fout]:not(.hidden)').count()) === 3 && (await p.evaluate(() => document.activeElement?.id)) === 'naam');
+  ok(`${tag} formulier leeg: 4 fouten (naam, straat, plaats, telefoon), focus Naam`, (await p.locator('[data-fout]:not(.hidden)').count()) === 4 && (await p.evaluate(() => document.activeElement?.id)) === 'naam');
   await p.fill('#mail', 'fout'); await p.locator('#mail').blur(); await p.waitForTimeout(100);
   ok(`${tag} formulier ongeldig e-mail`, !(await p.locator('#mail-fout').evaluate((e) => e.classList.contains('hidden'))));
-  await p.fill('#naam', 'Test'); await p.fill('#tel', '0612345678'); await p.fill('#mail', 'test@example.com');
+  await p.fill('#naam', 'Test'); await p.fill('#straat', 'Teststraat 1'); await p.fill('#plaats', 'Ridderkerk'); await p.fill('#tel', '0612345678'); await p.fill('#mail', 'test@example.com');
   await p.setInputFiles('#fotos', [{ name: 'a.png', mimeType: 'image/png', buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64') }]);
   await p.waitForTimeout(200); ok(`${tag} formulier fotopreview`, (await p.locator('[data-previews] li').count()) === 1);
   await p.setInputFiles('#fotos', [{ name: 'groot.png', mimeType: 'image/png', buffer: Buffer.alloc(6 * 1024 * 1024) }]); await p.waitForTimeout(200);
@@ -137,7 +142,7 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await p.setInputFiles('#fotos', []); await p.waitForTimeout(100);
   const key = await p.getAttribute('[data-offerte]', 'data-key');
   await tik('[data-verstuur]'); await p.waitForTimeout(1200);
-  if (key) { ok(`${tag} formulier bevestiging`, await p.locator('[data-klaar]').isVisible()); await tik('[data-nog-een]'); await p.waitForTimeout(300); ok(`${tag} formulier nog een aanvraag`, await p.locator('#naam').isVisible()); }
+  if (key) { ok(`${tag} formulier stuurt producten samen mee`, verstuurd.includes('Rolluiken, Screens, Horren') && !verstuurd.includes('product-keuze')); ok(`${tag} formulier bevestiging`, await p.locator('[data-klaar]').isVisible()); await tik('[data-nog-een]'); await p.waitForTimeout(300); ok(`${tag} formulier nog een aanvraag`, await p.locator('#naam').isVisible()); }
   else ok(`${tag} formulier zonder key: nette melding`, (await p.textContent('[data-status]')).includes('nog niet gekoppeld'));
   // Afsluiter
   await p.goto(base, { waitUntil: 'load' }); await tik('main > section:last-of-type a.btn-groen'); await p.waitForTimeout(900); ok(`${tag} afsluiter Offerte`, Math.abs((await top('#offerte')) - (await headerBottom())) < 60);
@@ -157,7 +162,7 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await tik('main details summary'); await p.waitForTimeout(200); ok(`${tag} FAQ sluit`, (await p.locator('main details[open]').count()) === 0);
   await tik('a.btn-wit[href$="#showroom"]'); await p.waitForLoadState('load'); await p.waitForTimeout(700); ok(`${tag} doek -> showroom`, p.url().includes('#showroom') && Math.abs((await top('#showroom')) - (await headerBottom())) < 60);
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
-  await tik('aside a.btn-wit'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} zijblok Offerte -> ingevuld`, (await p.inputValue('#product')) === 'Screens');
+  await tik('aside a.btn-wit'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} zijblok Offerte -> ingevuld`, await p.isChecked('input[name="product-keuze"][value="Screens"]'));
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
   await tik('[data-galerij] [data-foto]'); await p.waitForTimeout(300); ok(`${tag} lightbox opent`, await p.evaluate(() => document.querySelector('[data-lightbox]').open));
   await p.keyboard.press('Escape'); await p.waitForTimeout(200); ok(`${tag} lightbox Escape`, !(await p.evaluate(() => document.querySelector('[data-lightbox]').open)));

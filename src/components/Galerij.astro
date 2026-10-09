@@ -1,28 +1,29 @@
 ---
-// Fotogalerij: grid op desktop, swipebaar op mobiel, klik opent een lightbox met toetsenbord en swipe.
-// Vlakken met een markering zijn niet klikbaar: er is nog geen foto.
+// Fotogalerij: de hoofdfoto groot, daarnaast tot vier kleinere. Grid op desktop, swipebaar op mobiel,
+// klik opent een lightbox met toetsenbord en swipe. Is er hooguit een foto, dan vullen vlakken met een markering
+// de rest aan; die zijn niet klikbaar.
 import { getImage } from 'astro:assets';
 import Foto from './Foto.astro';
 import Vlak from './Vlak.astro';
-import { fotos } from './Fotos';
-import type { Product } from '../data/site';
-interface Props { naam: string; foto?: Product['foto']; fotoAlt?: string }
-const { naam, foto, fotoAlt = '' } = Astro.props;
-const groot = foto ? await getImage({ src: fotos[foto], width: 1800, format: 'webp', quality: 78 }) : null;
-const plekken = 4;
+import type { ProductFoto } from './Fotos';
+import { inZin } from '../data/site';
+interface Props { naam: string; fotos: ProductFoto[] }
+const { naam, fotos } = Astro.props;
+const lijst = await Promise.all(fotos.slice(0, 5).map(async (f) => ({ ...f, groot: (await getImage({ src: f.src, width: 1800, format: 'webp', quality: 78 })).src })));
+const plekken = lijst.length > 1 ? 0 : 4;
 ---
 <section class="wrap py-6 lg:py-10" aria-labelledby="galerij-kop">
-  <h2 id="galerij-kop" class="text-2xl">Foto's van {naam.toLowerCase()}</h2>
+  <h2 id="galerij-kop" class="text-2xl">Foto's van {inZin(naam)}</h2>
   <ul class="slider -mx-5 mt-6 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-4" data-galerij>
-    {groot && (
-      <li class="w-[80vw] md:w-auto md:col-span-2 md:row-span-2">
-        <button type="button" class="block aspect-[4/3] w-full overflow-hidden rounded-xl md:h-full" data-foto={groot.src} data-alt={fotoAlt} aria-label={`Vergroot: ${fotoAlt}`}>
-          <Foto src={fotos[foto!]} alt={fotoAlt} sizes="(min-width: 1024px) 640px, (min-width: 768px) 50vw, 80vw" class="transition-transform duration-500 hover:scale-[1.03]" />
+    {lijst.map((f, i) => (
+      <li class={`w-[80vw] md:w-auto ${i === 0 ? 'md:col-span-2 md:row-span-2' : ''}`}>
+        <button type="button" class="block aspect-[4/3] w-full overflow-hidden rounded-xl md:h-full" data-foto={f.groot} data-alt={f.alt} aria-label={`Vergroot: ${f.alt}`}>
+          <Foto src={f.src} alt={f.alt} sizes={i === 0 ? '(min-width: 1024px) 640px, (min-width: 768px) 50vw, 80vw' : '(min-width: 1024px) 310px, (min-width: 768px) 50vw, 80vw'} class="transition-transform duration-500 hover:scale-[1.03]" />
         </button>
       </li>
-    )}
+    ))}
     {Array.from({ length: plekken }).map((_, i) => (
-      <li class="w-[80vw] md:w-auto"><div class="aspect-[4/3] overflow-hidden rounded-xl md:h-full"><Vlak wat={`${naam.toLowerCase()} ${i + (groot ? 2 : 1)}`} /></div></li>
+      <li class="w-[80vw] md:w-auto"><div class="aspect-[4/3] overflow-hidden rounded-xl md:h-full"><Vlak wat={`${inZin(naam)} ${i + lijst.length + 1}`} /></div></li>
     ))}
   </ul>
 </section>

@@ -1,4 +1,6 @@
-hero.jpg  https://unsplash.com/photos/1660599197081-62eec73f8f36 (Unsplash-licentie)
-luifel.jpg  https://unsplash.com/photos/1578866586893-92711a99b1bf (Unsplash-licentie)
-binnen.jpg  https://unsplash.com/photos/1515466678546-d0f851801e9c (Unsplash-licentie)
-knikarm.jpg  https://unsplash.com/photos/1533517954228-3e95c10a5ff1 (Unsplash-licentie)
+Eigen foto's van ZBN (aangeleverd via WeTransfer, 9 oktober 2026), verkleind en zonder EXIF:
+  hero.jpg                       Knikarmscherm (2).jpg
+  producten/<slug>/<n>.jpg       zie src/data/productfotos.ts
+  showroom/                      showroom en gevel, aangeleverd in de chat
+Tijdelijk gegenereerd stockbeeld, tot er een eigen foto is:
+  stock/screens.jpg, stock/garagedeur.jpg
