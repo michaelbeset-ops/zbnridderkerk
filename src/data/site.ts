@@ -94,15 +94,6 @@ export const producten: Product[] = [
     punten: ['Per raam op maat', 'Houdt warmte buiten, zicht naar buiten blijft', 'Handbediening of elektrisch', 'Doek afgestemd op de rest van de gevel'],
   },
   {
-    slug: 'markiezen', naam: 'Markiezen', categorie: 'buiten', kort: 'Het klassieke gebogen scherm boven raam, deur of etalage.',
-    intro: 'Een markies is een zonnescherm met een gebogen kap die boven een raam, deur of etalage uitklapt. Ingeklapt ligt het doek beschermd tegen de gevel.',
-    tekst: [
-      'Markiezen passen goed bij karakteristieke woningen en winkelpuien. Het doek is er effen en in de klassieke streep, het frame in een kleur die bij de kozijnen past.',
-      'U kiest de breedte, de uitval en de bediening: met de hand of elektrisch. In de showroom hangt een markies, zodat u het scherm in het echt ziet.',
-    ],
-    punten: ['Gebogen kap boven raam, deur of etalage', 'Doek effen of gestreept', 'Handmatig of elektrisch', 'Op maat voor elk raam', 'Inmeten en montage door onze eigen monteurs'],
-  },
-  {
     slug: 'rolluiken', naam: 'Rolluiken', categorie: 'buiten', kort: 'Isoleren, verduisteren en beveiligen in een.',
     intro: 'Rolluiken doen drie dingen tegelijk: ze houden in de zomer de warmte buiten, in de winter de warmte binnen, en dicht geven ze inbrekers geen kans.',
     tekst: [
@@ -175,6 +166,15 @@ export const producten: Product[] = [
       'Combineer de overkapping met zonwering onder of boven het dak, met verlichting of met schuifwanden. Dan heeft u een buitenkamer.',
     ],
     punten: ['Dak van glas of polycarbonaat', 'Aan de gevel of vrijstaand', 'Te combineren met zonwering, verlichting en zijwanden', 'Frame in een kleur naar keuze'],
+  },
+  {
+    slug: 'markiezen', naam: 'Markiezen', categorie: 'buiten', kort: 'Het klassieke gebogen scherm boven raam, deur of etalage.',
+    intro: 'Een markies is een zonnescherm met een gebogen kap die boven een raam, deur of etalage uitklapt. Ingeklapt ligt het doek beschermd tegen de gevel.',
+    tekst: [
+      'Markiezen passen goed bij karakteristieke woningen en winkelpuien. Het doek is er effen en in de klassieke streep, het frame in een kleur die bij de kozijnen past.',
+      'U kiest de breedte, de uitval en de bediening: met de hand of elektrisch. In de showroom hangt een markies, zodat u het scherm in het echt ziet.',
+    ],
+    punten: ['Gebogen kap boven raam, deur of etalage', 'Doek effen of gestreept', 'Handmatig of elektrisch', 'Op maat voor elk raam', 'Inmeten en montage door onze eigen monteurs'],
   },
   {
     slug: 'motoren', naam: 'Motoren', categorie: 'buiten', kort: 'Elektrische bediening voor zonwering en rolluiken.',
