@@ -9,7 +9,7 @@ export interface Variant { naam: string; tekst: string }
 export interface Bediening { naam: string; tekst: string; beschikbaar: boolean }
 export interface Doek { kop: string; tekst: string; stalen: { naam: string; kleur: string }[]; merken: string }
 export interface Vraag { vraag: string; antwoord: string }
-export interface Details { voordelen: Voordeel[]; varianten: Variant[]; bediening: Bediening[]; doek: Doek; vragen: Vraag[]; verwant: string[] }
+export interface Details { voordelen: Voordeel[]; varianten: Variant[]; bediening?: Bediening[]; doek?: Doek; vragen: Vraag[]; verwant: string[] }
 
 // Bedieningsopties die bij de meeste buitenzonwering horen. Per product zet je aan wat van toepassing is.
 const bediening = (opties: { hand?: boolean; motor?: boolean; app?: boolean; sensor?: boolean }): Bediening[] => [
@@ -51,7 +51,7 @@ const gaasStalen = [
   { naam: 'Wit', kleur: '#f1f1ee' }, { naam: 'Crème', kleur: '#e8e1cd' }, { naam: 'Grijs', kleur: '#a7a9a6' }, { naam: 'Antraciet', kleur: '#3f4245' }, { naam: 'Zwart', kleur: '#242526' },
 ];
 const doekMerken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger.';
-const binnenMerken = 'Raamdecoratie van Velux. [[AANLEVEREN: merken binnenzonwering]]';
+const binnenMerken = 'Raamdecoratie van Velux en Fakro. [[AANLEVEREN: merken binnenzonwering]]';
 const stoffen: Doek = { kop: 'Stoffen en kleuren', tekst: 'Transparant, lichtdoorlatend, lichtdempend of verduisterend. In de showroom liggen stalenboeken van alle stoffen; neem gerust een kussen of een stukje behang mee om kleuren naast elkaar te leggen.', stalen: stofStalen, merken: binnenMerken };
 
 export const details: Record<string, Details> = {
@@ -75,7 +75,7 @@ export const details: Record<string, Details> = {
       { vraag: 'Hoe ver kan een knikarmscherm uitvallen?', antwoord: 'Dat hangt af van de breedte en de constructie van de gevel. Bij het inmeten bekijken we wat op uw terras mogelijk is en adviseren we een maat die goed in verhouding staat. Moet het doek verder uitvallen, kijk dan naar een pergolazonwering.' },
       { vraag: 'Mag het scherm uit blijven staan bij wind?', antwoord: 'Bij harde wind rolt u het scherm in. Met een windsensor gebeurt dat automatisch, ook als u niet thuis bent.' },
       { vraag: 'Kan ik het scherm bedienen met mijn telefoon?', antwoord: 'Ja, met een motor van Somfy en de bijbehorende app. We stellen dit bij de montage voor u in.' },
-      { vraag: 'Hoe lang duurt de montage?', antwoord: 'Een knikarmscherm plaatsen onze monteurs meestal op een dag. We spreken de datum met u af nadat het scherm in onze werkplaats is gemaakt.' },
+      { vraag: 'Hoe lang duurt de montage?', antwoord: 'Een knikarmscherm plaatsen onze monteurs meestal op een dag. We spreken de datum met u af zodra het scherm klaar is voor montage.' },
     ],
     verwant: ['pergolazonwering', 'uitvalschermen', 'overkappingen'],
   },
@@ -270,6 +270,83 @@ export const details: Record<string, Details> = {
       { vraag: 'Wordt het onder de overkapping niet te warm?', antwoord: 'Met zonwering onder of boven het dak blijft het aangenaam. Die kunt u automatisch op de zon laten reageren.' },
     ],
     verwant: ['pergolazonwering', 'serrezonwering', 'zipscreens'],
+  },
+  markiezen: {
+    voordelen: [
+      { icoon: 'zon', kop: 'Zon buiten het raam', tekst: 'De kap klapt boven het raam uit en houdt de zon van het glas.' },
+      { icoon: 'huis', kop: 'Klassiek gevelbeeld', tekst: 'Past bij karakteristieke woningen en winkelpuien.' },
+      { icoon: 'maat', kop: 'Op maat', tekst: 'Voor elk raam, elke deur en elke etalage.' },
+      { icoon: 'kleur', kop: 'Doek naar keuze', tekst: 'Effen of in de klassieke streep, passend bij de gevel.' },
+    ],
+    varianten: [
+      { naam: 'Voor ramen', tekst: 'Een markies boven een raam, aan de voor- of achtergevel.' },
+      { naam: 'Voor deuren en etalages', tekst: 'Boven een voordeur, winkeldeur of etalage.' },
+    ],
+    bediening: bediening({ hand: true, motor: true, app: true }),
+    doek: { kop: 'Doek effen of gestreept', tekst: 'Kies een kleur die bij de kozijnen en de rest van de gevel past. Het frame leveren we in een passende kleur.', stalen: doekStalen, merken: doekMerken },
+    vragen: [
+      { vraag: 'Wat is het verschil met een uitvalscherm?', antwoord: 'Een markies heeft een gebogen kap die als geheel uitklapt. Een uitvalscherm is een plat doek dat schuin naar buiten kantelt. Een markies geeft een klassiek beeld, een uitvalscherm een strakker beeld.' },
+      { vraag: 'Kan een markies boven een winkelpui?', antwoord: 'Ja. Markiezen worden veel boven etalages en winkeldeuren gebruikt. We meten de pui in en maken het scherm op maat.' },
+      { vraag: 'Kan ik een markies in het echt zien?', antwoord: 'Ja, in de showroom aan de Noordenweg hangt een markies. Daar liggen ook de doekstalen.' },
+    ],
+    verwant: ['uitvalschermen', 'knikarmschermen', 'zonweringsdoek'],
+  },
+  motoren: {
+    voordelen: [
+      { icoon: 'motor', kop: 'Gemak', tekst: 'Een druk op de knop in plaats van slingeren of trekken.' },
+      { icoon: 'wind', kop: 'Automatisch op het weer', tekst: 'Met een sensor gaat de zonwering uit bij zon en in bij harde wind.' },
+      { icoon: 'huis', kop: 'Ook als u niet thuis bent', tekst: 'Met de Somfy-app bedient u alles op afstand en stelt u tijden in.' },
+      { icoon: 'schild', kop: 'Minder kans op schade', tekst: 'Met een windsensor rolt het scherm bij harde wind vanzelf in.' },
+    ],
+    varianten: [
+      { naam: 'Met afstandsbediening', tekst: 'Een handzender voor een product of voor een groep tegelijk.' },
+      { naam: 'Met wandschakelaar', tekst: 'Een vaste schakelaar aan de muur, bijvoorbeeld naast de tuindeur.' },
+      { naam: 'Met de Somfy-app', tekst: 'Bedien met uw telefoon en stel tijden in, ook als u niet thuis bent.' },
+      { naam: 'Met zon- en windsensor', tekst: 'De zonwering reageert zelf op zon en wind.' },
+    ],
+    bediening: bediening({ motor: true, app: true, sensor: true }),
+    vragen: [
+      { vraag: 'Kan er een motor in mijn bestaande zonwering?', antwoord: 'Dat hangt af van het product en hoe het gemonteerd is. Neem contact op of kom langs in de showroom, dan bekijken we wat bij u kan.' },
+      { vraag: 'Welke merken gebruiken jullie?', antwoord: 'We werken met motoren en bediening van Somfy en Geiger.' },
+      { vraag: 'Is er stroom nodig bij het raam?', antwoord: 'Een motor heeft stroom nodig. Bij rolluiken en screens kan het ook met een zonnepaneel en accu, zonder bekabeling door de muur.' },
+    ],
+    verwant: ['knikarmschermen', 'rolluiken', 'screens'],
+  },
+  screendoek: {
+    voordelen: [
+      { icoon: 'thermo', kop: 'Houdt de warmte buiten', tekst: 'Het doek stopt de zon voordat die het glas raakt.' },
+      { icoon: 'oog', kop: 'Uitzicht blijft', tekst: 'Overdag kijkt u naar buiten en kijkt niemand naar binnen.' },
+      { icoon: 'licht', kop: 'Licht naar wens', tekst: 'Van open tot bijna dicht, per raam te kiezen.' },
+      { icoon: 'kleur', kop: 'Veel kleuren', tekst: 'Van wit tot zwart, passend bij kozijnen en gevel.' },
+    ],
+    varianten: [
+      { naam: 'Open weefsel', tekst: 'Meer licht en meer uitzicht, houdt minder warmte tegen.' },
+      { naam: 'Dicht weefsel', tekst: 'Houdt meer warmte en inkijk tegen, minder uitzicht.' },
+    ],
+    doek: { kop: 'Kleuren en openheden', tekst: 'Hoe dichter het doek, hoe meer warmte en inkijk het tegenhoudt. We adviseren per raam wat past.', stalen: screenStalen, merken: doekMerken },
+    vragen: [
+      { vraag: 'Welke openheid moet ik kiezen?', antwoord: 'Dat hangt af van wat u belangrijker vindt: uitzicht of warmte en privacy tegenhouden. In de showroom ziet u het verschil en adviseren we u.' },
+      { vraag: 'Kan alleen het doek van mijn screen vervangen worden?', antwoord: 'Dat hangt af van het screen en of er passend doek voor te krijgen is. Neem contact op of kom langs, dan bekijken we het.' },
+    ],
+    verwant: ['screens', 'zipscreens', 'zonweringsdoek'],
+  },
+  zonweringsdoek: {
+    voordelen: [
+      { icoon: 'kleur', kop: 'Veel kleuren en dessins', tekst: 'Effen of gestreept, van rustig tot opvallend.' },
+      { icoon: 'zon', kop: 'Houdt de zon tegen', tekst: 'Een goed doek geeft schaduw en houdt de warmte buiten.' },
+      { icoon: 'huis', kop: 'Bepaalt het gevelbeeld', tekst: 'Het doek is het eerste wat opvalt aan uw zonwering.' },
+      { icoon: 'maat', kop: 'Voor elk scherm', tekst: 'Voor knikarmschermen, markiezen, uitvalschermen en pergola’s.' },
+    ],
+    varianten: [
+      { naam: 'Effen', tekst: 'Een kleur over het hele doek. Rustig en tijdloos.' },
+      { naam: 'Gestreept', tekst: 'De klassieke streep, in brede of smalle banen.' },
+    ],
+    doek: { kop: 'Doek in veel kleuren en dessins', tekst: 'In de showroom hangen de stalenboeken. Neem gerust een foto van uw gevel mee om kleuren te vergelijken.', stalen: doekStalen, merken: doekMerken },
+    vragen: [
+      { vraag: 'Kan alleen het doek van mijn zonnescherm vervangen worden?', antwoord: 'Dat hangt af van het scherm en of er passend doek voor te krijgen is. Neem contact op of kom langs, dan bekijken we het.' },
+      { vraag: 'Hoe houd ik het doek mooi?', antwoord: 'Heeft u het scherm nat ingerold, rol het dan zo snel mogelijk weer uit zodat het doek kan drogen. Blad en vuil borstelt u droog af.' },
+    ],
+    verwant: ['knikarmschermen', 'markiezen', 'screendoek'],
   },
   // Binnen
   jaloezieen: {
@@ -482,5 +559,49 @@ export const details: Record<string, Details> = {
       { vraag: 'Kan een hor samen met een plissé?', antwoord: 'Ja, in een Smart-fit-frame zitten een plissé en een hor in hetzelfde frame.' },
     ],
     verwant: ['hordeuren', 'smart-fit', 'plissegordijnen'],
+  },
+  'dakramen-fakro': {
+    voordelen: [
+      { icoon: 'maat', kop: 'Precies passend', tekst: 'Gemaakt voor het type en de maat van uw Fakro-dakraam.' },
+      { icoon: 'licht', kop: 'Donker slapen', tekst: 'Een verduisterend gordijn houdt het licht tegen, ook in de zomer.' },
+      { icoon: 'thermo', kop: 'Koeler onder het dak', tekst: 'Zonwering aan de buitenkant houdt de warmte tegen voordat die het glas raakt.' },
+      { icoon: 'huis', kop: 'Blijft op zijn plek', tekst: 'Loopt in geleiders, dus ook bij een schuin raam hangt niets los.' },
+    ],
+    varianten: [
+      { naam: 'Verduisterend gordijn', tekst: 'Houdt het licht tegen. Voor slaapkamers en zolders.' },
+      { naam: 'Rolgordijn', tekst: 'Dempt het licht en houdt inkijk tegen.' },
+      { naam: 'Plissé', tekst: 'Een gevouwen stof die u op elke hoogte kunt zetten.' },
+      { naam: 'Buitenzonwering', tekst: 'Een rolluik of screen aan de buitenkant, tegen warmte.' },
+    ],
+    bediening: binnenBediening('de dakraamzonwering', 'Met de hand, met een greep aan de onderlat.'),
+    doek: { ...stoffen, kop: 'Stoffen en kleuren', merken: 'Zonwering van Fakro.' },
+    vragen: [
+      { vraag: 'Hoe weet ik welk dakraam ik heb?', antwoord: 'Het type en de maat staan op het typeplaatje in het raam, meestal bovenin het kozijn als u het raam opent. Maak er een foto van en neem die mee naar de showroom of stuur hem mee met uw offerteaanvraag.' },
+      { vraag: 'Kan de zonwering elektrisch?', antwoord: 'Voor veel dakramen is er elektrische zonwering, ook op zonne-energie. Of het bij uw raam kan, hangt af van het type.' },
+      { vraag: 'Binnen of buiten?', antwoord: 'Binnen regelt u licht en privacy. Buiten houdt de warmte het beste tegen, omdat de zon het glas niet raakt. Ze zijn ook te combineren.' },
+    ],
+    verwant: ['dakramen-velux', 'plissegordijnen', 'rolgordijnen'],
+  },
+  'dakramen-velux': {
+    voordelen: [
+      { icoon: 'maat', kop: 'Precies passend', tekst: 'Gemaakt voor het type en de maat van uw Velux-dakraam.' },
+      { icoon: 'licht', kop: 'Donker slapen', tekst: 'Een verduisterend gordijn houdt het licht tegen, ook in de zomer.' },
+      { icoon: 'thermo', kop: 'Koeler onder het dak', tekst: 'Zonwering aan de buitenkant houdt de warmte tegen voordat die het glas raakt.' },
+      { icoon: 'huis', kop: 'Blijft op zijn plek', tekst: 'Loopt in geleiders, dus ook bij een schuin raam hangt niets los.' },
+    ],
+    varianten: [
+      { naam: 'Verduisterend gordijn', tekst: 'Houdt het licht tegen. Voor slaapkamers en zolders.' },
+      { naam: 'Rolgordijn', tekst: 'Dempt het licht en houdt inkijk tegen.' },
+      { naam: 'Plissé', tekst: 'Een gevouwen stof die u op elke hoogte kunt zetten.' },
+      { naam: 'Buitenzonwering', tekst: 'Een rolluik of screen aan de buitenkant, tegen warmte.' },
+    ],
+    bediening: binnenBediening('de dakraamzonwering', 'Met de hand, met een greep aan de onderlat.'),
+    doek: { ...stoffen, kop: 'Stoffen en kleuren', merken: 'Zonwering van Velux.' },
+    vragen: [
+      { vraag: 'Hoe weet ik welk dakraam ik heb?', antwoord: 'Het type en de maat staan op het typeplaatje in het raam, meestal bovenin het kozijn als u het raam opent. Maak er een foto van en neem die mee naar de showroom of stuur hem mee met uw offerteaanvraag.' },
+      { vraag: 'Kan de zonwering elektrisch?', antwoord: 'Voor veel dakramen is er elektrische zonwering, ook op zonne-energie. Of het bij uw raam kan, hangt af van het type.' },
+      { vraag: 'Binnen of buiten?', antwoord: 'Binnen regelt u licht en privacy. Buiten houdt de warmte het beste tegen, omdat de zon het glas niet raakt. Ze zijn ook te combineren.' },
+    ],
+    verwant: ['dakramen-fakro', 'plissegordijnen', 'rolgordijnen'],
   },
 };

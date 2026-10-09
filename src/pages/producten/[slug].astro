@@ -6,7 +6,7 @@ import Foto from '../../components/Foto.astro';
 import Vlak from '../../components/Vlak.astro';
 import Galerij from '../../components/Galerij.astro';
 import Icoon from '../../components/Icoon.astro';
-import { producten, categorieen, site, url } from '../../data/site';
+import { producten, categorieen, site, url, inZin } from '../../data/site';
 import { details } from '../../data/productdetails';
 import { fotos } from '../../components/Fotos';
 import { getImage } from 'astro:assets';
@@ -19,7 +19,7 @@ const d = details[p.slug];
 const cat = categorieen.find((c) => c.categorie === p.categorie)!;
 const verwant = d.verwant.map((s) => producten.find((x) => x.slug === s)!).filter(Boolean);
 const offerte = url(`?product=${p.slug}#offerte`);
-const naam = p.naam.toLowerCase();
+const naam = inZin(p.naam);
 // Korte meta description (onder 155 tekens) en een eigen deelafbeelding per product.
 const beschrijving = `${p.naam} op maat in Ridderkerk. ${p.kort} Inmeten en montage door de eigen monteurs van ZBN.`;
 const og = p.foto ? (await getImage({ src: fotos[p.foto], width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 })).src : undefined;
@@ -101,8 +101,8 @@ const jsonld = site.preview ? undefined : [
         </ul>
       </section>
 
-      <!-- 4. Bedieningsopties. -->
-      <section class="mt-14" aria-labelledby="bediening">
+      <!-- 4. Bedieningsopties (niet bij elk product). -->
+      {d.bediening && <section class="mt-14" aria-labelledby="bediening">
         <h2 id="bediening" class="text-2xl">Bediening</h2>
         <ul class="mt-6 divide-y divide-lijn rounded-xl bg-ijs">
           {d.bediening.map((b) => (
@@ -117,10 +117,10 @@ const jsonld = site.preview ? undefined : [
             </li>
           ))}
         </ul>
-      </section>
+      </section>}
 
-      <!-- 5. Doeken en kleuren. -->
-      <section class="mt-14" aria-labelledby="doek">
+      <!-- 5. Doeken en kleuren (niet bij elk product). -->
+      {d.doek && <section class="mt-14" aria-labelledby="doek">
         <h2 id="doek" class="text-2xl">{d.doek.kop}</h2>
         <p class="mt-4 text-lg text-ink-zacht">{d.doek.tekst}</p>
         <ul class="mt-6 flex flex-wrap gap-3" aria-label="Voorbeeldkleuren">
@@ -130,7 +130,7 @@ const jsonld = site.preview ? undefined : [
         </ul>
         <p class="mt-5 text-sm text-ink-zacht">Voorbeelden; in de showroom aan de Noordenweg ziet u alle stalen in het echt. {d.doek.merken}</p>
         <a href={url('#showroom')} class="btn btn-wit mt-5">Showroom en openingstijden</a>
-      </section>
+      </section>}
     </div>
 
     <!-- Offerteblok, plakt op desktop. -->
@@ -190,7 +190,7 @@ const jsonld = site.preview ? undefined : [
 
   <!-- 9. Drie verwante producten. -->
   <section class="wrap pb-16 lg:pb-24" aria-labelledby="verwant">
-    <div class="flex items-end justify-between gap-4">
+    <div class="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
       <h2 id="verwant" class="text-2xl">Ook interessant</h2>
       <a href={url(`${cat.slug}/`)} class="shrink-0 whitespace-nowrap font-display font-semibold underline">Alle {cat.naam.toLowerCase()}</a>
     </div>
@@ -199,7 +199,7 @@ const jsonld = site.preview ? undefined : [
         <li class="group">
           <a href={url(`producten/${a.slug}/`)} class="block no-underline">
             <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
-              {a.foto ? <Foto src={fotos[a.foto]} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" /> : <Vlak wat={a.naam.toLowerCase()} />}
+              {a.foto ? <Foto src={fotos[a.foto]} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" /> : <Vlak wat={inZin(a.naam)} />}
             </div>
             <h3 class="mt-4 flex items-center justify-between gap-3 px-1 text-lg"><span>{a.naam}</span><span aria-hidden="true" class="text-ink-zacht transition-transform group-hover:translate-x-1">&rarr;</span></h3>
             <p class="mt-1 px-1 text-sm text-ink-zacht">{a.kort}</p>

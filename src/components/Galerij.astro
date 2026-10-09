@@ -6,13 +6,14 @@ import Foto from './Foto.astro';
 import Vlak from './Vlak.astro';
 import { fotos } from './Fotos';
 import type { Product } from '../data/site';
+import { inZin } from '../data/site';
 interface Props { naam: string; foto?: Product['foto']; fotoAlt?: string }
 const { naam, foto, fotoAlt = '' } = Astro.props;
 const groot = foto ? await getImage({ src: fotos[foto], width: 1800, format: 'webp', quality: 78 }) : null;
 const plekken = 4;
 ---
 <section class="wrap py-6 lg:py-10" aria-labelledby="galerij-kop">
-  <h2 id="galerij-kop" class="text-2xl">Foto's van {naam.toLowerCase()}</h2>
+  <h2 id="galerij-kop" class="text-2xl">Foto's van {inZin(naam)}</h2>
   <ul class="slider -mx-5 mt-6 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-4" data-galerij>
     {groot && (
       <li class="w-[80vw] md:w-auto md:col-span-2 md:row-span-2">
@@ -22,7 +23,7 @@ const plekken = 4;
       </li>
     )}
     {Array.from({ length: plekken }).map((_, i) => (
-      <li class="w-[80vw] md:w-auto"><div class="aspect-[4/3] overflow-hidden rounded-xl md:h-full"><Vlak wat={`${naam.toLowerCase()} ${i + (groot ? 2 : 1)}`} /></div></li>
+      <li class="w-[80vw] md:w-auto"><div class="aspect-[4/3] overflow-hidden rounded-xl md:h-full"><Vlak wat={`${inZin(naam)} ${i + (groot ? 2 : 1)}`} /></div></li>
     ))}
   </ul>
 </section>

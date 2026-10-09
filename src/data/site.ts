@@ -9,6 +9,8 @@ export const site = {
   tel: '0180 430 211',
   telHref: 'tel:+31180430211',
   mail: 'zonwering@zbnridderkerk.nl',
+  // Verzoeken over persoonsgegevens (privacyverklaring), op verzoek van ZBN.
+  privacyMail: 'info@zbnridderkerk.nl',
   kvk: '24249059',
   maps: 'https://www.google.com/maps/dir/?api=1&destination=Noordenweg+71a,+2984+AG+Ridderkerk',
   reviewsUrl: 'https://www.google.com/maps/search/?api=1&query=ZBN+Zonwering+Noordenweg+71a+Ridderkerk',
@@ -18,6 +20,8 @@ export const site = {
   // Zolang de site nog niet op het eigen domein staat: niet indexeren.
   preview: import.meta.env.PUBLIC_PREVIEW === '1',
 };
+// Productnaam midden in een zin: alleen de eerste letter klein, zodat merknamen als Velux en Fakro blijven staan.
+export const inZin = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 export const url = (p = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${p.replace(/^\//, '')}`;
 
 // Showroom. dag = getDay() in JavaScript (0 = zondag).
@@ -36,10 +40,10 @@ export const usps = [
   'Maatwerk',
   'Eigen montage',
   'Eigen showroom in Ridderkerk',
-  'Bijna alles zelf geassembleerd',
+  'Inmeten aan huis',
 ];
 
-export const merken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger. Raamdecoratie van Velux.';
+export const merken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger. Raamdecoratie en dakraamzonwering van Velux en Fakro.';
 
 export type Categorie = 'buiten' | 'binnen';
 
@@ -59,7 +63,7 @@ export interface Product {
 export const categorieen = [
   { slug: 'buitenzonwering', naam: 'Buitenzonwering', categorie: 'buiten' as Categorie, foto: 'knikarmscherm' as const,
     kort: 'Zonwering aan de gevel, rolluiken, poorten, deuren en overkappingen.',
-    intro: 'Alles wat aan de buitenkant van de woning de zon, de regen en ongewenste blikken tegenhoudt. Op maat gemaakt, bijna alles uit onze eigen werkplaats, en geplaatst door onze eigen monteurs.',
+    intro: 'Alles wat aan de buitenkant van de woning de zon, de regen en ongewenste blikken tegenhoudt. Op maat gemaakt en geplaatst door onze eigen monteurs.',
     fotoAlt: 'Antracietgrijs knikarmscherm met licht doek boven een terras aan een bakstenen woning' },
   { slug: 'binnenzonwering', naam: 'Binnenzonwering', categorie: 'binnen' as Categorie, foto: 'binnen' as const,
     kort: 'Raamdecoratie voor licht, privacy en sfeer, plus horren.',
@@ -90,6 +94,15 @@ export const producten: Product[] = [
     ],
     punten: ['Per raam op maat', 'Houdt warmte buiten, zicht naar buiten blijft', 'Handbediening of elektrisch', 'Doek afgestemd op de rest van de gevel'],
     foto: 'uitvalscherm', fotoAlt: 'Lichtgrijs uitvalscherm schuin naar buiten boven een raam van een bakstenen woning',
+  },
+  {
+    slug: 'markiezen', naam: 'Markiezen', categorie: 'buiten', kort: 'Het klassieke gebogen scherm boven raam, deur of etalage.',
+    intro: 'Een markies is een zonnescherm met een gebogen kap die boven een raam, deur of etalage uitklapt. Ingeklapt ligt het doek beschermd tegen de gevel.',
+    tekst: [
+      'Markiezen passen goed bij karakteristieke woningen en winkelpuien. Het doek is er effen en in de klassieke streep, het frame in een kleur die bij de kozijnen past.',
+      'U kiest de breedte, de uitval en de bediening: met de hand of elektrisch. In de showroom hangt een markies, zodat u het scherm in het echt ziet.',
+    ],
+    punten: ['Gebogen kap boven raam, deur of etalage', 'Doek effen of gestreept', 'Handmatig of elektrisch', 'Op maat voor elk raam', 'Inmeten en montage door onze eigen monteurs'],
   },
   {
     slug: 'rolluiken', naam: 'Rolluiken', categorie: 'buiten', kort: 'Isoleren, verduisteren en beveiligen in een.',
@@ -169,6 +182,33 @@ export const producten: Product[] = [
     ],
     punten: ['Dak van glas of polycarbonaat', 'Aan de gevel of vrijstaand', 'Te combineren met zonwering, verlichting en zijwanden', 'Frame in een kleur naar keuze'],
     foto: 'overkapping', fotoAlt: 'Antracietgrijze terrasoverkapping met glazen dak aan een bakstenen woning, met loungebank eronder',
+  },
+  {
+    slug: 'motoren', naam: 'Motoren', categorie: 'buiten', kort: 'Elektrische bediening voor zonwering en rolluiken.',
+    intro: 'Met een motor bedient u zonwering, rolluiken en screens met een afstandsbediening, een schakelaar of uw telefoon. We werken met motoren en bediening van Somfy en Geiger.',
+    tekst: [
+      'Bij een nieuw product bouwen we de motor meteen in. Heeft u al zonwering of rolluiken met handbediening, vraag dan of er een motor in kan. Dat bekijken we per situatie.',
+      'Met een zon- en windsensor reageert buitenzonwering vanzelf op het weer. Met de Somfy-app bedient u alles op afstand en stelt u tijden in.',
+    ],
+    punten: ['Motoren van Somfy en Geiger', 'Afstandsbediening, schakelaar of app', 'Optioneel: zon- en windsensor', 'Ook voor bestaande zonwering, per situatie bekeken'],
+  },
+  {
+    slug: 'screendoek', naam: 'Screendoek', categorie: 'buiten', kort: 'Doek voor screens en zipscreens, in veel kleuren en openheden.',
+    intro: 'Screendoek is het gaasweefsel van screens en zipscreens. Het houdt warmte en inkijk tegen en laat licht en uitzicht door.',
+    tekst: [
+      'Hoe dichter het doek, hoe meer warmte het tegenhoudt en hoe minder u naar buiten kijkt. In de showroom ziet u de stalen en het verschil tussen de openheden.',
+      'Is het doek van uw screen versleten, verkleurd of beschadigd? Vraag naar de mogelijkheden voor nieuw doek.',
+    ],
+    punten: ['Veel kleuren', 'Verschillende openheden', 'Stalen in de showroom', 'Vraag naar nieuw doek voor uw screen'],
+  },
+  {
+    slug: 'zonweringsdoek', naam: 'Zonweringsdoek', categorie: 'buiten', kort: 'Doek voor zonnescherm, markies en pergola.',
+    intro: 'Zonweringsdoek is het doek van een zonnescherm, markies of pergola. Het bepaalt voor een groot deel hoe de zonwering eruitziet en hoe goed hij de zon tegenhoudt.',
+    tekst: [
+      'We werken met doek van Swela, Dickson, Tibelly en Sattler, effen en in de klassieke streep. In de showroom hangen de stalen, zodat u kleuren naast elkaar kunt leggen.',
+      'Is het doek van uw zonnescherm versleten of verkleurd? Vraag naar de mogelijkheden voor nieuw doek.',
+    ],
+    punten: ['Doek van Swela, Dickson, Tibelly en Sattler', 'Effen of gestreept', 'Stalen in de showroom', 'Vraag naar nieuw doek voor uw scherm'],
   },
   // Binnen
   {
@@ -261,6 +301,24 @@ export const producten: Product[] = [
       'Ook voor draai-kiepramen en dakramen is er een passende hor. We maken ze op maat in een kleur die bij het kozijn past.',
     ],
     punten: ['Inzethor, rolhor of plisséhor', 'Ook voor draai-kiep- en dakramen', 'Op maat gemaakt', 'Kleur passend bij het kozijn'],
+  },
+  {
+    slug: 'dakramen-fakro', naam: 'Zonwering voor Fakro dakramen', categorie: 'binnen', kort: 'Zonwering die precies in een Fakro-dakraam past.',
+    intro: 'Voor een dakraam van Fakro is er zonwering die precies in het kozijn past. Zo houdt u licht, warmte of inkijk tegen, ook bij een schuin raam.',
+    tekst: [
+      'Er is zonwering voor binnen, zoals verduisterende gordijnen, rolgordijnen en plissés. Voor buiten zijn er rolluiken en screens, die de warmte tegenhouden voordat die het glas raakt.',
+      'Welke zonwering past, hangt af van het type en de maat van het dakraam. Die staan op het typeplaatje in het raam. Neem een foto van het plaatje mee naar de showroom, of stuur hem mee met uw offerteaanvraag.',
+    ],
+    punten: ['Past precies in het Fakro-dakraam', 'Verduisteren, licht dempen of warmte tegenhouden', 'Voor binnen en buiten', 'Neem een foto van het typeplaatje mee'],
+  },
+  {
+    slug: 'dakramen-velux', naam: 'Zonwering voor Velux dakramen', categorie: 'binnen', kort: 'Zonwering die precies in een Velux-dakraam past.',
+    intro: 'Voor een dakraam van Velux is er zonwering die precies in het kozijn past. Zo houdt u licht, warmte of inkijk tegen, ook bij een schuin raam.',
+    tekst: [
+      'Er is zonwering voor binnen, zoals verduisterende gordijnen, rolgordijnen en plissés. Voor buiten zijn er rolluiken en screens, die de warmte tegenhouden voordat die het glas raakt.',
+      'Welke zonwering past, hangt af van het type en de maat van het dakraam. Die staan op het typeplaatje in het raam. Neem een foto van het plaatje mee naar de showroom, of stuur hem mee met uw offerteaanvraag.',
+    ],
+    punten: ['Past precies in het Velux-dakraam', 'Verduisteren, licht dempen of warmte tegenhouden', 'Voor binnen en buiten', 'Neem een foto van het typeplaatje mee'],
   },
 ];
 

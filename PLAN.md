@@ -30,3 +30,15 @@ Mobiel: vaste balk met Bellen en Offerte.
   naar de volgende plek, pijlen draaien naar de wand ernaast, Terug en Buiten linksboven. Geen echte 360 graden:
   daarvoor zijn 360-foto's nodig (bijv. Insta360 op 4 a 5 plekken). Geen AI-beelden van de showroom: bezoekers moeten
   zien wat er echt staat.
+- Feedback ZBN (9 okt 2026), verwerkt:
+  - Buiten erbij: Markiezen, Motoren, Screendoek, Zonweringsdoek. Binnen erbij: Zonwering voor Fakro dakramen en voor
+    Velux dakramen. Nu 26 producten. Teksten algemeen gehouden; bij doek staat "vraag naar de mogelijkheden voor nieuw
+    doek" in plaats van een belofte. Motoren, Screendoek en Zonweringsdoek hebben geen sectie die niet past
+    (bediening en doek zijn optioneel per product).
+  - Formulier: verplicht zijn naam, straat en huisnummer, plaats en telefoon. E-mail en postcode zijn optioneel
+    (stonden niet in de lijst van ZBN). Meerdere producten tegelijk aan te vinken; ze gaan als een regel mee.
+  - Privacyverklaring: verzoeken over gegevens naar info@zbnridderkerk.nl (site.privacyMail). Overal elders blijft
+    zonwering@zbnridderkerk.nl.
+  - Zelf assembleren en de eigen werkplaats zijn overal weg. Werkwijze stap 3 is nu "Op maat besteld"; de
+    werkplaatsfoto (gegenereerd) is vervangen door een eigen showroomfoto. USP "Bijna alles zelf geassembleerd"
+    vervangen door "Inmeten aan huis".
