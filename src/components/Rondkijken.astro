@@ -42,13 +42,18 @@ const hoeken = beschrijving.slice(1).flatMap((b) => { const src = vind(b.naam); 
     </div>
   )}
 
-  <p class="pointer-events-none absolute top-4 left-4 rounded-pill bg-wit/90 px-3.5 py-1.5 text-sm font-medium shadow-zacht backdrop-blur">
+  <p class="pointer-events-none absolute top-4 left-4 rounded-pill max-[359px]:hidden bg-wit/90 px-3.5 py-1.5 text-sm font-medium shadow-zacht backdrop-blur">
     <span class="hidden md:inline">Sleep of gebruik de pijlen om rond te kijken</span><span class="md:hidden">Veeg om rond te kijken</span>
   </p>
 
+  {gevel && (
+    <button type="button" class="absolute top-4 right-4 inline-flex items-center gap-1 rounded-pill bg-wit/90 py-1.5 pr-3.5 pl-2.5 text-sm font-medium shadow-zacht backdrop-blur hover:bg-wit" data-naar-buiten>
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Buiten
+    </button>
+  )}
+
   <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-linear-to-t from-ink/70 to-transparent p-4 pt-16 text-wit md:p-5 md:pt-20">
     <p class="min-w-0" aria-live="polite">
-      {gevel && <button type="button" class="pointer-events-auto mb-2 text-sm underline" data-naar-buiten>Naar buiten</button>}
       <span class="block text-sm tabular-nums opacity-85"><span data-nummer>1</span> van {hoeken.length}</span>
       <span class="block font-display text-lg font-bold md:text-xl" data-label>{hoeken[0].label}</span>
     </p>

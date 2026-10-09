@@ -28,4 +28,4 @@ Mobiel: vaste balk met Bellen en Offerte.
 - Showroom (9 okt 2026): de stockfoto is vervangen door een rondleiding met de eigen foto's van Michael (src/assets/showroom).
   Geen echte 360 graden: de foto's zijn vanaf verschillende plekken genomen. Slepen of vegen schuift de foto opzij,
   voorbij de rand gaat het naar de volgende hoek. Staat er een 0-gevel.jpg (en eventueel 1-overzicht.jpg) in die map,
-  dan begint de viewer buiten met een knop Kijk binnen; die foto's zijn nog niet als bestand aangeleverd.
+  dan begint de viewer buiten met een knop Kijk binnen. Beide staan erin (9 okt).
