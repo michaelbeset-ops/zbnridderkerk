@@ -25,7 +25,8 @@ Mobiel: vaste balk met Bellen en Offerte.
   Bijlagen werken bij Web3Forms alleen op het betaalde plan; het veld is gebouwd.
 - Kaart: click-to-load, dus geen cookiebanner. Staat zo in de privacyverklaring.
 - Algemene voorwaarden: standaardtekst met drie markeringen (geldigheid offerte, aanbetaling, montagegarantie).
-- Showroom (9 okt 2026): de stockfoto is vervangen door een rondleiding met de eigen foto's van Michael (src/assets/showroom).
-  Geen echte 360 graden: de foto's zijn vanaf verschillende plekken genomen. Slepen of vegen schuift de foto opzij,
-  voorbij de rand gaat het naar de volgende hoek. Staat er een 0-gevel.jpg (en eventueel 1-overzicht.jpg) in die map,
-  dan begint de viewer buiten met een knop Kijk binnen. Beide staan erin (9 okt).
+- Showroom (9 okt 2026): de stockfoto is vervangen door een klikbare rondloop met de eigen foto's van Michael
+  (src/assets/showroom). Begint buiten bij de gevel; klik op de deur en u zoomt naar binnen. Punten in de foto lopen
+  naar de volgende plek, pijlen draaien naar de wand ernaast, Terug en Buiten linksboven. Geen echte 360 graden:
+  daarvoor zijn 360-foto's nodig (bijv. Insta360 op 4 a 5 plekken). Geen AI-beelden van de showroom: bezoekers moeten
+  zien wat er echt staat.

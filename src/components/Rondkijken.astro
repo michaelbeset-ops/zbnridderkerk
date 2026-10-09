@@ -1,191 +1,215 @@
 ---
-// Rondkijken in de showroom: vijf eigen foto's achter elkaar, van de ingang rond tot de stalenkast.
-// Begint buiten bij de gevel als die foto er is. Geen echte 360 graden (de foto's zijn vanaf verschillende plekken genomen), wel rondlopen: slepen of vegen schuift
-// de foto opzij, voorbij de rand draait u door naar de volgende hoek. Pijlen en toetsenbord werken ook.
-// Alleen de eerste foto laadt meteen; de rest pas als iemand de viewer aanraakt of focust.
+// Rondlopen door de showroom met de eigen foto's. Begint buiten bij de gevel; klik op de deur en u zoomt naar binnen.
+// Binnen staan klikbare punten in de foto (daarheen lopen) en pijlen links en rechts (draaien naar de wand ernaast).
+// Geen echte 360 graden: de foto's zijn vanaf verschillende plekken genomen. De punten staan in procenten van de foto.
+// Alleen de gevel laadt meteen; de rest pas als iemand de viewer aanraakt of focust.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import gevel from '../assets/showroom/0-gevel.webp';
+import overzicht from '../assets/showroom/1-overzicht.jpg';
+import ingang from '../assets/showroom/1-ingang.jpg';
+import rolluiken from '../assets/showroom/2-rolluiken.jpg';
+import toonbank from '../assets/showroom/3-toonbank.jpg';
+import zonneschermen from '../assets/showroom/4-zonneschermen.jpg';
+import stalen from '../assets/showroom/5-stalen.jpg';
 
-// Elke foto die in assets/showroom staat en hieronder beschreven is, komt in de rondleiding, in deze volgorde.
-// 0-gevel is de buitenfoto: staat die er, dan begint de viewer buiten met een knop Kijk binnen.
-const bestanden = import.meta.glob<{ default: ImageMetadata }>('../assets/showroom/*.{jpg,jpeg,png,webp}', { eager: true });
-const beschrijving = [
-  { naam: '0-gevel', label: 'Buiten aan de Noordenweg', alt: 'Gevel van ZBN zonwering aan de Noordenweg met rolluik, overkapping en het logo' },
-  { naam: '1-overzicht', label: 'Binnenzonwering', alt: 'Kast van steigerhout met jaloezieën, plissés en rolgordijnen, rechts een stalenrek bij de toonbank' },
-  { naam: '1-ingang', label: 'Bij de ingang', alt: 'Wand bij de ingang met folders, kasten van zonneschermen en een rek met doekstalen' },
-  { naam: '2-rolluiken', label: 'Rolluiken en screens', alt: 'Grijze wand met rolluiken en screens, de toonbank en de grote houten tafel' },
-  { naam: '3-toonbank', label: 'Toonbank en tafel', alt: 'Toonbank van steigerhout voor de wand met rolluiken, rechts de tafel en de groene wand' },
-  { naam: '4-zonneschermen', label: 'Zonneschermen aan de wand', alt: 'Groene wand met zonneschermen op consoles, daaronder een lange kast met stalen' },
-  { naam: '5-stalen', label: 'De stalenkast', alt: 'Lange kast van steigerhout vol hangende doekstalen en stalenboeken' },
+type Punt = { naar: string; x: number; y: number; label: string };
+type Plek = { id: string; src: ImageMetadata; label: string; alt: string; punten: Punt[]; links?: string; rechts?: string };
+
+const plekken: Plek[] = [
+  { id: 'gevel', src: gevel, label: 'Buiten aan de Noordenweg', alt: 'Gevel van ZBN zonwering aan de Noordenweg met rolluik, overkapping en het logo',
+    punten: [{ naar: 'overzicht', x: 60, y: 50, label: 'Naar binnen' }] },
+  { id: 'overzicht', src: overzicht, label: 'Binnenzonwering', alt: 'Kast van steigerhout met jaloezieën, plissés en rolgordijnen, rechts een stalenrek bij de toonbank',
+    punten: [{ naar: 'ingang', x: 80, y: 42, label: 'Folders en stalen' }], links: 'zonneschermen', rechts: 'rolluiken' },
+  { id: 'ingang', src: ingang, label: 'Folders en doekstalen', alt: 'Wand met folders, kasten van zonneschermen en een rek met doekstalen',
+    punten: [], links: 'overzicht', rechts: 'rolluiken' },
+  { id: 'rolluiken', src: rolluiken, label: 'Rolluiken en screens', alt: 'Grijze wand met rolluiken en screens, de toonbank en de grote houten tafel',
+    punten: [{ naar: 'toonbank', x: 30, y: 55, label: 'Toonbank' }], links: 'ingang', rechts: 'toonbank' },
+  { id: 'toonbank', src: toonbank, label: 'Toonbank en tafel', alt: 'Toonbank van steigerhout voor de wand met rolluiken, rechts de tafel en de groene wand',
+    punten: [{ naar: 'zonneschermen', x: 80, y: 36, label: 'Zonneschermen' }], links: 'rolluiken', rechts: 'zonneschermen' },
+  { id: 'zonneschermen', src: zonneschermen, label: 'Zonneschermen aan de wand', alt: 'Groene wand met zonneschermen op consoles, daaronder een lange kast met stalen',
+    punten: [{ naar: 'stalen', x: 58, y: 62, label: 'Stalenkast' }], links: 'toonbank', rechts: 'overzicht' },
+  { id: 'stalen', src: stalen, label: 'De stalenkast', alt: 'Lange kast van steigerhout vol hangende doekstalen en stalenboeken',
+    punten: [], links: 'zonneschermen', rechts: 'overzicht' },
 ];
-const vind = (naam: string) => Object.entries(bestanden).find(([pad]) => pad.split('/').pop()!.replace(/\.\w+$/, '') === naam)?.[1].default;
-const gevel = vind('0-gevel');
-const hoeken = beschrijving.slice(1).flatMap((b) => { const src = vind(b.naam); return src ? [{ ...b, src }] : []; });
+const naam = Object.fromEntries(plekken.map((p) => [p.id, p.label]));
+const pijl = (d: string) => `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 ---
-<div class="rondkijk relative h-full overflow-hidden rounded-xl bg-nevel" data-rondkijk tabindex="0" role="region"
-  aria-roledescription="rondleiding" aria-label="Rondkijken in de showroom. Gebruik de pijltoetsen om rond te kijken.">
-  {hoeken.map((h, i) => (
-    <figure class="dia" data-dia hidden={i > 0} aria-hidden={i > 0 ? 'true' : undefined} data-actief={i === 0 ? '' : undefined}>
-      <Image src={h.src} alt={h.alt} widths={[640, 960, 1400, 2000]} sizes="(min-width: 1024px) 900px, 125vw"
-        format="webp" quality={74} loading="lazy" draggable="false" class="pan" />
-    </figure>
-  ))}
-
-  {gevel && (
-    <div class="buiten absolute inset-0 z-10 bg-nevel" data-buiten>
-      <Image src={gevel} alt={beschrijving[0].alt} widths={[640, 960, 1400]} sizes="(min-width: 1024px) 700px, 100vw"
-        format="webp" quality={74} loading="lazy" draggable="false" class="block h-full w-full object-cover" />
-      <div class="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-3 bg-linear-to-t from-ink/70 to-transparent p-4 pt-16 text-wit md:p-5 md:pt-20">
-        <p class="font-display text-lg font-bold md:text-xl">{beschrijving[0].label}</p>
-        <button type="button" class="btn btn-wit" data-naar-binnen>Kijk binnen</button>
+<div class="rondloop relative h-full overflow-clip rounded-xl bg-ink" data-rondloop tabindex="0" role="region"
+  aria-roledescription="rondleiding" aria-label="Rondlopen door de showroom. Klik op de punten om verder te lopen, pijltoetsen om te draaien.">
+  {plekken.map((p, i) => (
+    <div class="plek" data-plek={p.id} data-label={p.label} data-links={p.links} data-rechts={p.rechts}
+      hidden={i > 0} data-actief={i === 0 ? '' : undefined} aria-hidden={i > 0 ? 'true' : undefined}>
+      <div class="vlak">
+        <Image src={p.src} alt={p.alt} widths={[640, 960, 1400, 2000]} sizes="(min-width: 1024px) 940px, 135vw"
+          format="webp" quality={74} loading="lazy" draggable="false" class="block h-full w-full" />
+        {p.punten.map((pt) => (
+          <button type="button" class:list={['punt', { rechts: pt.x >= 65 }]} style={`left:${pt.x}%;top:${pt.y}%`} data-naar={pt.naar}>
+            <span class="stip" aria-hidden="true"></span><span class="tekst">{pt.label}</span>
+          </button>
+        ))}
       </div>
     </div>
-  )}
+  ))}
 
-  <p class="pointer-events-none absolute top-4 left-4 rounded-pill max-[359px]:hidden bg-wit/90 px-3.5 py-1.5 text-sm font-medium shadow-zacht backdrop-blur">
-    <span class="hidden md:inline">Sleep of gebruik de pijlen om rond te kijken</span><span class="md:hidden">Veeg om rond te kijken</span>
-  </p>
-
-  {gevel && (
-    <button type="button" class="absolute top-4 right-4 inline-flex items-center gap-1 rounded-pill bg-wit/90 py-1.5 pr-3.5 pl-2.5 text-sm font-medium shadow-zacht backdrop-blur hover:bg-wit" data-naar-buiten>
-      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Buiten
+  <div class="absolute top-3 left-3 flex gap-2 md:top-4 md:left-4">
+    <button type="button" class="pil" data-terug hidden>
+      <Fragment set:html={pijl('M15 5l-7 7 7 7')} />Terug
     </button>
-  )}
+    <button type="button" class="pil" data-buiten hidden>Buiten</button>
+  </div>
 
-  <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-linear-to-t from-ink/70 to-transparent p-4 pt-16 text-wit md:p-5 md:pt-20">
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-linear-to-t from-ink/75 to-transparent p-3 pt-10 text-wit sm:p-4 sm:pt-16 md:p-5 md:pt-20">
     <p class="min-w-0" aria-live="polite">
-      <span class="block text-sm tabular-nums opacity-85"><span data-nummer>1</span> van {hoeken.length}</span>
-      <span class="block font-display text-lg font-bold md:text-xl" data-label>{hoeken[0].label}</span>
+      <span class="hidden text-sm opacity-85 sm:block" data-hint>Klik op de deur om binnen te kijken</span>
+      <span class="block font-display text-base leading-tight font-bold sm:text-lg md:text-xl" data-titel>{plekken[0].label}</span>
     </p>
-    <div class="flex shrink-0 gap-2">
-      <button type="button" class="pijl" data-vorige aria-label="Vorige hoek">
-        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    <button type="button" class="btn btn-wit pointer-events-auto shrink-0 max-sm:px-4 max-sm:py-2.5" data-kijk-binnen>Kijk binnen</button>
+    <div class="pointer-events-auto flex shrink-0 gap-2">
+      <button type="button" class="kant" data-draai="links" hidden>
+        <Fragment set:html={pijl('M15 5l-7 7 7 7')} /><span class="sr-only">Linksaf</span>
       </button>
-      <button type="button" class="pijl" data-volgende aria-label="Volgende hoek">
-        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      <button type="button" class="kant" data-draai="rechts" hidden>
+        <Fragment set:html={pijl('M9 5l7 7-7 7')} /><span class="sr-only">Rechtsaf</span>
       </button>
     </div>
   </div>
 </div>
-<script type="application/json" data-rondkijk-labels set:html={JSON.stringify(hoeken.map((h) => h.label))} />
+<script type="application/json" data-rondloop-namen set:html={JSON.stringify(naam)} />
 
 <style>
-  .rondkijk { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
-  .rondkijk.sleept { cursor: grabbing; }
-  .dia { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity .45s ease; }
-  .dia[data-actief] { opacity: 1; }
-  /* De foto is breder dan het kader; --pan (0 tot 1) bepaalt welk deel u ziet. */
-  .pan { position: absolute; top: 0; left: 0; height: 100%; width: 130%; max-width: none; object-fit: cover;
-    transform: translateX(calc(var(--pan, .5) * -23.077%)); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
-  .sleept .pan { transition: none; }
-  .buiten { transition: opacity .45s ease, visibility .45s; }
-  .rondkijk.binnen .buiten { opacity: 0; visibility: hidden; }
-  .pijl { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: var(--radius-pill);
-    background: var(--color-wit); color: var(--color-ink); box-shadow: var(--shadow-zacht); cursor: pointer; transition: background-color .15s ease; }
-  .pijl:hover { background: var(--color-ijs); }
+  .rondloop { container-type: size; user-select: none; -webkit-user-select: none; }
+  .plek { position: absolute; inset: 0; opacity: 0; visibility: hidden;
+    transition: opacity .55s ease, transform .75s cubic-bezier(.3,.6,.2,1), visibility 0s linear .75s; }
+  .plek[data-actief] { opacity: 1; visibility: visible; transition: opacity .55s ease, transform .75s cubic-bezier(.3,.6,.2,1), visibility 0s; }
+  /* De foto (4:3) vult het kader zoals object-cover, zodat de punten in procenten van de foto kloppen. */
+  .vlak { position: absolute; left: 50%; top: 50%; aspect-ratio: 4 / 3; width: max(100cqw, 133.334cqh); transform: translate(-50%, -50%); }
+  .punt { position: absolute; display: flex; flex-direction: column; align-items: center; gap: .4rem; transform: translate(-50%, -22px); cursor: pointer; }
+  .punt.rechts { align-items: flex-end; transform: translate(calc(-100% + 22px), -22px); }
+  .stip { position: relative; width: 44px; height: 44px; flex: none; border-radius: 999px; background: rgba(255,255,255,.95);
+    box-shadow: 0 2px 10px rgba(20,32,29,.35); }
+  .stip::before { content: ""; position: absolute; inset: 14px; border-radius: 999px; background: var(--color-groen); }
+  .stip::after { content: ""; position: absolute; inset: -6px; border-radius: 999px; border: 2px solid rgba(255,255,255,.9); animation: puls 1.8s ease-out infinite; }
+  @keyframes puls { from { transform: scale(.8); opacity: 1; } to { transform: scale(1.35); opacity: 0; } }
+  .tekst { border-radius: 999px; background: rgba(255,255,255,.95); color: var(--color-ink); padding: .35rem .8rem; font-size: var(--text-sm);
+    font-weight: 600; white-space: nowrap; box-shadow: 0 2px 10px rgba(20,32,29,.25); }
+  .punt:hover .stip::before { background: var(--color-groen-diep); }
+  .kant { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 999px;
+    background: rgba(255,255,255,.92); color: var(--color-ink); box-shadow: var(--shadow-zacht); cursor: pointer; }
+  @media (min-width: 640px) { .kant { width: 3rem; height: 3rem; } }
+  .kant:hover, .pil:hover { background: var(--color-wit); }
+  .pil { display: inline-flex; align-items: center; gap: .25rem; border-radius: 999px; background: rgba(255,255,255,.92); color: var(--color-ink);
+    padding: .4rem .9rem .4rem .7rem; font-size: var(--text-sm); font-weight: 600; box-shadow: var(--shadow-zacht); cursor: pointer; }
+  [hidden] { display: none !important; }
 </style>
 
 <script>
-  const RAND = 0.3; // hoe ver voorbij de rand u moet slepen om door te draaien
+  type Stap = 'zoom' | 'links' | 'rechts' | 'terug';
+  const UIT: Record<Stap, string> = { zoom: 'scale(1.9)', rechts: 'translateX(-16%)', links: 'translateX(16%)', terug: 'scale(.85)' };
+  const IN: Record<Stap, string> = { zoom: 'scale(1.12)', rechts: 'translateX(16%)', links: 'translateX(-16%)', terug: 'scale(1.3)' };
 
-  for (const kader of document.querySelectorAll<HTMLElement>('[data-rondkijk]')) {
-    const dias = [...kader.querySelectorAll<HTMLElement>('[data-dia]')];
-    const labels: string[] = JSON.parse(kader.nextElementSibling?.textContent ?? '[]');
-    const nummer = kader.querySelector('[data-nummer]')!;
-    const label = kader.querySelector('[data-label]')!;
-    let index = 0;
-    let pan = 0.5;
-    let geladen = false;
-
-    const zetPan = (waarde: number) => {
-      pan = waarde;
-      dias[index].querySelector('img')!.style.setProperty('--pan', String(waarde));
-    };
+  for (const kader of document.querySelectorAll<HTMLElement>('[data-rondloop]')) {
+    const namen: Record<string, string> = JSON.parse(kader.nextElementSibling?.textContent ?? '{}');
+    const plekken = new Map([...kader.querySelectorAll<HTMLElement>('[data-plek]')].map((el) => [el.dataset.plek!, el]));
+    const $ = <T extends HTMLElement>(s: string) => kader.querySelector<T>(s)!;
+    const links = $('[data-draai="links"]');
+    const rechts = $('[data-draai="rechts"]');
+    const terug = $('[data-terug]');
+    const buiten = $('[data-buiten]');
+    const kijkBinnen = $('[data-kijk-binnen]');
+    const hint = $('[data-hint]');
+    const titel = $('[data-titel]');
+    const eerste = [...plekken.keys()][0];
+    let huidig = eerste;
+    let geschiedenis: string[] = [];
+    let bezig = false;
 
     // De overige foto's pas ophalen bij de eerste aanraking, zodat de pagina licht blijft.
+    let geladen = false;
     const laadAlles = () => {
       if (geladen) return;
       geladen = true;
-      for (const d of dias) d.hidden = false;
+      for (const el of plekken.values()) el.hidden = false;
     };
-
-    const ga = (naar: number, richting: 1 | -1) => {
-      laadAlles();
-      zetPan(Math.min(1, Math.max(0, pan)));
-      dias[index].removeAttribute('data-actief');
-      dias[index].setAttribute('aria-hidden', 'true');
-      index = (naar + dias.length) % dias.length;
-      // Doorlopen naar rechts begint links in de nieuwe foto, terug begint rechts.
-      const img = dias[index].querySelector('img')!;
-      img.style.transition = 'none';
-      zetPan(richting === 1 ? 0 : 1);
-      img.getBoundingClientRect();
-      img.style.transition = '';
-      dias[index].setAttribute('data-actief', '');
-      dias[index].removeAttribute('aria-hidden');
-      nummer.textContent = String(index + 1);
-      label.textContent = labels[index];
-    };
-
-    const stap = (richting: 1 | -1) => {
-      // Eerst naar de rand van de huidige foto, daarna pas naar de volgende hoek.
-      const rand = richting === 1 ? 1 : 0;
-      if (Math.abs(pan - rand) > 0.05) zetPan(rand);
-      else ga(index + richting, richting);
-    };
-
-    kader.querySelector('[data-volgende]')!.addEventListener('click', (e) => { e.stopPropagation(); laadAlles(); ga(index + 1, 1); });
-    kader.querySelector('[data-vorige]')!.addEventListener('click', (e) => { e.stopPropagation(); laadAlles(); ga(index - 1, -1); });
-    const buiten = kader.querySelector<HTMLElement>('[data-buiten]');
-    if (buiten) {
-      kader.querySelector('[data-naar-binnen]')!.addEventListener('click', (e) => {
-        e.stopPropagation(); laadAlles(); kader.classList.add('binnen'); buiten.setAttribute('aria-hidden', 'true'); buiten.inert = true; kader.focus();
-      });
-      kader.querySelector('[data-naar-buiten]')!.addEventListener('click', (e) => {
-        e.stopPropagation(); kader.classList.remove('binnen'); buiten.removeAttribute('aria-hidden'); buiten.inert = false;
-        kader.querySelector<HTMLElement>('[data-naar-binnen]')!.focus();
-      });
-    }
-    const isBuiten = () => !!buiten && !kader.classList.contains('binnen');
     kader.addEventListener('pointerenter', laadAlles, { once: true });
     kader.addEventListener('focusin', laadAlles, { once: true });
-    kader.addEventListener('keydown', (e) => {
-      if (isBuiten()) return;
-      if (e.key === 'ArrowRight') { e.preventDefault(); laadAlles(); stap(1); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); laadAlles(); stap(-1); }
-    });
+    kader.addEventListener('touchstart', laadAlles, { once: true, passive: true });
 
-    // Slepen en vegen. Verticaal blijft de pagina scrollen (touch-action: pan-y).
-    let startX = 0;
-    let startPan = 0;
-    let actief = false;
-    kader.addEventListener('pointerdown', (e) => {
-      if ((e.target as HTMLElement).closest('button') || isBuiten()) return;
-      laadAlles();
-      actief = true;
-      startX = e.clientX;
-      startPan = pan;
-      kader.setPointerCapture(e.pointerId);
-      kader.classList.add('sleept');
-    });
-    kader.addEventListener('pointermove', (e) => {
-      if (!actief) return;
-      // De extra breedte van de foto is 30 procent van het kader.
-      let nieuw = startPan - (e.clientX - startX) / (kader.clientWidth * 0.3);
-      // Voorbij de rand loopt het stroever.
-      if (nieuw > 1) nieuw = 1 + (nieuw - 1) * 0.35;
-      if (nieuw < 0) nieuw = nieuw * 0.35;
-      zetPan(nieuw);
-    });
-    const los = () => {
-      if (!actief) return;
-      actief = false;
-      kader.classList.remove('sleept');
-      if (pan > 1 + RAND * 0.35) ga(index + 1, 1);
-      else if (pan < -RAND * 0.35) ga(index - 1, -1);
-      else zetPan(Math.min(1, Math.max(0, pan)));
+    const werkBij = () => {
+      const el = plekken.get(huidig)!;
+      const opGevel = huidig === eerste;
+      links.hidden = !el.dataset.links;
+      rechts.hidden = !el.dataset.rechts;
+      if (el.dataset.links) links.setAttribute('aria-label', `Linksaf: ${namen[el.dataset.links]}`);
+      if (el.dataset.rechts) rechts.setAttribute('aria-label', `Rechtsaf: ${namen[el.dataset.rechts]}`);
+      terug.hidden = geschiedenis.length === 0 || opGevel;
+      buiten.hidden = opGevel;
+      kijkBinnen.hidden = !opGevel;
+      titel.textContent = el.dataset.label!;
+      hint.textContent = opGevel ? 'Klik op de deur om binnen te kijken'
+        : el.querySelector('[data-naar]') ? 'Klik op een punt om verder te lopen' : 'Draai met de pijlen links en rechts';
     };
-    kader.addEventListener('pointerup', los);
-    kader.addEventListener('pointercancel', los);
+
+    const ga = (naar: string, stap: Stap, via?: HTMLElement) => {
+      if (bezig || naar === huidig || !plekken.has(naar)) return;
+      laadAlles();
+      bezig = true;
+      const oud = plekken.get(huidig)!;
+      const nieuw = plekken.get(naar)!;
+      // Inzoomen gebeurt richting het aangeklikte punt.
+      if (via) {
+        const k = kader.getBoundingClientRect();
+        const p = via.querySelector('.stip')!.getBoundingClientRect();
+        oud.style.transformOrigin = `${p.left + p.width / 2 - k.left}px ${p.top + p.height / 2 - k.top}px`;
+      } else oud.style.transformOrigin = '';
+      oud.style.transform = UIT[stap];
+      oud.removeAttribute('data-actief');
+      oud.setAttribute('aria-hidden', 'true');
+      nieuw.style.transition = 'none';
+      nieuw.style.transformOrigin = '';
+      nieuw.style.transform = IN[stap];
+      nieuw.getBoundingClientRect();
+      nieuw.style.transition = '';
+      nieuw.style.transform = '';
+      nieuw.setAttribute('data-actief', '');
+      nieuw.removeAttribute('aria-hidden');
+      huidig = naar;
+      werkBij();
+      setTimeout(() => { oud.style.transform = ''; oud.style.transformOrigin = ''; bezig = false; }, 760);
+    };
+
+    const vooruit = (naar: string, stap: Stap, via?: HTMLElement) => {
+      if (bezig) return;
+      geschiedenis.push(huidig);
+      ga(naar, stap, via);
+    };
+
+    for (const knop of kader.querySelectorAll<HTMLElement>('[data-naar]')) {
+      knop.addEventListener('click', () => vooruit(knop.dataset.naar!, 'zoom', knop));
+    }
+    kijkBinnen.addEventListener('click', () => {
+      const deur = plekken.get(eerste)!.querySelector<HTMLElement>('[data-naar]')!;
+      vooruit(deur.dataset.naar!, 'zoom', deur);
+    });
+    const draai = (kant: 'links' | 'rechts') => {
+      const naar = plekken.get(huidig)!.dataset[kant];
+      if (naar) vooruit(naar, kant);
+    };
+    links.addEventListener('click', () => draai('links'));
+    rechts.addEventListener('click', () => draai('rechts'));
+    terug.addEventListener('click', () => {
+      const vorige = geschiedenis.pop();
+      if (vorige) ga(vorige, 'terug');
+    });
+    buiten.addEventListener('click', () => {
+      geschiedenis = [];
+      ga(eerste, 'terug');
+      kijkBinnen.focus();
+    });
+    kader.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); draai('links'); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); draai('rechts'); }
+    });
+    werkBij();
   }
 </script>
