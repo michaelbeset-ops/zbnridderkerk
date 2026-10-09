@@ -1,0 +1,186 @@
+---
+// Rondkijken in de showroom: vijf eigen foto's achter elkaar, van de ingang rond tot de stalenkast.
+// Begint buiten bij de gevel als die foto er is. Geen echte 360 graden (de foto's zijn vanaf verschillende plekken genomen), wel rondlopen: slepen of vegen schuift
+// de foto opzij, voorbij de rand draait u door naar de volgende hoek. Pijlen en toetsenbord werken ook.
+// Alleen de eerste foto laadt meteen; de rest pas als iemand de viewer aanraakt of focust.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+// Elke foto die in assets/showroom staat en hieronder beschreven is, komt in de rondleiding, in deze volgorde.
+// 0-gevel is de buitenfoto: staat die er, dan begint de viewer buiten met een knop Kijk binnen.
+const bestanden = import.meta.glob<{ default: ImageMetadata }>('../assets/showroom/*.{jpg,jpeg,png,webp}', { eager: true });
+const beschrijving = [
+  { naam: '0-gevel', label: 'Buiten aan de Noordenweg', alt: 'Gevel van ZBN zonwering aan de Noordenweg met rolluik, overkapping en het logo' },
+  { naam: '1-overzicht', label: 'Binnenzonwering', alt: 'Kast van steigerhout met jaloezieën, plissés en rolgordijnen, rechts een stalenrek bij de toonbank' },
+  { naam: '1-ingang', label: 'Bij de ingang', alt: 'Wand bij de ingang met folders, kasten van zonneschermen en een rek met doekstalen' },
+  { naam: '2-rolluiken', label: 'Rolluiken en screens', alt: 'Grijze wand met rolluiken en screens, de toonbank en de grote houten tafel' },
+  { naam: '3-toonbank', label: 'Toonbank en tafel', alt: 'Toonbank van steigerhout voor de wand met rolluiken, rechts de tafel en de groene wand' },
+  { naam: '4-zonneschermen', label: 'Zonneschermen aan de wand', alt: 'Groene wand met zonneschermen op consoles, daaronder een lange kast met stalen' },
+  { naam: '5-stalen', label: 'De stalenkast', alt: 'Lange kast van steigerhout vol hangende doekstalen en stalenboeken' },
+];
+const vind = (naam: string) => Object.entries(bestanden).find(([pad]) => pad.split('/').pop()!.replace(/\.\w+$/, '') === naam)?.[1].default;
+const gevel = vind('0-gevel');
+const hoeken = beschrijving.slice(1).flatMap((b) => { const src = vind(b.naam); return src ? [{ ...b, src }] : []; });
+---
+<div class="rondkijk relative h-full overflow-hidden rounded-xl bg-nevel" data-rondkijk tabindex="0" role="region"
+  aria-roledescription="rondleiding" aria-label="Rondkijken in de showroom. Gebruik de pijltoetsen om rond te kijken.">
+  {hoeken.map((h, i) => (
+    <figure class="dia" data-dia hidden={i > 0} aria-hidden={i > 0 ? 'true' : undefined} data-actief={i === 0 ? '' : undefined}>
+      <Image src={h.src} alt={h.alt} widths={[640, 960, 1400, 2000]} sizes="(min-width: 1024px) 900px, 125vw"
+        format="webp" quality={74} loading="lazy" draggable="false" class="pan" />
+    </figure>
+  ))}
+
+  {gevel && (
+    <div class="buiten absolute inset-0 z-10 bg-nevel" data-buiten>
+      <Image src={gevel} alt={beschrijving[0].alt} widths={[640, 960, 1400]} sizes="(min-width: 1024px) 700px, 100vw"
+        format="webp" quality={74} loading="lazy" draggable="false" class="block h-full w-full object-cover" />
+      <div class="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-3 bg-linear-to-t from-ink/70 to-transparent p-4 pt-16 text-wit md:p-5 md:pt-20">
+        <p class="font-display text-lg font-bold md:text-xl">{beschrijving[0].label}</p>
+        <button type="button" class="btn btn-wit" data-naar-binnen>Kijk binnen</button>
+      </div>
+    </div>
+  )}
+
+  <p class="pointer-events-none absolute top-4 left-4 rounded-pill bg-wit/90 px-3.5 py-1.5 text-sm font-medium shadow-zacht backdrop-blur">
+    <span class="hidden md:inline">Sleep of gebruik de pijlen om rond te kijken</span><span class="md:hidden">Veeg om rond te kijken</span>
+  </p>
+
+  <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-linear-to-t from-ink/70 to-transparent p-4 pt-16 text-wit md:p-5 md:pt-20">
+    <p class="min-w-0" aria-live="polite">
+      {gevel && <button type="button" class="pointer-events-auto mb-2 text-sm underline" data-naar-buiten>Naar buiten</button>}
+      <span class="block text-sm tabular-nums opacity-85"><span data-nummer>1</span> van {hoeken.length}</span>
+      <span class="block font-display text-lg font-bold md:text-xl" data-label>{hoeken[0].label}</span>
+    </p>
+    <div class="flex shrink-0 gap-2">
+      <button type="button" class="pijl" data-vorige aria-label="Vorige hoek">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button type="button" class="pijl" data-volgende aria-label="Volgende hoek">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+<script type="application/json" data-rondkijk-labels set:html={JSON.stringify(hoeken.map((h) => h.label))} />
+
+<style>
+  .rondkijk { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+  .rondkijk.sleept { cursor: grabbing; }
+  .dia { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity .45s ease; }
+  .dia[data-actief] { opacity: 1; }
+  /* De foto is breder dan het kader; --pan (0 tot 1) bepaalt welk deel u ziet. */
+  .pan { position: absolute; top: 0; left: 0; height: 100%; width: 130%; max-width: none; object-fit: cover;
+    transform: translateX(calc(var(--pan, .5) * -23.077%)); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .sleept .pan { transition: none; }
+  .buiten { transition: opacity .45s ease, visibility .45s; }
+  .rondkijk.binnen .buiten { opacity: 0; visibility: hidden; }
+  .pijl { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: var(--radius-pill);
+    background: var(--color-wit); color: var(--color-ink); box-shadow: var(--shadow-zacht); cursor: pointer; transition: background-color .15s ease; }
+  .pijl:hover { background: var(--color-ijs); }
+</style>
+
+<script>
+  const RAND = 0.3; // hoe ver voorbij de rand u moet slepen om door te draaien
+
+  for (const kader of document.querySelectorAll<HTMLElement>('[data-rondkijk]')) {
+    const dias = [...kader.querySelectorAll<HTMLElement>('[data-dia]')];
+    const labels: string[] = JSON.parse(kader.nextElementSibling?.textContent ?? '[]');
+    const nummer = kader.querySelector('[data-nummer]')!;
+    const label = kader.querySelector('[data-label]')!;
+    let index = 0;
+    let pan = 0.5;
+    let geladen = false;
+
+    const zetPan = (waarde: number) => {
+      pan = waarde;
+      dias[index].querySelector('img')!.style.setProperty('--pan', String(waarde));
+    };
+
+    // De overige foto's pas ophalen bij de eerste aanraking, zodat de pagina licht blijft.
+    const laadAlles = () => {
+      if (geladen) return;
+      geladen = true;
+      for (const d of dias) d.hidden = false;
+    };
+
+    const ga = (naar: number, richting: 1 | -1) => {
+      laadAlles();
+      zetPan(Math.min(1, Math.max(0, pan)));
+      dias[index].removeAttribute('data-actief');
+      dias[index].setAttribute('aria-hidden', 'true');
+      index = (naar + dias.length) % dias.length;
+      // Doorlopen naar rechts begint links in de nieuwe foto, terug begint rechts.
+      const img = dias[index].querySelector('img')!;
+      img.style.transition = 'none';
+      zetPan(richting === 1 ? 0 : 1);
+      img.getBoundingClientRect();
+      img.style.transition = '';
+      dias[index].setAttribute('data-actief', '');
+      dias[index].removeAttribute('aria-hidden');
+      nummer.textContent = String(index + 1);
+      label.textContent = labels[index];
+    };
+
+    const stap = (richting: 1 | -1) => {
+      // Eerst naar de rand van de huidige foto, daarna pas naar de volgende hoek.
+      const rand = richting === 1 ? 1 : 0;
+      if (Math.abs(pan - rand) > 0.05) zetPan(rand);
+      else ga(index + richting, richting);
+    };
+
+    kader.querySelector('[data-volgende]')!.addEventListener('click', (e) => { e.stopPropagation(); laadAlles(); ga(index + 1, 1); });
+    kader.querySelector('[data-vorige]')!.addEventListener('click', (e) => { e.stopPropagation(); laadAlles(); ga(index - 1, -1); });
+    const buiten = kader.querySelector<HTMLElement>('[data-buiten]');
+    if (buiten) {
+      kader.querySelector('[data-naar-binnen]')!.addEventListener('click', (e) => {
+        e.stopPropagation(); laadAlles(); kader.classList.add('binnen'); buiten.setAttribute('aria-hidden', 'true'); buiten.inert = true; kader.focus();
+      });
+      kader.querySelector('[data-naar-buiten]')!.addEventListener('click', (e) => {
+        e.stopPropagation(); kader.classList.remove('binnen'); buiten.removeAttribute('aria-hidden'); buiten.inert = false;
+        kader.querySelector<HTMLElement>('[data-naar-binnen]')!.focus();
+      });
+    }
+    const isBuiten = () => !!buiten && !kader.classList.contains('binnen');
+    kader.addEventListener('pointerenter', laadAlles, { once: true });
+    kader.addEventListener('focusin', laadAlles, { once: true });
+    kader.addEventListener('keydown', (e) => {
+      if (isBuiten()) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); laadAlles(); stap(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); laadAlles(); stap(-1); }
+    });
+
+    // Slepen en vegen. Verticaal blijft de pagina scrollen (touch-action: pan-y).
+    let startX = 0;
+    let startPan = 0;
+    let actief = false;
+    kader.addEventListener('pointerdown', (e) => {
+      if ((e.target as HTMLElement).closest('button') || isBuiten()) return;
+      laadAlles();
+      actief = true;
+      startX = e.clientX;
+      startPan = pan;
+      kader.setPointerCapture(e.pointerId);
+      kader.classList.add('sleept');
+    });
+    kader.addEventListener('pointermove', (e) => {
+      if (!actief) return;
+      // De extra breedte van de foto is 30 procent van het kader.
+      let nieuw = startPan - (e.clientX - startX) / (kader.clientWidth * 0.3);
+      // Voorbij de rand loopt het stroever.
+      if (nieuw > 1) nieuw = 1 + (nieuw - 1) * 0.35;
+      if (nieuw < 0) nieuw = nieuw * 0.35;
+      zetPan(nieuw);
+    });
+    const los = () => {
+      if (!actief) return;
+      actief = false;
+      kader.classList.remove('sleept');
+      if (pan > 1 + RAND * 0.35) ga(index + 1, 1);
+      else if (pan < -RAND * 0.35) ga(index - 1, -1);
+      else zetPan(Math.min(1, Math.max(0, pan)));
+    };
+    kader.addEventListener('pointerup', los);
+    kader.addEventListener('pointercancel', los);
+  }
+</script>

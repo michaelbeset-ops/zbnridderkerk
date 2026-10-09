@@ -12,6 +12,5 @@ import jaloezie from '../assets/stock/jaloezie.jpg';
 import zipscreens from '../assets/stock/zipscreens.jpg';
 import serrezonwering from '../assets/stock/serrezonwering.jpg';
 import pergola from '../assets/stock/pergola.jpg';
-import showroom from '../assets/stock/showroom.jpg';
 import werkplaats from '../assets/stock/werkplaats.jpg';
-export const fotos = { hero, binnen, knikarmscherm, uitvalscherm, screens, rolluiken, garagedeur, overkapping, jaloezie, zipscreens, serrezonwering, pergola, showroom, werkplaats };
+export const fotos = { hero, binnen, knikarmscherm, uitvalscherm, screens, rolluiken, garagedeur, overkapping, jaloezie, zipscreens, serrezonwering, pergola, werkplaats };
