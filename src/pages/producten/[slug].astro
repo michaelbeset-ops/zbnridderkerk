@@ -31,6 +31,10 @@ const jsonld = site.preview ? undefined : [
     { '@type': 'ListItem', position: 2, name: cat.naam, item: new URL(url(`${cat.slug}/`), Astro.site).href },
     { '@type': 'ListItem', position: 3, name: p.naam, item: new URL(url(`producten/${p.slug}/`), Astro.site).href },
   ] },
+  { '@context': 'https://schema.org', '@type': 'Service', name: p.naam, serviceType: p.naam, description: p.intro.replace(/\s*\[\[[^\]]*\]\]/g, ''),
+    url: new URL(url(`producten/${p.slug}/`), Astro.site).href, ...(og ? { image: new URL(og, Astro.site).href } : {}),
+    provider: { '@id': new URL(url('#bedrijf'), Astro.site).href, '@type': 'HomeAndConstructionBusiness', name: `${site.naam} ${site.rechtsvorm}`, telephone: '+31180430211' },
+    areaServed: { '@type': 'City', name: site.plaats } },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: d.vragen.map((v) => ({ '@type': 'Question', name: v.vraag, acceptedAnswer: { '@type': 'Answer', text: v.antwoord } })) },
 ];
 ---

@@ -1,4 +1,4 @@
-# 360-panorama van de showroom.
+# 360-panorama van de showroom. Gebruik: python3 maak.py <map met foto's> <uitmap> 1137 0.35 0.20, daarna ontwaas.py.
 # Alleen de foto's die vanaf het midden zijn genomen (10,11,0..5) vormen de ronde; foto 9 (van dichterbij, bij de
 # ingang) vult verkleind het smalle stuk tussen 5 en 10. Foto 6, 7 en 8 zijn van een andere plek en vallen af.
 import cv2, numpy as np, sys, os, functools
@@ -35,10 +35,10 @@ def opbouw(f):
     # positie van de kopie van foto 10 na een volle ronde, via 5 -> 9 -> 10
     A=np.vstack([M59,[0,0,1]])@np.vstack([M910,[0,0,1]])
     eind=pos[-1]+A[:2,2]
-    return war,pos,eind,M59,(n59,n910),A
+    return war,pos,eind,M59,(n59,n910),A,kd
 # brandpuntsafstand waarbij de ronde sluit (lineair tussen 1125 en 1150)
 f=float(sys.argv[3]) if len(sys.argv)>3 else 1137.0
-war,pos,eind,M59,n,_=opbouw(f); P=2*np.pi*f
+war,pos,eind,M59,n,_,kd=opbouw(f); P=2*np.pi*f
 print('f',f,'ronde',round(eind[0]),'P',round(P))
 pos=np.array(pos); sx=P/eind[0]; dy=eind[1]
 # rek de ronde zacht op tot precies 360 graden en verdeel de verticale drift lineair
@@ -48,12 +48,18 @@ imgs=[];masks=[];corners=[]
 for k,p in zip(RONDE,pos):
     img,m=war[k]; imgs.append(img); masks.append(m); corners.append((int(round(p[0])),int(round(p[1]))))
 img9,m9=war[VUL]; h9,w9=m9.shape
-M=M59.copy(); M[:,2]+=pos[RONDE.index(5)]
-hoeken=np.array([[0,0,1],[w9,0,1],[0,h9,1],[w9,h9,1]],float)@M.T
+GRENS=float(sys.argv[5]) if len(sys.argv)>5 else 0.0
+m9=m9.copy(); m9[:,:int(w9*GRENS)]=0
+p5=pos[RONDE.index(5)]; p10=pos[0]+np.array([P,0])
+b1,a1=matches(*kd[5],*kd[VUL]); b2,a2=matches(*kd[10],*kd[VUL])
+bron=np.vstack([b1,b2]); doel=np.vstack([a1+p5,a2+p10])
+Hm,inl=cv2.findHomography(bron,doel,cv2.RANSAC,6.0,maxIters=20000)
+i1=inl[:len(b1)].sum(); i2=inl[len(b1):].sum(); print('homografie 9: inliers op 5',int(i1),'op 10',int(i2))
+hoeken=cv2.perspectiveTransform(np.float32([[[0,0]],[[w9,0]],[[0,h9]],[[w9,h9]]]),Hm).reshape(-1,2)
 x0,y0=np.floor(hoeken.min(0)).astype(int); x1,y1=np.ceil(hoeken.max(0)).astype(int)
-Mt=M.copy(); Mt[:,2]-=[x0,y0]
-imgs.append(cv2.warpAffine(img9,Mt,(x1-x0,y1-y0),flags=cv2.INTER_AREA,borderMode=cv2.BORDER_REFLECT))
-masks.append(cv2.warpAffine(m9,Mt,(x1-x0,y1-y0),flags=cv2.INTER_NEAREST)); corners.append((int(x0),int(y0)))
+T=np.array([[1,0,-x0],[0,1,-y0],[0,0,1]],float)@Hm
+imgs.append(cv2.warpPerspective(img9,T,(x1-x0,y1-y0),flags=cv2.INTER_AREA,borderMode=cv2.BORDER_REFLECT))
+masks.append(cv2.warpPerspective(m9,T,(x1-x0,y1-y0),flags=cv2.INTER_NEAREST)); corners.append((int(x0),int(y0)))
 img,m=war[10]; imgs.append(img); masks.append(m); corners.append((int(round(pos[0][0]+P)),int(round(pos[0][1]))))
 N=len(imgs)
 # belichting/kleur: globale log-gains per kanaal over alle overlappende paren
@@ -80,8 +86,23 @@ for c in range(3):
     A[-1,:]=1; gains[:,c]=np.exp(np.linalg.lstsq(A,v,rcond=None)[0])
 print('gains',np.round(gains,2).tolist())
 imgs=[np.clip(im.astype(np.float32)*gains[idx[i]][None,None,:],0,255).astype(np.uint8) for i,im in enumerate(imgs)]
+# Tafel: de onderste helft tussen de randen van beeld 5 (foto 1) komt alleen uit dat beeld,
+# zodat er geen naad door de tafel en stoelen loopt (die staan dichtbij en verschuiven tussen foto's).
+T=5; tx0=corners[T][0]+90; tx1=corners[T][0]+masks[T].shape[1]-90
+for i in (4,6):
+    c=corners[i]; m=masks[i].copy(); h,w=m.shape
+    yy=np.arange(h)+c[1]; xx=np.arange(w)+c[0]
+    # beeld 6 (met de deur) helemaal, beeld 4 alleen onder de horizon
+    rij=yy>=(corners[T][1]+masks[T].shape[0]*0.48 if i==4 else -1e9); kol=(xx>=tx0)&(xx<tx1)
+    m[np.ix_(rij,kol)]=0
+    if i==4: m[:,xx>=tx0+650]=0   # deur alleen uit beeld 5
+    masks[i]=m
+# Ingang: het ruitpaneel alleen uit foto 9; beeld 7 (foto 5) stopt waar foto 9 begint.
+m9=masks[8]; kolom9=np.where(m9[m9.shape[0]//2]>0)[0]; links9=corners[8][0]+kolom9.min()+60
+c=corners[7]; m=masks[7].copy(); xx=np.arange(m.shape[1])+c[0]; m[:,xx>links9]=0; masks[7]=m
+print('foto 5 stopt bij',links9)
 # naden en meerbandig mengen
-sc=0.35
+sc=float(sys.argv[4]) if len(sys.argv)>4 else 0.5
 ki=[cv2.resize(i,None,fx=sc,fy=sc).astype(np.float32) for i in imgs]
 km=[cv2.UMat(cv2.resize(m,None,fx=sc,fy=sc,interpolation=cv2.INTER_NEAREST)) for m in masks]
 kc=[(int(c[0]*sc),int(c[1]*sc)) for c in corners]
@@ -106,4 +127,4 @@ strook=np.clip(f32,0,255).astype(np.uint8)
 lab=cv2.cvtColor(strook,cv2.COLOR_BGR2LAB); l,a,b=cv2.split(lab)
 l=cv2.createCLAHE(clipLimit=1.15,tileGridSize=(8,40)).apply(l); strook=cv2.cvtColor(cv2.merge([l,a,b]),cv2.COLOR_LAB2BGR)
 blur=cv2.GaussianBlur(strook,(0,0),1.6); strook=cv2.addWeighted(strook,1.3,blur,-0.3,0)
-cv2.imwrite(f'{uit}/pano.jpg',strook,[cv2.IMWRITE_JPEG_QUALITY,92]); print('pano',strook.shape)
+cv2.imwrite(f'{uit}/pano8.jpg',strook,[cv2.IMWRITE_JPEG_QUALITY,92]); print('pano',strook.shape)

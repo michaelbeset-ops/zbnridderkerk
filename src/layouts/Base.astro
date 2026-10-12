@@ -38,6 +38,8 @@ const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'u
     <meta name="twitter:card" content="summary_large_image" />
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
     <meta name="robots" content="max-image-preview:large" />
+    <link rel="sitemap" href={url('sitemap-index.xml')} />
+    <link rel="alternate" type="text/plain" title="Samenvatting voor AI-assistenten" href={url('llms.txt')} />
   </head>
   <body class="min-h-dvh pb-[4rem] md:pb-0">
     <a href="#inhoud" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
