@@ -117,7 +117,7 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   // Showroom
   await p.goto(base, { waitUntil: 'load' });
   ok(`${tag} Plan route`, (await p.getAttribute('#showroom a.btn-groen', 'href')).includes('google.com/maps/dir') && (await p.getAttribute('#showroom a.btn-groen', 'target')) === '_blank');
-  ok(`${tag} showroom mail`, (await p.getAttribute('#showroom a[href^="mailto"]', 'href')) === 'mailto:zonwering@zbnridderkerk.nl');
+  ok(`${tag} showroom mail`, (await p.getAttribute('#showroom a[href^="mailto"]', 'href')) === 'mailto:info@zbnridderkerk.nl');
   ok(`${tag} vandaag gemarkeerd`, (await p.locator('#showroom tr.text-groen').count()) === 1);
   // Reviews link
   ok(`${tag} reviews Google-link`, (await p.getAttribute('#reviews a[href*="google"]', 'target')) === '_blank');
