@@ -8,8 +8,7 @@ export const site = {
   plaats: 'Ridderkerk',
   tel: '0180 430 211',
   telHref: 'tel:+31180430211',
-  mail: 'zonwering@zbnridderkerk.nl',
-  // Verzoeken over persoonsgegevens (privacyverklaring), op verzoek van ZBN.
+  mail: 'info@zbnridderkerk.nl', // op verzoek van ZBN (12 okt 2026), niet zonwering@
   privacyMail: 'info@zbnridderkerk.nl',
   kvk: '24249059',
   maps: 'https://www.google.com/maps/dir/?api=1&destination=Noordenweg+71a,+2984+AG+Ridderkerk',
@@ -43,7 +42,7 @@ export const usps = [
   'Inmeten aan huis',
 ];
 
-export const merken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger. Raamdecoratie en dakraamzonwering van Velux en Fakro.';
+export const merken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy. Raamdecoratie en dakraamzonwering van Velux en Fakro.';
 
 export type Categorie = 'buiten' | 'binnen';
 
@@ -176,12 +175,12 @@ export const producten: Product[] = [
   },
   {
     slug: 'motoren', naam: 'Motoren', categorie: 'buiten', kort: 'Elektrische bediening voor zonwering en rolluiken.',
-    intro: 'Met een motor bedient u zonwering, rolluiken en screens met een afstandsbediening of een schakelaar. We werken met motoren en bediening van Somfy en Geiger.',
+    intro: 'Met een motor bedient u zonwering, rolluiken en screens met een afstandsbediening of een schakelaar. We werken met motoren en bediening van Somfy.',
     tekst: [
       'Heeft u al zonwering of rolluiken met handbediening, vraag dan wat er mogelijk is.',
       'Vraag in de showroom naar de mogelijkheden, zoals bediening met een app of een zon- en windsensor.',
     ],
-    punten: ['Motoren en bediening van Somfy en Geiger', 'Afstandsbediening of schakelaar', 'Vraag naar de mogelijkheden'],
+    punten: ['Motoren en bediening van Somfy', 'Afstandsbediening of schakelaar', 'Vraag naar de mogelijkheden'],
   },
   {
     slug: 'screendoek', naam: 'Screendoek', categorie: 'buiten', kort: 'Doek voor screens en zipscreens, in veel kleuren en openheden.',

@@ -14,7 +14,7 @@ export interface Details { voordelen: Voordeel[]; varianten: Variant[]; bedienin
 // Bedieningsopties die bij de meeste buitenzonwering horen. Per product zet je aan wat van toepassing is.
 const bediening = (opties: { hand?: boolean; motor?: boolean; app?: boolean; sensor?: boolean }): Bediening[] => [
   { naam: 'Handmatig', tekst: 'Met een slinger, koord of band. Eenvoudig en zonder stroom.', beschikbaar: opties.hand ?? false },
-  { naam: 'Elektrisch met afstandsbediening', tekst: 'Een motor van Somfy of Geiger, bediend met een handzender of wandschakelaar.', beschikbaar: opties.motor ?? false },
+  { naam: 'Elektrisch met afstandsbediening', tekst: 'Een motor van Somfy, bediend met een handzender of wandschakelaar.', beschikbaar: opties.motor ?? false },
   { naam: 'Bediening met app', tekst: 'Bij veel motoren kan de zonwering ook met een app op de telefoon. Vraag naar de mogelijkheden.', beschikbaar: opties.app ?? false },
   { naam: 'Zon- en windsensor', tekst: 'De zonwering gaat zelf uit bij zon en zelf in bij harde wind.', beschikbaar: opties.sensor ?? false },
 ];
@@ -50,7 +50,7 @@ const houtStalen = [
 const gaasStalen = [
   { naam: 'Wit', kleur: '#f1f1ee' }, { naam: 'Crème', kleur: '#e8e1cd' }, { naam: 'Grijs', kleur: '#a7a9a6' }, { naam: 'Antraciet', kleur: '#3f4245' }, { naam: 'Zwart', kleur: '#242526' },
 ];
-const doekMerken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger.';
+const doekMerken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy.';
 const binnenMerken = 'Raamdecoratie van Velux en Fakro.';
 const stoffen: Doek = { kop: 'Stoffen en kleuren', tekst: 'Transparant, lichtdoorlatend, lichtdempend of verduisterend. In de showroom liggen stalenboeken van alle stoffen; neem gerust een kussen of een stukje behang mee om kleuren naast elkaar te leggen.', stalen: stofStalen, merken: binnenMerken };
 
@@ -114,7 +114,7 @@ export const details: Record<string, Details> = {
       { naam: 'Rolluik voor deuren', tekst: 'Voor schuifpuien en tuindeuren. Voor een garage kijkt u naar een rolpoort.' },
     ],
     bediening: bediening({ hand: true, motor: true, app: true, sensor: true }),
-    doek: { kop: 'Kleuren van lamellen en kast', tekst: 'De lamellen en de kast leveren we in kleuren die bij de gevel en de kozijnen passen.', stalen: lamelStalen, merken: 'Motoren en bediening van Somfy en Geiger.' },
+    doek: { kop: 'Kleuren van lamellen en kast', tekst: 'De lamellen en de kast leveren we in kleuren die bij de gevel en de kozijnen passen.', stalen: lamelStalen, merken: 'Motoren en bediening van Somfy.' },
     vragen: [
       { vraag: 'Hoeveel scheelt een rolluik in de temperatuur?', antwoord: 'Dat hangt af van het raam, de oriëntatie en de isolatie van de woning. Een gesloten rolluik houdt in elk geval de directe zon helemaal van het glas.' },
       { vraag: 'Moet er een stroomkabel naar het rolluik?', antwoord: 'Bij een elektrisch rolluik wel, tenzij u kiest voor een solar rolluik met zonnepaneel en accu.' },
@@ -307,7 +307,7 @@ export const details: Record<string, Details> = {
     bediening: bediening({ motor: true, app: true, sensor: true }),
     vragen: [
       { vraag: 'Kan er een motor in mijn bestaande zonwering?', antwoord: 'Neem contact op of kom langs in de showroom, dan bekijken we wat bij uw zonwering kan.' },
-      { vraag: 'Welke merken gebruiken jullie?', antwoord: 'We werken met motoren en bediening van Somfy en Geiger.' },
+      { vraag: 'Welke merken gebruiken jullie?', antwoord: 'We werken met motoren en bediening van Somfy.' },
       { vraag: 'Is er stroom nodig bij het raam?', antwoord: 'Een motor heeft stroom nodig. Bij rolluiken en screens kan het ook met een zonnepaneel en accu, zonder bekabeling door de muur.' },
     ],
     verwant: ['knikarmschermen', 'rolluiken', 'screens'],
