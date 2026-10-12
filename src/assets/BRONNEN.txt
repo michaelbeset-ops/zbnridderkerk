@@ -2,5 +2,6 @@ Eigen foto's van ZBN (aangeleverd via WeTransfer, 9 oktober 2026), verkleind en 
   hero.jpg                       Knikarmscherm (1).jpg
   producten/<slug>/<n>.jpg       zie src/data/productfotos.ts
   showroom/                      showroom en gevel, aangeleverd in de chat
-Tijdelijk gegenereerd stockbeeld, tot er een eigen foto is:
-  stock/screens.jpg, stock/garagedeur.jpg
+  screendoek/ en zonweringsdoek/ kopieen van eigen foto's van zipscreens, knikarmschermen en markiezen
+Gegenereerd beeld, op verzoek van Michael (12 okt 2026), tot er een eigen foto is:
+  producten/screens/1.jpg, producten/garagedeuren/1.jpg

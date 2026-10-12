@@ -64,7 +64,20 @@ export const fotoAlts: Record<string, string[]> = {
     'Onder een overkapping gezien: loungeset en kunstgras in de tuin',
   ],
   zonweringsdoek: [
+    'Knikarmscherm met geel-wit gestreept doek boven het terras van een bakstenen woning',
+    'Twee markiezen met blauw-wit gestreept doek boven de ramen van een bakstenen woning',
     'Lange kast vol hangende doekstalen in de showroom van ZBN',
+  ],
+  screendoek: [
+    'Lichtgrijs screendoek omlaag voor een raam in een rode bakstenen gevel',
+    'Antracietgrijs screendoek voor een groot raam, met een olijfboom op de voorgrond',
+  ],
+  // Geen eigen foto van ZBN: gegenereerd beeld (assets/BRONNEN.txt), tot er een eigen foto is.
+  screens: [
+    'Donkergrijze screens half neergelaten voor grote ramen van een moderne witte woning',
+  ],
+  garagedeuren: [
+    'Antracietgrijze sectionaaldeur in een bakstenen woning met bestrate oprit',
   ],
   jaloezieen: [
     'Houten jaloezieën voor twee ramen in een eetkamer met hanglampen',
