@@ -13,7 +13,7 @@ const srcset = varianten.map((v, i) => `${v.src} ${breedtes[i]}w`).join(', ');
 const pijl = (d: string) => `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 const alt = 'Showroom van ZBN rondom: folderrek met doekstalen, de toonbank, de wand met rolluiken en screens, de groene wand met zonneschermen, de kast met binnenzonwering en de ingang met garagedeuren';
 ---
-<div class="rondkijk relative h-full overflow-clip rounded-xl bg-ink" data-rondkijk tabindex="0" role="region"
+<div class="rondkijk relative h-full w-full overflow-clip rounded-xl bg-ink" data-rondkijk tabindex="0" role="region"
   aria-roledescription="rondleiding" aria-label="Rondkijken in de showroom. Gebruik de pijltoetsen om te draaien.">
 
   <!-- Binnen: het 360-gradenpanorama, twee keer naast elkaar zodat het rond loopt. -->
