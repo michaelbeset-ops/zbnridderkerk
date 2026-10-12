@@ -20,9 +20,9 @@ const menu = [['Werkwijze', '#werkwijze'], ['Showroom', '#showroom'], ['Reviews'
     <!-- Sticky navigatie als afgeronde witte kaart met schaduw. -->
     <header class="sticky top-0 z-40 px-3 pt-3 md:px-6">
       <div class="mx-auto flex h-16 max-w-[76rem] items-center justify-between gap-3 rounded-pill bg-wit/95 pl-2 pr-2 shadow-zacht ring-1 ring-lijn backdrop-blur-sm lg:h-[4.5rem] lg:pl-3">
-        <a href={url('')} class="flex items-center gap-3 no-underline" aria-label="ZBN Zonwering, naar de homepage">
+        <a href={url('')} class="flex min-w-0 items-center gap-2 no-underline md:gap-3" aria-label="ZBN Zonwering, naar de homepage">
           <Image src={logo} alt="" width={176} height={120} loading="eager" class="h-12 w-auto lg:h-14" />
-          <span class="hidden font-display text-[0.95rem] font-semibold leading-tight tracking-[-0.01em] text-ink md:block"><span class="block">Zonweringsbedrijf</span><span class="block">Noordenweg</span></span>
+          <span class="font-display text-[0.8rem] font-semibold leading-tight tracking-[-0.01em] text-ink max-[339px]:hidden md:text-[0.95rem]"><span class="block">Zonweringsbedrijf</span><span class="block">Noordenweg</span></span>
         </a>
         <nav aria-label="Hoofdmenu" class="hidden lg:block">
           <ul class="flex gap-1 font-display text-[0.95rem] font-semibold">
@@ -40,11 +40,12 @@ const menu = [['Werkwijze', '#werkwijze'], ['Showroom', '#showroom'], ['Reviews'
             {menu.map(([n, h]) => <li><a href={url(h)} class="block rounded-pill px-4 py-2 no-underline transition-colors hover:bg-ijs">{n}</a></li>)}
           </ul>
         </nav>
-        <div class="flex items-center gap-2">
+        <div class="flex shrink-0 items-center gap-2">
           <a href={site.telHref} class="btn btn-wit hidden !px-4 !py-2.5 text-sm xl:inline-flex"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg><span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
           <a href={url('#offerte')} class="btn btn-groen hidden !px-4 !py-2.5 text-sm md:inline-flex">Offerte aanvragen</a>
-          <button type="button" class="flex h-11 w-11 items-center justify-center rounded-pill ring-1 ring-lijn lg:hidden" aria-expanded="false" aria-controls="menu-mobiel" aria-label="Menu" data-menu-knop>
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" data-open-icoon /><path d="M6 6l12 12M18 6L6 18" class="hidden" data-dicht-icoon /></svg>
+          <a href={site.telHref} class="flex h-11 w-11 shrink-0 items-center justify-center rounded-pill text-groen ring-1 ring-lijn transition-colors hover:bg-ijs xl:hidden" aria-label={`Bel ${site.tel}`}><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg></a>
+          <button type="button" class="flex h-11 shrink-0 items-center justify-center gap-2 rounded-pill bg-groen px-3.5 font-display text-sm font-semibold text-wit shadow-knop transition-colors hover:bg-groen-diep lg:hidden" aria-expanded="false" aria-controls="menu-mobiel" aria-label="Menu" data-menu-knop>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" data-open-icoon /><path d="M6 6l12 12M18 6L6 18" class="hidden" data-dicht-icoon /></svg><span class="max-[379px]:hidden" aria-hidden="true">Menu</span>
           </button>
         </div>
       </div>
