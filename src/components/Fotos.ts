@@ -1,18 +1,15 @@
 // Foto's van de site. Eigen foto's van ZBN staan per product in assets/producten/<slug>/1.jpg, 2.jpg, ...
-// (beschrijvingen in data/productfotos.ts). Voor screens en garagedeuren is er nog geen eigen foto: daar staat
-// tijdelijk een gegenereerd stockbeeld uit assets/stock.
+// (beschrijvingen in data/productfotos.ts). Een product zonder eigen foto krijgt een vlak met zijn icoon (GeenFoto).
 import type { ImageMetadata } from 'astro';
 import { fotoAlts } from '../data/productfotos';
 import knikarmscherm from '../assets/producten/knikarmschermen/3.jpg';
 import binnen from '../assets/producten/jaloezieen/2.jpg';
-import screens from '../assets/stock/screens.jpg';
-import garagedeur from '../assets/stock/garagedeur.jpg';
-export const fotos = { knikarmscherm, binnen, screens, garagedeur };
+export const fotos = { knikarmscherm, binnen };
 
 const eigen = import.meta.glob<{ default: ImageMetadata }>('../assets/producten/*/*.jpg', { eager: true });
 export interface ProductFoto { src: ImageMetadata; alt: string }
 
-// Alle foto's van een product, hoofdfoto eerst. Geen eigen foto's: dan het stockbeeld, als dat er is.
+// Alle foto's van een product, hoofdfoto eerst.
 export const productFotos = (p: { slug: string; foto?: keyof typeof fotos; fotoAlt?: string }): ProductFoto[] => {
   const nummer = (pad: string) => parseInt(pad.split('/').at(-1)!, 10);
   const lijst = Object.entries(eigen)

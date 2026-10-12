@@ -3,7 +3,7 @@
 // src/data/productdetails.ts (voordelen, varianten, bediening, doek, vragen). Mobile-first; het offerteblok plakt op desktop.
 import Base from '../../layouts/Base.astro';
 import Foto from '../../components/Foto.astro';
-import Vlak from '../../components/Vlak.astro';
+import GeenFoto from '../../components/GeenFoto.astro';
 import Galerij from '../../components/Galerij.astro';
 import Icoon from '../../components/Icoon.astro';
 import { producten, categorieen, site, url, inZin } from '../../data/site';
@@ -58,12 +58,22 @@ const jsonld = site.preview ? undefined : [
         </div>
       </div>
       <div class="lg:col-span-6 xl:col-span-7">
-        <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-kaart xl:aspect-[3/2]">
-          {hoofd ? <Foto src={hoofd.src} alt={hoofd.alt} hero sizes="(min-width: 1024px) 760px, 100vw" /> : <Vlak wat={`${naam}, hoofdfoto liggend`} />}
-        </div>
-        <ul class="mt-4 flex flex-wrap gap-2">
+        {hoofd ? (
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-kaart xl:aspect-[3/2]">
+            <Foto src={hoofd.src} alt={hoofd.alt} hero sizes="(min-width: 1024px) 760px, 100vw" />
+          </div>
+        ) : (
+          /* Nog geen eigen foto: de punten als kaart, zodat er geen leeg vlak staat. */
+          <div class="rounded-xl bg-ijs p-6 ring-1 ring-lijn md:p-8">
+            <p class="kicker text-ink-zacht">In het kort</p>
+            <ul class="mt-4 grid gap-3">
+              {p.punten.map((x) => <li class="flex gap-3 text-lg"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="mt-1.5 shrink-0 text-groen"><path d="M4 12.5l5 5L20 6.5"/></svg>{x}</li>)}
+            </ul>
+          </div>
+        )}
+        {hoofd && <ul class="mt-4 flex flex-wrap gap-2">
           {p.punten.slice(0, 3).map((x) => <li class="inline-flex items-center gap-2 rounded-pill bg-ijs px-3.5 py-1.5 text-sm font-medium ring-1 ring-lijn"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-groen"><path d="M4 12.5l5 5L20 6.5"/></svg>{x}</li>)}
-        </ul>
+        </ul>}
       </div>
     </div>
   </section>
@@ -153,7 +163,7 @@ const jsonld = site.preview ? undefined : [
   </div>
 
   <!-- 6. Fotogalerij met plekken voor foto's. -->
-  <div class="mt-14 lg:mt-20"><Galerij naam={p.naam} fotos={eigen} /></div>
+  {eigen.length > 1 && <div class="mt-14 lg:mt-20"><Galerij naam={p.naam} fotos={eigen} /></div>}
 
   <!-- 7. Veelgestelde vragen als accordeon. -->
   <section class="wrap py-14 lg:py-20" aria-labelledby="vragen">
@@ -201,7 +211,7 @@ const jsonld = site.preview ? undefined : [
         <li class="group">
           <a href={url(`producten/${a.slug}/`)} class="block no-underline">
             <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
-              {productFotos(a)[0] ? <Foto src={productFotos(a)[0].src} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" /> : <Vlak wat={inZin(a.naam)} />}
+              {productFotos(a)[0] ? <Foto src={productFotos(a)[0].src} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" /> : <GeenFoto slug={a.slug} />}
             </div>
             <h3 class="mt-4 flex items-center justify-between gap-3 px-1 text-lg"><span>{a.naam}</span><span aria-hidden="true" class="text-ink-zacht transition-transform group-hover:translate-x-1">&rarr;</span></h3>
             <p class="mt-1 px-1 text-sm text-ink-zacht">{a.kort}</p>
