@@ -1,97 +1,105 @@
+# 360-panorama van de showroom.
+# Alleen de foto's die vanaf het midden zijn genomen (10,11,0..5) vormen de ronde; foto 9 (van dichterbij, bij de
+# ingang) vult verkleind het smalle stuk tussen 5 en 10. Foto 6, 7 en 8 zijn van een andere plek en vallen af.
 import cv2, numpy as np, sys, os, functools
 print=functools.partial(print,flush=True)
 src, uit = sys.argv[1], sys.argv[2]
 volgorde = ['15.24.54.jpeg','15.24.54 (1).jpeg','15.24.55.jpeg','15.24.55 (1).jpeg','15.24.55 (2).jpeg','15.24.55 (3).jpeg','15.24.55 (4).jpeg','15.24.55 (5).jpeg','15.24.56.jpeg','15.24.56 (1).jpeg','15.24.56 (2).jpeg','15.24.56 (3).jpeg']
-ims=[cv2.imread(os.path.join(src,'WhatsApp Image 2026-10-12 at '+v)) for v in volgorde]
-H,W=ims[0].shape[:2]; n=len(ims); f=1300.0
-K=np.array([[f,0,W/2],[0,f,H/2],[0,0,1]],np.float32)
-wp=cv2.PyRotationWarper('cylindrical',f)
-war=[]
-for im in ims:
-    c,img=wp.warp(im,K,np.eye(3,dtype=np.float32),cv2.INTER_LANCZOS4,cv2.BORDER_REFLECT)
+RONDE=[10,11,0,1,2,3,4,5]; VUL=9
+orig={k:cv2.imread(os.path.join(src,'WhatsApp Image 2026-10-12 at '+volgorde[k])) for k in RONDE+[VUL]}
+H,W=orig[0].shape[:2]
+sift=cv2.SIFT_create(15000)
+def warp(im,f):
+    K=np.array([[f,0,W/2],[0,f,H/2],[0,0,1]],np.float32); wp=cv2.PyRotationWarper('cylindrical',f)
+    _,img=wp.warp(im,K,np.eye(3,dtype=np.float32),cv2.INTER_LANCZOS4,cv2.BORDER_REFLECT)
     _,m=wp.warp(np.full((H,W),255,np.uint8),K,np.eye(3,dtype=np.float32),cv2.INTER_NEAREST,cv2.BORDER_CONSTANT)
-    war.append((img,m))
-sift=cv2.SIFT_create(10000)
-kd=[sift.detectAndCompute(cv2.cvtColor(a,cv2.COLOR_BGR2GRAY),cv2.erode(m,np.ones((15,15)))) for a,m in war]
-def paar(i,j):
-    (ka,da),(kb,db)=kd[i],kd[j]
-    m=cv2.BFMatcher().knnMatch(da,db,k=2); g=[x for x,y in m if x.distance<0.8*y.distance]
-    pa=np.float32([ka[x.queryIdx].pt for x in g]); pb=np.float32([kb[x.trainIdx].pt for x in g]); d=pa-pb
-    res=[]
+    return img,m
+def kenmerken(img,m): return sift.detectAndCompute(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY),cv2.erode(m,np.ones((15,15))))
+def matches(ka,da,kb,db):
+    mm=cv2.BFMatcher().knnMatch(db,da,k=2); g=[x for x,y in mm if x.distance<0.8*y.distance]
+    return np.float32([kb[x.queryIdx].pt for x in g]), np.float32([ka[x.trainIdx].pt for x in g])
+def verschuiving(A,B):
+    pb,pa=matches(*A,*B); d=pa-pb; best=(0,0)
     for k in range(len(d)):
-        if not (200<d[k,0]<1500) or abs(d[k,1])>150: continue
-        sel=np.abs(d-d[k]).max(1)<8; res.append((sel.sum(),k))
-    if not res: return None,0
-    c,k=max(res); sel=np.abs(d-d[k]).max(1)<8
-    return np.median(d[sel],0),int(c)
-sh=[]; betr=[]
-for i in range(n):
-    s,c=paar(i,(i+1)%n); sh.append(s if s is not None else np.array([0.,0.])); betr.append(c>=20)
-    print(i,'dx %.0f dy %.0f stemmen %d'%(sh[-1][0],sh[-1][1],c))
-sh=np.array(sh); betr=np.array(betr)
-totaal=2*np.pi*f
-rest=totaal-sh[betr,0].sum(); nb=(~betr).sum()
-print('betrouwbaar',betr.sum(),'rest',round(rest),'per onbetrouwbaar',round(rest/max(nb,1)))
-if nb: sh[~betr,0]=rest/nb; sh[~betr,1]=0
-else: sh[:,0]*=totaal/sh[:,0].sum()
-sh[:,1]-=sh[:,1].mean()   # verticale drift over de ronde wegwerken
-np.save(f'{uit}/sh.npy',sh)
-# Posities, beeld 0 ook aan het eind (n) voor de rondsluiting
-x=np.concatenate([[0],np.cumsum(sh[:,0])]); y=np.concatenate([[0],np.cumsum(sh[:,1])])
-idx=list(range(n))+[0]
-imgs=[war[k][0] for k in idx]; masks=[war[k][1] for k in idx]
-corners=[(int(round(x[i])),int(round(y[i]))) for i in range(n+1)]
-sizes=[(m.shape[1],m.shape[0]) for m in masks]
-print('stap: # Belichting')
-# Belichting gelijktrekken
-# Belichting en kleur: per beeld en per kleurkanaal een factor, globaal opgelost over alle buurparen incl. 11->0,
-# zodat er geen opstapeling ontstaat. Vergelijk alleen pixels die in beide beelden echt beeld zijn.
-def overlap(i,j,dx,dy):
-    a_,ma=imgs[i],masks[i]; b_,mb=imgs[j],masks[j]
-    h_=a_.shape[0]; w_=a_.shape[1]-dx
-    if w_<=50: return None
-    ya=slice(max(0,dy),min(h_,h_+dy)); yb=slice(max(0,-dy),max(0,-dy)+(ya.stop-ya.start))
-    pa=a_[ya,dx:dx+w_].reshape(-1,3).astype(np.float64); pb=b_[yb,:w_].reshape(-1,3).astype(np.float64)
-    ok=((ma[ya,dx:dx+w_]>0)&(mb[yb,:w_]>0)).reshape(-1)
+        if not (100<d[k,0]<1700) or abs(d[k,1])>200: continue
+        c=(np.abs(d-d[k]).max(1)<8).sum()
+        if c>best[0]: best=(c,k)
+    sel=np.abs(d-d[best[1]]).max(1)<8; return np.median(d[sel],0)   # positie van B in A-coordinaten
+def gelijkvormig(A,B):
+    pb,pa=matches(*A,*B); M,inl=cv2.estimateAffinePartial2D(pb,pa,ransacReprojThreshold=5,maxIters=20000); return M,int(inl.sum())
+def opbouw(f):
+    war={k:warp(orig[k],f) for k in RONDE+[VUL]}; kd={k:kenmerken(*war[k]) for k in war}
+    pos=[np.zeros(2)]
+    for a,b in zip(RONDE[:-1],RONDE[1:]): pos.append(pos[-1]+verschuiving(kd[a],kd[b]))
+    M59,n59=gelijkvormig(kd[5],kd[VUL]); M910,n910=gelijkvormig(kd[VUL],kd[10])
+    # positie van de kopie van foto 10 na een volle ronde, via 5 -> 9 -> 10
+    A=np.vstack([M59,[0,0,1]])@np.vstack([M910,[0,0,1]])
+    eind=pos[-1]+A[:2,2]
+    return war,pos,eind,M59,(n59,n910),A
+# brandpuntsafstand waarbij de ronde sluit (lineair tussen 1125 en 1150)
+f=float(sys.argv[3]) if len(sys.argv)>3 else 1137.0
+war,pos,eind,M59,n,_=opbouw(f); P=2*np.pi*f
+print('f',f,'ronde',round(eind[0]),'P',round(P))
+pos=np.array(pos); sx=P/eind[0]; dy=eind[1]
+# rek de ronde zacht op tot precies 360 graden en verdeel de verticale drift lineair
+pos[:,0]*=sx; pos[:,1]-=dy*pos[:,0]/P
+# lijst van beelden: ronde, dan 9 (vervormd met de gelijkvormigheid t.o.v. 5), dan foto 10 nog eens na de ronde
+imgs=[];masks=[];corners=[]
+for k,p in zip(RONDE,pos):
+    img,m=war[k]; imgs.append(img); masks.append(m); corners.append((int(round(p[0])),int(round(p[1]))))
+img9,m9=war[VUL]; h9,w9=m9.shape
+M=M59.copy(); M[:,2]+=pos[RONDE.index(5)]
+hoeken=np.array([[0,0,1],[w9,0,1],[0,h9,1],[w9,h9,1]],float)@M.T
+x0,y0=np.floor(hoeken.min(0)).astype(int); x1,y1=np.ceil(hoeken.max(0)).astype(int)
+Mt=M.copy(); Mt[:,2]-=[x0,y0]
+imgs.append(cv2.warpAffine(img9,Mt,(x1-x0,y1-y0),flags=cv2.INTER_AREA,borderMode=cv2.BORDER_REFLECT))
+masks.append(cv2.warpAffine(m9,Mt,(x1-x0,y1-y0),flags=cv2.INTER_NEAREST)); corners.append((int(x0),int(y0)))
+img,m=war[10]; imgs.append(img); masks.append(m); corners.append((int(round(pos[0][0]+P)),int(round(pos[0][1]))))
+N=len(imgs)
+# belichting/kleur: globale log-gains per kanaal over alle overlappende paren
+def overlap(i,j):
+    (xa,ya),(xb,yb)=corners[i],corners[j]; ha,wa=masks[i].shape; hb,wb=masks[j].shape
+    X0,X1=max(xa,xb),min(xa+wa,xb+wb); Y0,Y1=max(ya,yb),min(ya+ha,yb+hb)
+    if X1-X0<40 or Y1-Y0<40: return None
+    pa=imgs[i][Y0-ya:Y1-ya,X0-xa:X1-xa].reshape(-1,3).astype(float); pb=imgs[j][Y0-yb:Y1-yb,X0-xb:X1-xb].reshape(-1,3).astype(float)
+    ok=((masks[i][Y0-ya:Y1-ya,X0-xa:X1-xa]>0)&(masks[j][Y0-yb:Y1-yb,X0-xb:X1-xb]>0)).reshape(-1)
     ok&=(pa.max(1)<245)&(pb.max(1)<245)&(pa.min(1)>8)&(pb.min(1)>8)
-    return pa[ok].mean(0),pb[ok].mean(0)
-L=np.zeros((n+1,n,3)); rij=0
-A_=[];B_=[]
-for i in range(n):
-    j=i+1; dx_=corners[j][0]-corners[i][0]; dy_=corners[j][1]-corners[i][1]
-    o=overlap(i,j,dx_,dy_)
-    if o is None: continue
-    A_.append((i,j%n,np.log(o[0]+1)-np.log(o[1]+1)))
-gains=np.ones((n,3))
+    if ok.sum()<500: return None
+    return np.log(pa[ok].mean(0)+1)-np.log(pb[ok].mean(0)+1)
+idx=list(range(N-1))+[0]   # laatste beeld is dezelfde foto als het eerste
+rijen=[]
+for i in range(N):
+    for j in range(i+1,N):
+        if idx[i]==idx[j]: continue
+        d=overlap(i,j)
+        if d is not None: rijen.append((idx[i],idx[j],d))
+gains=np.ones((N-1,3))
 for c in range(3):
-    M=np.zeros((len(A_)+1,n)); v=np.zeros(len(A_)+1)
-    for r,(i,j,d) in enumerate(A_): M[r,i]=-1; M[r,j]=1; v[r]=d[c]
-    M[-1,:]=1  # gemiddelde log-gain 0
-    sol=np.linalg.lstsq(M,v,rcond=None)[0]; gains[:,c]=np.exp(sol)
+    A=np.zeros((len(rijen)+1,N-1)); v=np.zeros(len(rijen)+1)
+    for r,(i,j,d) in enumerate(rijen): A[r,i]=-1; A[r,j]=1; v[r]=d[c]
+    A[-1,:]=1; gains[:,c]=np.exp(np.linalg.lstsq(A,v,rcond=None)[0])
 print('gains',np.round(gains,2).tolist())
-G=list(gains)+[gains[0]]
-imgs=[np.clip(im.astype(np.float32)*G[i][None,None,:],0,255).astype(np.uint8) for i,im in enumerate(imgs)]
-print('stap: # Naden zoeken')
-# Naden zoeken op lage resolutie, dan opschalen
+imgs=[np.clip(im.astype(np.float32)*gains[idx[i]][None,None,:],0,255).astype(np.uint8) for i,im in enumerate(imgs)]
+# naden en meerbandig mengen
 sc=0.35
 ki=[cv2.resize(i,None,fx=sc,fy=sc).astype(np.float32) for i in imgs]
 km=[cv2.UMat(cv2.resize(m,None,fx=sc,fy=sc,interpolation=cv2.INTER_NEAREST)) for m in masks]
 kc=[(int(c[0]*sc),int(c[1]*sc)) for c in corners]
-sf=cv2.detail_GraphCutSeamFinder('COST_COLOR_GRAD')
-km=sf.find(ki,kc,km)
-naad=[cv2.resize(cv2.dilate(m.get(),None),(sizes[i][0],sizes[i][1]),interpolation=cv2.INTER_LINEAR_EXACT)&masks[i] for i,m in enumerate(km)]
-print('stap: bl=cv2.detail_MultiB')
+km=cv2.detail_GraphCutSeamFinder('COST_COLOR_GRAD').find(ki,kc,km)
+naad=[cv2.resize(cv2.dilate(m.get(),None),(masks[i].shape[1],masks[i].shape[0]),interpolation=cv2.INTER_LINEAR_EXACT)&masks[i] for i,m in enumerate(km)]
+sizes=[(m.shape[1],m.shape[0]) for m in masks]
 bl=cv2.detail_MultiBandBlender(); bl.setNumBands(7)
 dst=cv2.detail.resultRoi(corners=corners,sizes=sizes); bl.prepare(dst)
-for i in range(n+1): bl.feed(imgs[i].astype(np.int16),naad[i],corners[i])
-print('stap: res,resm=bl.blend')
+for i in range(N): bl.feed(imgs[i].astype(np.int16),naad[i],corners[i])
 res,resm=bl.blend(None,None); res=cv2.convertScaleAbs(res)
-# Een volle ronde uitsnijden: van het midden van beeld 0 tot het midden van de kopie aan het eind
-x0=int(round(W/2*0+ (masks[0].shape[1]/2))) - dst[0]
-P=int(round(totaal))
-strook=res[:,x0:x0+P]; sm=resm[:,x0:x0+P]
-rij=(sm>0).mean(1); rows=np.where(rij>0.97)[0]
-strook=strook[rows.min():rows.max()+1]
+# een volle ronde uitsnijden, vanaf het midden van foto 10
+xs=corners[0][0]+masks[0].shape[1]//2-dst[0]; Pi=int(round(P))
+strook=res[:,xs:xs+Pi]; sm=resm[:,xs:xs+Pi]
+dekking=(sm>0).mean(1); rows=np.where(dekking>0.95)[0]
+strook=strook[rows.min():rows.max()+1]; gat=(sm[rows.min():rows.max()+1]==0).astype(np.uint8)*255
+print('gat %',round(gat.mean()/2.55,2))
+strook=cv2.inpaint(strook,cv2.dilate(gat,np.ones((7,7),np.uint8)),9,cv2.INPAINT_TELEA)
+# nabewerking
 strook=cv2.fastNlMeansDenoisingColored(strook,None,3,3,5,15)
 f32=strook.astype(np.float32); gem=f32.reshape(-1,3).mean(0); f32*=gem.mean()/gem*0.5+0.5
 strook=np.clip(f32,0,255).astype(np.uint8)
