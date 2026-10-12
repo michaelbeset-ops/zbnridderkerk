@@ -1,5 +1,5 @@
 Eigen foto's van ZBN (aangeleverd via WeTransfer, 9 oktober 2026), verkleind en zonder EXIF:
-  hero.jpg                       Knikarmscherm (2).jpg
+  hero.jpg                       Knikarmscherm (1).jpg
   producten/<slug>/<n>.jpg       zie src/data/productfotos.ts
   showroom/                      showroom en gevel, aangeleverd in de chat
 Tijdelijk gegenereerd stockbeeld, tot er een eigen foto is:
