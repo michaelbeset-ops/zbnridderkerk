@@ -1,14 +1,14 @@
 ---
 // Rondkijken in de showroom. Begint buiten bij de gevel; met "Kijk binnen" staat u midden in de showroom en kijkt u
 // 360 graden rond: slepen, vegen, pijlknoppen of pijltoetsen. Het panorama is gemaakt van 12 foto's die ZBN vanaf één
-// plek nam (bron/showroom-360). Het loopt eindeloos door: twee kopieën naast elkaar, verschoven met modulo de breedte.
+// plek nam (bron/showroom-360, gemaakt met maak.py). Het loopt eindeloos door: twee kopieën naast elkaar, verschoven met modulo de breedte.
 // Het panorama laadt pas na de eerste aanraking of focus, zodat de pagina licht blijft.
 import { Image, getImage } from 'astro:assets';
-import gevel from '../assets/showroom/0-gevel.webp';
+import gevel from '../assets/showroom/0-gevel.jpg';
 import panorama from '../assets/showroom/360.jpg';
 
-const breedtes = [2600, 4400, panorama.width];
-const varianten = await Promise.all(breedtes.map((w) => getImage({ src: panorama, width: w, format: 'webp', quality: 72 })));
+const breedtes = [3000, 5200, panorama.width];
+const varianten = await Promise.all(breedtes.map((w) => getImage({ src: panorama, width: w, format: 'webp', quality: 82 })));
 const srcset = varianten.map((v, i) => `${v.src} ${breedtes[i]}w`).join(', ');
 const pijl = (d: string) => `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 const alt = 'Showroom van ZBN rondom: folderrek met doekstalen, de toonbank, de wand met rolluiken en screens, de groene wand met zonneschermen, de kast met binnenzonwering en de ingang met garagedeuren';
@@ -19,14 +19,14 @@ const alt = 'Showroom van ZBN rondom: folderrek met doekstalen, de toonbank, de 
   <!-- Binnen: het 360-gradenpanorama, twee keer naast elkaar zodat het rond loopt. -->
   <div class="binnen absolute inset-0" data-binnen hidden>
     <div class="baan flex h-full w-max" data-baan>
-      <img src={varianten[1].src} srcset={srcset} sizes="(min-width: 1024px) 4400px, 2600px" alt={alt} draggable="false" loading="lazy" decoding="async" class="h-full w-auto max-w-none" />
-      <img src={varianten[1].src} srcset={srcset} sizes="(min-width: 1024px) 4400px, 2600px" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" class="h-full w-auto max-w-none" />
+      <img src={varianten[1].src} srcset={srcset} sizes="(min-width: 1024px) 5200px, 3000px" alt={alt} draggable="false" loading="lazy" decoding="async" class="h-full w-auto max-w-none" />
+      <img src={varianten[1].src} srcset={srcset} sizes="(min-width: 1024px) 5200px, 3000px" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" class="h-full w-auto max-w-none" />
     </div>
   </div>
 
   <!-- Buiten: de gevel met de knop om naar binnen te gaan. -->
   <div class="buiten absolute inset-0" data-buiten>
-    <Image src={gevel} alt="Gevel van ZBN zonwering aan de Noordenweg met rolluik, overkapping en het logo" widths={[640, 960, 1400]}
+    <Image src={gevel} alt="Gevel van ZBN zonwering aan de Noordenweg met houten gevel, rolluik, overkapping en het logo" widths={[640, 960, 1400]}
       sizes="(min-width: 1024px) 700px, 100vw" format="webp" quality={74} loading="lazy" class="block h-full w-full object-cover" />
   </div>
 
