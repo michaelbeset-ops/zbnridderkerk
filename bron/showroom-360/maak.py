@@ -1,6 +1,8 @@
-# 360-panorama van de showroom. Gebruik: python3 maak.py <map met foto's> <uitmap> 1137 0.35 0.20, daarna ontwaas.py.
+# 360-panorama van de showroom.
 # Alleen de foto's die vanaf het midden zijn genomen (10,11,0..5) vormen de ronde; foto 9 (van dichterbij, bij de
 # ingang) vult verkleind het smalle stuk tussen 5 en 10. Foto 6, 7 en 8 zijn van een andere plek en vallen af.
+# Gebruik: UP=1.15 BANDS=5 MARGE=0 MK=420 NAAM=x python3 maak.py bron/showroom-360 <map> 1137 0.5 0.06
+#         python3 afwerk.py <map>/ruw-x.png src/assets/showroom/360.jpg 90
 import cv2, numpy as np, sys, os, functools
 print=functools.partial(print,flush=True)
 src, uit = sys.argv[1], sys.argv[2]
@@ -9,8 +11,9 @@ RONDE=[10,11,0,1,2,3,4,5]; VUL=9
 orig={k:cv2.imread(os.path.join(src,'WhatsApp Image 2026-10-12 at '+volgorde[k])) for k in RONDE+[VUL]}
 H,W=orig[0].shape[:2]
 sift=cv2.SIFT_create(15000)
+UP=float(os.environ.get('UP','1.15'))   # uitvoer op ~volle resolutie van de bronfoto's (geometrie blijft f)
 def warp(im,f):
-    K=np.array([[f,0,W/2],[0,f,H/2],[0,0,1]],np.float32); wp=cv2.PyRotationWarper('cylindrical',f)
+    K=np.array([[f,0,W/2],[0,f,H/2],[0,0,1]],np.float32); wp=cv2.PyRotationWarper('cylindrical',f*UP)
     _,img=wp.warp(im,K,np.eye(3,dtype=np.float32),cv2.INTER_LANCZOS4,cv2.BORDER_REFLECT)
     _,m=wp.warp(np.full((H,W),255,np.uint8),K,np.eye(3,dtype=np.float32),cv2.INTER_NEAREST,cv2.BORDER_CONSTANT)
     return img,m
@@ -38,7 +41,7 @@ def opbouw(f):
     return war,pos,eind,M59,(n59,n910),A,kd
 # brandpuntsafstand waarbij de ronde sluit (lineair tussen 1125 en 1150)
 f=float(sys.argv[3]) if len(sys.argv)>3 else 1137.0
-war,pos,eind,M59,n,_,kd=opbouw(f); P=2*np.pi*f
+war,pos,eind,M59,n,_,kd=opbouw(f); P=2*np.pi*f*UP
 print('f',f,'ronde',round(eind[0]),'P',round(P))
 pos=np.array(pos); sx=P/eind[0]; dy=eind[1]
 # rek de ronde zacht op tot precies 360 graden en verdeel de verticale drift lineair
@@ -88,18 +91,37 @@ print('gains',np.round(gains,2).tolist())
 imgs=[np.clip(im.astype(np.float32)*gains[idx[i]][None,None,:],0,255).astype(np.uint8) for i,im in enumerate(imgs)]
 # Tafel: de onderste helft tussen de randen van beeld 5 (foto 1) komt alleen uit dat beeld,
 # zodat er geen naad door de tafel en stoelen loopt (die staan dichtbij en verschuiven tussen foto's).
-T=5; tx0=corners[T][0]+90; tx1=corners[T][0]+masks[T].shape[1]-90
+T=5; tx0=corners[T][0]+int(90*UP); tx1=corners[T][0]+masks[T].shape[1]-int(90*UP)
 for i in (4,6):
     c=corners[i]; m=masks[i].copy(); h,w=m.shape
     yy=np.arange(h)+c[1]; xx=np.arange(w)+c[0]
     # beeld 6 (met de deur) helemaal, beeld 4 alleen onder de horizon
     rij=yy>=(corners[T][1]+masks[T].shape[0]*0.48 if i==4 else -1e9); kol=(xx>=tx0)&(xx<tx1)
     m[np.ix_(rij,kol)]=0
-    if i==4: m[:,xx>=tx0+650]=0   # deur alleen uit beeld 5
+    if i==4: m[:,xx>=tx0+int(650*UP)]=0   # deur alleen uit beeld 5
+    masks[i]=m
+# Markies: zit dicht bij de camera en staat in beeld 3 (foto 1) half aan de rand. Vanaf hier alleen beeld 4 (foto 2).
+mk=corners[4][0]+int(float(os.environ.get('MK','500'))*UP)
+m4=cv2.erode(masks[4],np.ones((25,25)))
+for i in (2,3):
+    c=corners[i]; m=masks[i].copy(); h,w=m.shape
+    # stuk van beeld i dat ook in beeld 4 valt, rechts van mk: weg
+    ox,oy=corners[4][0]-c[0],corners[4][1]-c[1]
+    x0,y0=max(0,ox),max(0,oy); x1,y1=min(w,ox+m4.shape[1]),min(h,oy+m4.shape[0])
+    if x1>x0 and y1>y0:
+        dek=m4[y0-oy:y1-oy,x0-ox:x1-ox]>0
+        kol=(np.arange(x0,x1)+c[0])>mk
+        sub=m[y0:y1,x0:x1]; sub[dek&kol[None,:]]=0
     masks[i]=m
 # Ingang: het ruitpaneel alleen uit foto 9; beeld 7 (foto 5) stopt waar foto 9 begint.
-m9=masks[8]; kolom9=np.where(m9[m9.shape[0]//2]>0)[0]; links9=corners[8][0]+kolom9.min()+60
-c=corners[7]; m=masks[7].copy(); xx=np.arange(m.shape[1])+c[0]; m[:,xx>links9]=0; masks[7]=m
+m9=masks[8]; kolom9=np.where(m9[m9.shape[0]//2]>0)[0]; links9=corners[8][0]+kolom9.min()+int(float(os.environ.get('MARGE','60'))*UP)
+# foto 5 wijkt alleen waar foto 9 echt beeld heeft; boven (plafond) en onder (vloer) vult foto 5 aan i.p.v. inpainting
+m9e=cv2.erode(masks[8],np.ones((int(os.environ.get('ER','41')),)*2,np.uint8))
+c=corners[7]; m=masks[7].copy(); h,w=m.shape; xx=np.arange(w)+c[0]
+ox,oy=corners[8][0]-c[0],corners[8][1]-c[1]
+dek=np.zeros_like(m); x0,y0=max(0,ox),max(0,oy); x1,y1=min(w,ox+m9e.shape[1]),min(h,oy+m9e.shape[0])
+dek[y0:y1,x0:x1]=m9e[y0-oy:y1-oy,x0-ox:x1-ox]
+m[(dek>0)&(xx>links9)[None,:]]=0; masks[7]=m
 print('foto 5 stopt bij',links9)
 # naden en meerbandig mengen
 sc=float(sys.argv[4]) if len(sys.argv)>4 else 0.5
@@ -109,7 +131,7 @@ kc=[(int(c[0]*sc),int(c[1]*sc)) for c in corners]
 km=cv2.detail_GraphCutSeamFinder('COST_COLOR_GRAD').find(ki,kc,km)
 naad=[cv2.resize(cv2.dilate(m.get(),None),(masks[i].shape[1],masks[i].shape[0]),interpolation=cv2.INTER_LINEAR_EXACT)&masks[i] for i,m in enumerate(km)]
 sizes=[(m.shape[1],m.shape[0]) for m in masks]
-bl=cv2.detail_MultiBandBlender(); bl.setNumBands(7)
+bl=cv2.detail_MultiBandBlender(); bl.setNumBands(int(os.environ.get('BANDS','5')))
 dst=cv2.detail.resultRoi(corners=corners,sizes=sizes); bl.prepare(dst)
 for i in range(N): bl.feed(imgs[i].astype(np.int16),naad[i],corners[i])
 res,resm=bl.blend(None,None); res=cv2.convertScaleAbs(res)
@@ -121,10 +143,4 @@ strook=strook[rows.min():rows.max()+1]; gat=(sm[rows.min():rows.max()+1]==0).ast
 print('gat %',round(gat.mean()/2.55,2))
 strook=cv2.inpaint(strook,cv2.dilate(gat,np.ones((7,7),np.uint8)),9,cv2.INPAINT_TELEA)
 # nabewerking
-strook=cv2.fastNlMeansDenoisingColored(strook,None,3,3,5,15)
-f32=strook.astype(np.float32); gem=f32.reshape(-1,3).mean(0); f32*=gem.mean()/gem*0.5+0.5
-strook=np.clip(f32,0,255).astype(np.uint8)
-lab=cv2.cvtColor(strook,cv2.COLOR_BGR2LAB); l,a,b=cv2.split(lab)
-l=cv2.createCLAHE(clipLimit=1.15,tileGridSize=(8,40)).apply(l); strook=cv2.cvtColor(cv2.merge([l,a,b]),cv2.COLOR_LAB2BGR)
-blur=cv2.GaussianBlur(strook,(0,0),1.6); strook=cv2.addWeighted(strook,1.3,blur,-0.3,0)
-cv2.imwrite(f'{uit}/pano8.jpg',strook,[cv2.IMWRITE_JPEG_QUALITY,92]); print('pano',strook.shape)
+cv2.imwrite(f'{uit}/ruw-'+os.environ.get('NAAM','x')+'.png',strook); print('pano',strook.shape)
