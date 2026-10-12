@@ -8,15 +8,18 @@ import Reviews from '../components/Reviews.astro';
 import Offerte from '../components/Offerte.astro';
 import Afsluiter from '../components/Afsluiter.astro';
 import Vandaag from '../components/Vandaag.astro';
-import { site, tijden, url } from '../data/site';
+import { site, tijden, url, categorieen, perCategorie } from '../data/site';
 
 // JSON-LD LocalBusiness met alleen de echte gegevens. Pas opnemen als de site op het eigen domein staat.
 const dagen = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const jsonld = site.preview ? undefined : {
-  '@context': 'https://schema.org', '@type': 'LocalBusiness',
+  '@context': 'https://schema.org', '@type': 'HomeAndConstructionBusiness', '@id': new URL(url('#bedrijf'), Astro.site).href,
   name: `${site.naam} ${site.rechtsvorm}`, alternateName: site.kort, telephone: '+31180430211', email: site.mail,
   url: new URL(url(''), Astro.site).href, image: new URL(url('og.png'), Astro.site).href,
   address: { '@type': 'PostalAddress', streetAddress: site.straat, postalCode: site.postcode, addressLocality: site.plaats, addressCountry: 'NL' },
+  description: 'Zonweringsbedrijf in Ridderkerk met eigen showroom: buiten- en binnenzonwering, rolluiken, garagedeuren en overkappingen op maat, ingemeten en gemonteerd door eigen monteurs.',
+  identifier: { '@type': 'PropertyValue', propertyID: 'KvK', value: site.kvk },
+  hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Producten', itemListElement: categorieen.map((c) => ({ '@type': 'OfferCatalog', name: c.naam, itemListElement: perCategorie(c.categorie).map((p) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: p.naam, url: new URL(url(`producten/${p.slug}/`), Astro.site).href } })) })) },
   openingHoursSpecification: tijden.filter((t) => t.open).map((t) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: dagen[t.dag], opens: t.open.split(' tot ')[0].replace('.', ':').padStart(5, '0'), closes: t.open.split(' tot ')[1].replace('.', ':') })),
 };
 ---
