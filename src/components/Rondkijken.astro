@@ -4,7 +4,7 @@
 // plek nam (bron/showroom-360). Het loopt eindeloos door: twee kopieën naast elkaar, verschoven met modulo de breedte.
 // Het panorama laadt pas na de eerste aanraking of focus, zodat de pagina licht blijft.
 import { Image, getImage } from 'astro:assets';
-import gevel from '../assets/showroom/0-gevel.webp';
+import gevel from '../assets/showroom/0-gevel.jpg';
 import panorama from '../assets/showroom/360.jpg';
 
 const breedtes = [2600, 4400, panorama.width];
@@ -26,7 +26,7 @@ const alt = 'Showroom van ZBN rondom: folderrek met doekstalen, de toonbank, de 
 
   <!-- Buiten: de gevel met de knop om naar binnen te gaan. -->
   <div class="buiten absolute inset-0" data-buiten>
-    <Image src={gevel} alt="Gevel van ZBN zonwering aan de Noordenweg met rolluik, overkapping en het logo" widths={[640, 960, 1400]}
+    <Image src={gevel} alt="Gevel van ZBN zonwering aan de Noordenweg met houten gevel, rolluik, overkapping en het logo" widths={[640, 960, 1400]}
       sizes="(min-width: 1024px) 700px, 100vw" format="webp" quality={74} loading="lazy" class="block h-full w-full object-cover" />
   </div>
 
