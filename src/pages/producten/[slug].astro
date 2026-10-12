@@ -3,7 +3,6 @@
 // src/data/productdetails.ts (voordelen, varianten, bediening, doek, vragen). Mobile-first; het offerteblok plakt op desktop.
 import Base from '../../layouts/Base.astro';
 import Foto from '../../components/Foto.astro';
-import GeenFoto from '../../components/GeenFoto.astro';
 import Galerij from '../../components/Galerij.astro';
 import Icoon from '../../components/Icoon.astro';
 import { producten, categorieen, site, url, inZin } from '../../data/site';
@@ -210,9 +209,11 @@ const jsonld = site.preview ? undefined : [
       {verwant.map((a) => (
         <li class="group">
           <a href={url(`producten/${a.slug}/`)} class="block no-underline">
-            <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
-              {productFotos(a)[0] ? <Foto src={productFotos(a)[0].src} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" /> : <GeenFoto slug={a.slug} />}
-            </div>
+            {productFotos(a)[0] && (
+              <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
+                <Foto src={productFotos(a)[0].src} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" />
+              </div>
+            )}
             <h3 class="mt-4 flex items-center justify-between gap-3 px-1 text-lg"><span>{a.naam}</span><span aria-hidden="true" class="text-ink-zacht transition-transform group-hover:translate-x-1">&rarr;</span></h3>
             <p class="mt-1 px-1 text-sm text-ink-zacht">{a.kort}</p>
           </a>

@@ -3,7 +3,6 @@
 // Geen tabbladen of schakelaars: alles staat gewoon in beeld.
 import Base from '../layouts/Base.astro';
 import Foto from '../components/Foto.astro';
-import GeenFoto from '../components/GeenFoto.astro';
 import Afsluiter from '../components/Afsluiter.astro';
 import { categorieen, perCategorie, site, url } from '../data/site';
 import { fotos, productFotos } from '../components/Fotos';
@@ -14,6 +13,9 @@ export function getStaticPaths() {
 }
 const { c } = Astro.props;
 const lijst = perCategorie(c.categorie);
+// Producten met een foto in het raster; zonder foto als compacte kaarten eronder, zodat er geen gaten vallen.
+const metFoto = lijst.filter((p) => productFotos(p).length);
+const zonderFoto = lijst.filter((p) => !productFotos(p).length);
 const ander = categorieen.find((x) => x.slug !== c.slug)!;
 const beschrijving = `${c.naam} op maat in Ridderkerk: ${lijst.map((p) => p.naam.toLowerCase()).slice(0, 6).join(', ')} en meer. Inmeten en montage door de eigen monteurs van ZBN.`;
 const og = (await getImage({ src: fotos[c.foto], width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 })).src;
@@ -50,10 +52,10 @@ const jsonld = site.preview ? undefined : {
   <section class="wrap py-12 lg:py-16" aria-labelledby="producten-kop">
     <h2 id="producten-kop" class="sr-only">Producten in {c.naam.toLowerCase()}</h2>
     <ul class="grid gap-x-6 gap-y-10 min-[480px]:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
-      {lijst.map((p) => (
+      {metFoto.map((p) => (
         <li class="group relative flex flex-col">
           <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
-            {productFotos(p)[0] ? <Foto src={productFotos(p)[0].src} alt="" sizes="(min-width: 1024px) 400px, (min-width: 480px) 50vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.04]" /> : <GeenFoto slug={p.slug} />}
+            <Foto src={productFotos(p)[0].src} alt="" sizes="(min-width: 1024px) 400px, (min-width: 480px) 50vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.04]" />
           </div>
           <h3 class="mt-4 flex items-center justify-between gap-3 px-1 text-lg sm:text-xl">
             <a href={url(`producten/${p.slug}/`)} class="min-w-0 break-words no-underline after:absolute after:inset-0 after:rounded-xl">{p.naam}</a>
@@ -64,6 +66,23 @@ const jsonld = site.preview ? undefined : {
         </li>
       ))}
     </ul>
+    {zonderFoto.length > 0 && (
+      <>
+        <h3 class="mt-14 text-xl lg:mt-16">Ook leverbaar</h3>
+        <ul class="mt-5 grid gap-4 min-[480px]:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
+          {zonderFoto.map((p) => (
+            <li class="group relative flex flex-col rounded-xl bg-ijs p-5 ring-1 ring-lijn">
+              <p class="flex items-center justify-between gap-3 font-display text-lg font-bold">
+                <a href={url(`producten/${p.slug}/`)} class="min-w-0 break-words no-underline after:absolute after:inset-0 after:rounded-xl">{p.naam}</a>
+                <span aria-hidden="true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-pill bg-wit ring-1 ring-lijn transition-colors group-hover:bg-groen group-hover:text-wit group-hover:ring-groen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </p>
+              <p class="mt-2 flex-1 text-ink-zacht">{p.kort}</p>
+              <p class="mt-4"><a href={url(`?product=${p.slug}#offerte`)} class="btn btn-lijn relative z-10 !px-4 !py-2 text-sm">Offerte aanvragen</a></p>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
   </section>
 
   <!-- Brede offertebalk en verwijzing naar de andere categorie. -->

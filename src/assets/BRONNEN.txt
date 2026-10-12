@@ -3,5 +3,7 @@ Eigen foto's van ZBN (aangeleverd via WeTransfer, 9 oktober 2026), verkleind en 
   producten/<slug>/<n>.jpg       zie src/data/productfotos.ts
   showroom/                      showroom en gevel, aangeleverd in de chat
   screendoek/ en zonweringsdoek/ kopieen van eigen foto's van zipscreens, knikarmschermen en markiezen
+  motoren/1.jpg                  uitsnede van showroomfoto 20261003_110852.jpg (Somfy TaHoma op het folderrek)
+  smart-fit/                     foto's met "Perfekt fit" in de naam; ZBN controleert of dat Smart-fit is
 Gegenereerd beeld, op verzoek van Michael (12 okt 2026), tot er een eigen foto is:
   producten/screens/1.jpg, producten/garagedeuren/1.jpg

@@ -76,6 +76,18 @@ export const fotoAlts: Record<string, string[]> = {
   screens: [
     'Donkergrijze screens half neergelaten voor grote ramen van een moderne witte woning',
   ],
+  motoren: [
+    'Dozen van de Somfy TaHoma switch op het folderrek in de showroom van ZBN',
+    'Knikarmscherm met grijs gestreept doek, van onderen gezien, boven een terras met kunstgras',
+  ],
+  // Foto's van ZBN met de naam "Perfekt fit"; ZBN controleert of dit hetzelfde is als Smart-fit.
+  'smart-fit': [
+    'Witte plissés in een frame op drie ramen, half dicht, met uitzicht op een patio',
+    'Witte jaloezieën in een frame op draai-kiepramen',
+    'Lichte plissés in een frame op de ramen van een woonkamer',
+    'Witte jaloezieën in een frame op een rij ramen',
+    'Jaloezieën in een frame op een schuin raam',
+  ],
   garagedeuren: [
     'Antracietgrijze sectionaaldeur in een bakstenen woning met bestrate oprit',
   ],

@@ -110,7 +110,7 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('ul li h3 a[href*="rolpoorten"]'); await p.waitForLoadState('load'); ok(`${tag} categorie kaart rolpoorten`, p.url().includes('rolpoorten'));
   await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('ul li a.btn-lijn[href*="product=rolpoorten"]'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} categorie kaart Offerte -> ingevuld`, await p.isChecked('input[name="product-keuze"][value="Rolpoorten"]'));
   await p.goto(base + 'buitenzonwering/', { waitUntil: 'load' }); await tik('main a[href*="binnenzonwering/"]'); await p.waitForLoadState('load'); ok(`${tag} categorie -> andere categorie`, p.url().includes('binnenzonwering/'));
-  await p.goto(base + 'binnenzonwering/', { waitUntil: 'load' }); ok(`${tag} binnenzonwering 12 kaarten`, (await p.locator('main ul li h3').count()) === 12);
+  await p.goto(base + 'binnenzonwering/', { waitUntil: 'load' }); ok(`${tag} binnenzonwering 12 kaarten`, (await p.locator('main ul li h3, main ul li p.font-display').count()) === 12);
   // Werkwijze knoppen
   await p.goto(base, { waitUntil: 'load' }); await tik('#werkwijze a.btn-groen'); await p.waitForTimeout(900); ok(`${tag} werkwijze Offerte`, Math.abs((await top('#offerte')) - (await headerBottom())) < 60);
   ok(`${tag} werkwijze Bel`, (await p.getAttribute('#werkwijze a[href^="tel"]', 'href')) === 'tel:+31180430211');
@@ -163,8 +163,8 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await tik('a.btn-wit[href$="#showroom"]'); await p.waitForLoadState('load'); await p.waitForTimeout(700); ok(`${tag} doek -> showroom`, p.url().includes('#showroom') && Math.abs((await top('#showroom')) - (await headerBottom())) < 60);
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
   await tik('aside a.btn-wit'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} zijblok Offerte -> ingevuld`, await p.isChecked('input[name="product-keuze"][value="Screens"]'));
-  // Galerij met lightbox: alleen bij producten met eigen foto's (markiezen). Motoren heeft nog geen foto: dan geen galerij.
-  await p.goto(base + 'producten/motoren/', { waitUntil: 'load' });
+  // Galerij met lightbox: alleen bij producten met eigen foto's (markiezen). Horren heeft nog geen foto: dan geen galerij.
+  await p.goto(base + 'producten/horren/', { waitUntil: 'load' });
   ok(`${tag} geen galerij zonder foto's`, (await p.locator('[data-galerij]').count()) === 0 && (await p.locator('text=In het kort').count()) === 1);
   await p.goto(base + 'producten/markiezen/', { waitUntil: 'load' });
   ok(`${tag} galerij markiezen 5 foto's`, (await p.locator('[data-galerij] [data-foto]').count()) === 5);

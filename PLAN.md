@@ -55,3 +55,6 @@ Mobiel: vaste balk met Bellen en Offerte.
   - Algemene voorwaarden: geldigheid offerte, aanbetaling en montagegarantie verwijzen naar de offerte.
   - Cookiemelding: de site plaatst geen cookies, laadt geen embeds en meet niets. Volgens de Sitefront-standaard dan
     geen banner; dat staat in de privacyverklaring.
+- 12 okt 2026: elk product heeft een foto behalve horren en Fakro-dakramen; die staan op de categoriepagina als
+  compacte kaart onder "Ook leverbaar". Motoren: uitsnede van de showroom (Somfy TaHoma). Smart-fit: de
+  "Perfekt fit"-foto's (ZBN controleert). Teksten over app en sensor neutraal: "vraag naar de mogelijkheden".

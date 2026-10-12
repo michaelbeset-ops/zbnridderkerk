@@ -176,12 +176,12 @@ export const producten: Product[] = [
   },
   {
     slug: 'motoren', naam: 'Motoren', categorie: 'buiten', kort: 'Elektrische bediening voor zonwering en rolluiken.',
-    intro: 'Met een motor bedient u zonwering, rolluiken en screens met een afstandsbediening, een schakelaar of uw telefoon. We werken met motoren en bediening van Somfy en Geiger.',
+    intro: 'Met een motor bedient u zonwering, rolluiken en screens met een afstandsbediening of een schakelaar. We werken met motoren en bediening van Somfy en Geiger.',
     tekst: [
-      'Bij een nieuw product bouwen we de motor meteen in. Heeft u al zonwering of rolluiken met handbediening, vraag dan of er een motor in kan. Dat bekijken we per situatie.',
-      'Met een zon- en windsensor reageert buitenzonwering vanzelf op het weer. Met de Somfy-app bedient u alles op afstand en stelt u tijden in.',
+      'Heeft u al zonwering of rolluiken met handbediening, vraag dan wat er mogelijk is.',
+      'Vraag in de showroom naar de mogelijkheden, zoals bediening met een app of een zon- en windsensor.',
     ],
-    punten: ['Motoren van Somfy en Geiger', 'Afstandsbediening, schakelaar of app', 'Optioneel: zon- en windsensor', 'Ook voor bestaande zonwering, per situatie bekeken'],
+    punten: ['Motoren en bediening van Somfy en Geiger', 'Afstandsbediening of schakelaar', 'Vraag naar de mogelijkheden'],
   },
   {
     slug: 'screendoek', naam: 'Screendoek', categorie: 'buiten', kort: 'Doek voor screens en zipscreens, in veel kleuren en openheden.',
