@@ -1,6 +1,6 @@
 // Inhoud per productpagina: voordelen, varianten, bediening, doeken en kleuren, veelgestelde vragen.
 // Teksten door Sitefront geschreven en algemeen gehouden: geen prijzen, garanties of technische specificaties.
-// Merken alleen die op de oude site van ZBN staan. Wat ZBN nog moet bevestigen staat als [[AANLEVEREN: ...]].
+// Merken alleen die op de oude site van ZBN staan of die ZBN zelf noemde. Onbekende merken laten we weg.
 
 export type Icoon = 'zon' | 'schild' | 'oog' | 'wind' | 'thermo' | 'regen' | 'kleur' | 'maat' | 'motor' | 'stil' | 'licht' | 'huis';
 
@@ -51,7 +51,7 @@ const gaasStalen = [
   { naam: 'Wit', kleur: '#f1f1ee' }, { naam: 'Crème', kleur: '#e8e1cd' }, { naam: 'Grijs', kleur: '#a7a9a6' }, { naam: 'Antraciet', kleur: '#3f4245' }, { naam: 'Zwart', kleur: '#242526' },
 ];
 const doekMerken = 'Doek van Swela, Dickson, Tibelly en Sattler. Motoren en bediening van Somfy en Geiger.';
-const binnenMerken = 'Raamdecoratie van Velux en Fakro. [[AANLEVEREN: merken binnenzonwering]]';
+const binnenMerken = 'Raamdecoratie van Velux en Fakro.';
 const stoffen: Doek = { kop: 'Stoffen en kleuren', tekst: 'Transparant, lichtdoorlatend, lichtdempend of verduisterend. In de showroom liggen stalenboeken van alle stoffen; neem gerust een kussen of een stukje behang mee om kleuren naast elkaar te leggen.', stalen: stofStalen, merken: binnenMerken };
 
 export const details: Record<string, Details> = {
@@ -114,7 +114,7 @@ export const details: Record<string, Details> = {
       { naam: 'Rolluik voor deuren', tekst: 'Voor schuifpuien en tuindeuren. Voor een garage kijkt u naar een rolpoort.' },
     ],
     bediening: bediening({ hand: true, motor: true, app: true, sensor: true }),
-    doek: { kop: 'Kleuren van lamellen en kast', tekst: 'De lamellen en de kast leveren we in kleuren die bij de gevel en de kozijnen passen.', stalen: lamelStalen, merken: 'Motoren en bediening van Somfy en Geiger. [[AANLEVEREN: merken rolluiken]]' },
+    doek: { kop: 'Kleuren van lamellen en kast', tekst: 'De lamellen en de kast leveren we in kleuren die bij de gevel en de kozijnen passen.', stalen: lamelStalen, merken: 'Motoren en bediening van Somfy en Geiger.' },
     vragen: [
       { vraag: 'Hoeveel scheelt een rolluik in de temperatuur?', antwoord: 'Dat hangt af van het raam, de oriëntatie en de isolatie van de woning. Een gesloten rolluik houdt in elk geval de directe zon helemaal van het glas.' },
       { vraag: 'Moet er een stroomkabel naar het rolluik?', antwoord: 'Bij een elektrisch rolluik wel, tenzij u kiest voor een solar rolluik met zonnepaneel en accu.' },
@@ -221,7 +221,7 @@ export const details: Record<string, Details> = {
       { naam: 'Met kijkvensters', tekst: 'Lamellen met vensters voor daglicht in de garage.' },
     ],
     bediening: bediening({ hand: true, motor: true, app: true, sensor: false }),
-    doek: { kop: 'Kleuren van lamellen en kast', tekst: 'De lamellen, de kast en de geleiders leveren we in kleuren die bij de gevel passen.', stalen: lamelStalen, merken: '[[AANLEVEREN: merken rolpoorten]]' },
+    doek: { kop: 'Kleuren van lamellen en kast', tekst: 'De lamellen, de kast en de geleiders leveren we in kleuren die bij de gevel passen.', stalen: lamelStalen, merken: '' },
     vragen: [
       { vraag: 'Rolpoort of sectionaaldeur?', antwoord: 'Een rolpoort rolt op in een kast en laat het plafond vrij. Een sectionaaldeur schuift onder het plafond en is beter geïsoleerd. Welke past, hangt af van de ruimte en of de garage verwarmd is.' },
       { vraag: 'Kan de poort ook met de hand open bij een stroomstoring?', antwoord: 'Ja, een elektrische rolpoort heeft een noodbediening.' },
@@ -242,7 +242,7 @@ export const details: Record<string, Details> = {
       { naam: 'Met ramen', tekst: 'Een rij ramen in het bovenste paneel voor daglicht in de garage.' },
     ],
     bediening: bediening({ hand: true, motor: true, app: true, sensor: false }),
-    doek: { kop: 'Kleur of houtlook', tekst: 'De panelen leveren we in een effen kleur of in een houtlook, glad of met profiel.', stalen: lamelStalen, merken: '[[AANLEVEREN: merken garagedeuren]]' },
+    doek: { kop: 'Kleur of houtlook', tekst: 'De panelen leveren we in een effen kleur of in een houtlook, glad of met profiel.', stalen: lamelStalen, merken: '' },
     vragen: [
       { vraag: 'Past een sectionaaldeur in mijn bestaande opening?', antwoord: 'Meestal wel. We meten de opening in en maken de deur op maat.' },
       { vraag: 'Kan de deur ook met de hand open bij een stroomstoring?', antwoord: 'Ja, een elektrische deur heeft een noodontgrendeling.' },
@@ -263,7 +263,7 @@ export const details: Record<string, Details> = {
       { naam: 'Met zijwanden', tekst: 'Glazen schuifwanden of zipscreens aan de zijkanten tegen wind en inkijk.' },
     ],
     bediening: bediening({ hand: false, motor: true, app: true, sensor: true }),
-    doek: { kop: 'Dak, frame en zonwering', tekst: 'Het dak is van helder of getint glas of van polycarbonaat. Het frame leveren we in een kleur naar keuze. Voor de zonwering eronder of erboven kiest u een doek.', stalen: doekStalen, merken: doekMerken + ' [[AANLEVEREN: merken overkappingen]]' },
+    doek: { kop: 'Dak, frame en zonwering', tekst: 'Het dak is van helder of getint glas of van polycarbonaat. Het frame leveren we in een kleur naar keuze. Voor de zonwering eronder of erboven kiest u een doek.', stalen: doekStalen, merken: doekMerken },
     vragen: [
       { vraag: 'Heb ik een vergunning nodig?', antwoord: 'Dat hangt af van de gemeente, de maat en de plek. Vaak is een overkapping aan de achterzijde vergunningsvrij. We adviseren u hierover, de aanvraag regelt u zelf.' },
       { vraag: 'Glas of polycarbonaat?', antwoord: 'Glas is helder en oogt luxer, polycarbonaat is lichter en voordeliger. In de showroom ziet u beide.' },
@@ -450,7 +450,7 @@ export const details: Record<string, Details> = {
     bediening: binnenBediening('Smart-fit', 'Met een handgreep op het frame.', false),
     doek: stoffen,
     vragen: [
-      { vraag: 'Past Smart-fit op elk kozijn?', antwoord: 'Smart-fit klemt in de rubbers van kunststof en aluminium kozijnen. Bij houten kozijnen bekijken we wat past. [[AANLEVEREN: controle kozijnen Smart-fit]]' },
+      { vraag: 'Past Smart-fit op elk kozijn?', antwoord: 'Smart-fit klemt in de rubbers van kunststof en aluminium kozijnen. Bij houten kozijnen bekijken we wat past.' },
       { vraag: 'Kan ik het raam nog openen?', antwoord: 'Ja, het frame zit op het raam zelf en beweegt mee als u het raam opent of kiept.' },
       { vraag: 'Is het geschikt voor een huurwoning?', antwoord: 'Ja, er wordt niet geboord. Bij verhuizing haalt u het frame zonder sporen weg.' },
     ],
@@ -507,7 +507,8 @@ export const details: Record<string, Details> = {
       { icoon: 'motor', kop: 'Montage door ons', tekst: 'Onze eigen monteurs plaatsen het.' },
     ],
     varianten: [
-      { naam: '[[AANLEVEREN: producten in de Fractions-collectie]]', tekst: 'Welke producten uit de collectie ZBN levert, vullen we in na overleg.' },
+      { naam: 'Met uitgesneden patroon', tekst: 'Witte panelen met bijvoorbeeld een ruitpatroon, voor een erker of een breed raam.' },
+      { naam: 'Met horizontale openingen', tekst: 'Strakke panelen met smalle openingen, ook voor openslaande deuren.' },
     ],
     bediening: binnenBediening('de raamdecoratie'),
     doek: stoffen,
@@ -530,7 +531,7 @@ export const details: Record<string, Details> = {
       { naam: 'Scharnierende hordeur', tekst: 'Een deur met gaas die met een dranger vanzelf dichtvalt.' },
     ],
     bediening: binnenBediening('de hordeur', 'Met de hand, open en dicht zoals een gewone deur.', false),
-    doek: { kop: 'Gaas en kleuren', tekst: 'Het frame leveren we in een kleur die bij het kozijn past. Het gaas is er in standaard uitvoering en in een stevigere uitvoering voor huisdieren.', stalen: gaasStalen, merken: '[[AANLEVEREN: merken horren en hordeuren]]' },
+    doek: { kop: 'Gaas en kleuren', tekst: 'Het frame leveren we in een kleur die bij het kozijn past. Het gaas is er in standaard uitvoering en in een stevigere uitvoering voor huisdieren.', stalen: gaasStalen, merken: '' },
     vragen: [
       { vraag: 'Welke hordeur past bij een schuifpui?', antwoord: 'Een schuifhordeur in een eigen rail of een plissé-hordeur. Bij het inmeten bekijken we wat past bij de pui en de ruimte ernaast.' },
       { vraag: 'Is het gaas bestand tegen een hond of kat?', antwoord: 'Er is een stevigere gaassoort voor huisdieren die krassen beter doorstaat.' },
@@ -552,7 +553,7 @@ export const details: Record<string, Details> = {
       { naam: 'Dakraamhor', tekst: 'Voor dakramen, ook van Velux.' },
     ],
     bediening: binnenBediening('de horren', 'Met de hand: inzetten, oprollen of opvouwen.', false),
-    doek: { kop: 'Gaas en kleuren', tekst: 'Het frame leveren we in een kleur die bij het kozijn past. Het gaas is er in standaard uitvoering en in een stevigere uitvoering voor huisdieren.', stalen: gaasStalen, merken: '[[AANLEVEREN: merken horren en hordeuren]]' },
+    doek: { kop: 'Gaas en kleuren', tekst: 'Het frame leveren we in een kleur die bij het kozijn past. Het gaas is er in standaard uitvoering en in een stevigere uitvoering voor huisdieren.', stalen: gaasStalen, merken: '' },
     vragen: [
       { vraag: 'Welke hor past bij een draai-kiepraam?', antwoord: 'Een inzethor of een plisséhor in het kozijn. Het raam blijft gewoon te openen en te kiepen.' },
       { vraag: 'Moet er geboord worden?', antwoord: 'Een inzethor klemt zonder boren. Een rolhor wordt op of in het kozijn geschroefd.' },

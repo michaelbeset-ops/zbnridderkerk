@@ -47,3 +47,11 @@ Mobiel: vaste balk met Bellen en Offerte.
   Hero en categorietegels nu met eigen foto's. Alleen screens en garagedeuren hebben nog een gegenereerd stockbeeld.
   Niet gebruikt: twee beschadigde bestanden (Plissé (1), Rolgordijn (1)), foto's met een kenteken of bedrijfsnaam,
   Balkonscherm en Glijarmscherm (geen product op de site), losse showroomfoto's (staan al in de rondloop).
+- Opleveren (12 okt 2026): geen lege fotovlakken en geen [[AANLEVEREN]] meer.
+  - Product zonder eigen foto: bovenaan een kaart "In het kort" met de punten, geen galerij, en in kaarten een vlak
+    met het icoon van het product (GeenFoto). Een foto in assets/producten/<slug>/ verschijnt vanzelf.
+  - De gegenereerde stockfoto's van screens en garagedeuren zijn weg.
+  - Fractions omschreven op basis van de eigen foto's (panelen met uitgesneden patroon). Onbekende merken weggelaten.
+  - Algemene voorwaarden: geldigheid offerte, aanbetaling en montagegarantie verwijzen naar de offerte.
+  - Cookiemelding: de site plaatst geen cookies, laadt geen embeds en meet niets. Volgens de Sitefront-standaard dan
+    geen banner; dat staat in de privacyverklaring.

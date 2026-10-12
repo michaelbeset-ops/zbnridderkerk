@@ -163,7 +163,11 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await tik('a.btn-wit[href$="#showroom"]'); await p.waitForLoadState('load'); await p.waitForTimeout(700); ok(`${tag} doek -> showroom`, p.url().includes('#showroom') && Math.abs((await top('#showroom')) - (await headerBottom())) < 60);
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
   await tik('aside a.btn-wit'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} zijblok Offerte -> ingevuld`, await p.isChecked('input[name="product-keuze"][value="Screens"]'));
+  // Galerij met lightbox: alleen bij producten met eigen foto's (markiezen). Screens heeft nog geen foto: dan geen galerij.
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
+  ok(`${tag} geen galerij zonder foto's`, (await p.locator('[data-galerij]').count()) === 0 && (await p.locator('text=In het kort').count()) === 1);
+  await p.goto(base + 'producten/markiezen/', { waitUntil: 'load' });
+  ok(`${tag} galerij markiezen 5 foto's`, (await p.locator('[data-galerij] [data-foto]').count()) === 5);
   await tik('[data-galerij] [data-foto]'); await p.waitForTimeout(300); ok(`${tag} lightbox opent`, await p.evaluate(() => document.querySelector('[data-lightbox]').open));
   await p.keyboard.press('Escape'); await p.waitForTimeout(200); ok(`${tag} lightbox Escape`, !(await p.evaluate(() => document.querySelector('[data-lightbox]').open)));
   await tik('[data-galerij] [data-foto]'); await p.waitForTimeout(300); await tik('[data-lightbox-dicht]'); await p.waitForTimeout(200); ok(`${tag} lightbox sluitknop`, !(await p.evaluate(() => document.querySelector('[data-lightbox]').open)));

@@ -1,0 +1,11 @@
+---
+// Kaart van een product zonder eigen foto: een rustig vlak in de huisstijl met het icoon van het product.
+// Geen markering of stockbeeld; zodra er een foto in assets/producten/<slug>/ staat, verschijnt die vanzelf.
+import Icoon from './Icoon.astro';
+import { details } from '../data/productdetails';
+interface Props { slug: string }
+const icoon = details[Astro.props.slug]?.voordelen[0]?.icoon ?? 'huis';
+---
+<div class="flex h-full w-full items-center justify-center bg-ijs transition-colors duration-500 group-hover:bg-nevel">
+  <span class="flex h-20 w-20 items-center justify-center rounded-pill bg-wit text-groen shadow-zacht ring-1 ring-lijn"><Icoon naam={icoon} class="h-9 w-9" /></span>
+</div>

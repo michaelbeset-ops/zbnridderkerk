@@ -110,7 +110,6 @@ export const producten: Product[] = [
       'Het doek loopt tussen twee zijgeleiders. Wilt u dat het doek ook bij wind strak blijft staan, kijk dan naar zipscreens. Bediening is meestal elektrisch, ook met zonsensor.',
     ],
     punten: ['Doek in verschillende openheidsgraden', 'Elektrisch, ook met zon- en windsensor', 'Cassette weggewerkt in of op het kozijn', 'Ook voor grote glaspartijen'],
-    foto: 'screens', fotoAlt: 'Donkergrijze screens half neergelaten voor grote ramen van een moderne witte woning',
   },
   {
     slug: 'zipscreens', naam: 'Zipscreens', categorie: 'buiten', kort: 'Screens met het doek vast in de geleiders, ook bij wind.',
@@ -156,7 +155,6 @@ export const producten: Product[] = [
       'Met een motor opent u de deur met de afstandsbediening vanuit de auto. Bestaande deuren kunnen vaak worden vervangen zonder aanpassingen aan de opening.',
     ],
     punten: ['Sectionaaldeur, geïsoleerd', 'Op maat voor de bestaande opening', 'Elektrisch met afstandsbediening', 'Kleur of houtlook naar keuze', 'Optioneel: loopdeur, ramen'],
-    foto: 'garagedeur', fotoAlt: 'Antracietgrijze sectionaaldeur in een bakstenen woning met bestrate oprit',
   },
   {
     slug: 'overkappingen', naam: 'Overkappingen', categorie: 'buiten', kort: 'Buiten zitten, ook als het regent.',
@@ -245,7 +243,7 @@ export const producten: Product[] = [
     intro: 'Smart-fit is een slank frame dat in het kozijn klemt, zonder boren of schroeven. In het frame zit een plissé, rolgordijn of jaloezie die het raam precies volgt.',
     tekst: [
       'Omdat het frame op het raam zelf zit, beweegt de raamdecoratie mee als u het raam opent of kiept. Er is geen koord nodig en er blijft niets hangen.',
-      'Handig bij kunststof en aluminium kozijnen, bij draai-kiepramen en in huurwoningen. In de showroom ziet u de stoffen en de bediening. [[AANLEVEREN: controle omschrijving Smart-fit]]',
+      'Handig bij kunststof en aluminium kozijnen, bij draai-kiepramen en in huurwoningen. In de showroom ziet u de stoffen en de bediening.',
     ],
     punten: ['Zonder boren in het kozijn', 'Beweegt mee met het raam', 'Met plissé, rolgordijn of jaloezie', 'Ook voor draai-kiepramen'],
   },
@@ -268,8 +266,8 @@ export const producten: Product[] = [
     punten: ['Op maat, ook voor ronde en schuine ramen', 'Lamelbreedte en kleur naar keuze', 'Zonwering en privacy in een', 'Ook voor badkamer en keuken'],
   },
   {
-    slug: 'fractions', naam: 'Fractions', categorie: 'binnen', kort: 'Collectie raamdecoratie met een eigen, strakke uitstraling.',
-    intro: 'Fractions is een collectie raamdecoratie die we in de showroom laten zien. [[AANLEVEREN: korte omschrijving van de Fractions-collectie: welke producten en wat het onderscheidt]]',
+    slug: 'fractions', naam: 'Fractions', categorie: 'binnen', kort: 'Panelen met een uitgesneden patroon, voor licht en privacy.',
+    intro: 'Fractions zijn panelen met een uitgesneden patroon, die u voor het raam zet en opzij vouwt. Het patroon laat licht door en houdt inkijk tegen.',
     tekst: [
       'Kom langs in de showroom aan de Noordenweg om de collectie in het echt te zien en stalen naast uw inrichting te leggen.',
       'Net als onze andere raamdecoratie meten we Fractions op maat in en monteren onze eigen monteurs het.',
