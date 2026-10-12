@@ -58,3 +58,7 @@ Mobiel: vaste balk met Bellen en Offerte.
 - 12 okt 2026: elk product heeft een foto behalve horren en Fakro-dakramen; die staan op de categoriepagina als
   compacte kaart onder "Ook leverbaar". Motoren: uitsnede van de showroom (Somfy TaHoma). Smart-fit: de
   "Perfekt fit"-foto's (ZBN controleert). Teksten over app en sensor neutraal: "vraag naar de mogelijkheden".
+- 12 okt 2026: echte 360 graden showroom. Jurgen maakte 12 foto's vanaf één plek (bron/showroom-360); samengevoegd
+  met de stitching-bibliotheek in twee helften en daarna rondgesloten (join2.py). Viewer: gevel, Kijk binnen,
+  panorama loopt eindeloos rond, slepen, pijlen, toetsenbord. Oude losse showroomfoto's verwijderd.
+  Motoren alleen Somfy; mailadres overal info@zbnridderkerk.nl. "Zesentwintig producten" werd "Alle producten".
