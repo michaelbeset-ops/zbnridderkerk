@@ -1,5 +1,5 @@
 // Foto's van de site. Eigen foto's van ZBN staan per product in assets/producten/<slug>/1.jpg, 2.jpg, ...
-// (beschrijvingen in data/productfotos.ts). Een product zonder eigen foto krijgt een vlak met zijn icoon (GeenFoto).
+// (beschrijvingen in data/productfotos.ts). Een product zonder foto toont geen fotovlak.
 import type { ImageMetadata } from 'astro';
 import { fotoAlts } from '../data/productfotos';
 import knikarmscherm from '../assets/producten/knikarmschermen/3.jpg';

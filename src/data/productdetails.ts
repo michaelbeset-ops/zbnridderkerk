@@ -15,14 +15,14 @@ export interface Details { voordelen: Voordeel[]; varianten: Variant[]; bedienin
 const bediening = (opties: { hand?: boolean; motor?: boolean; app?: boolean; sensor?: boolean }): Bediening[] => [
   { naam: 'Handmatig', tekst: 'Met een slinger, koord of band. Eenvoudig en zonder stroom.', beschikbaar: opties.hand ?? false },
   { naam: 'Elektrisch met afstandsbediening', tekst: 'Een motor van Somfy of Geiger, bediend met een handzender of wandschakelaar.', beschikbaar: opties.motor ?? false },
-  { naam: 'Somfy-app', tekst: 'Bedien de zonwering met uw telefoon, ook als u niet thuis bent, en stel tijden in.', beschikbaar: opties.app ?? false },
+  { naam: 'Bediening met app', tekst: 'Bij veel motoren kan de zonwering ook met een app op de telefoon. Vraag naar de mogelijkheden.', beschikbaar: opties.app ?? false },
   { naam: 'Zon- en windsensor', tekst: 'De zonwering gaat zelf uit bij zon en zelf in bij harde wind.', beschikbaar: opties.sensor ?? false },
 ];
 // Bediening voor binnen: geen sensor, wel een stille motor.
 const binnenBediening = (wat: string, hand = 'Met koord, ketting of handgreep.', motor = true): Bediening[] => [
   { naam: 'Handmatig', tekst: hand, beschikbaar: true },
   { naam: 'Elektrisch met afstandsbediening', tekst: 'Een stille motor, handig bij hoge of moeilijk bereikbare ramen.', beschikbaar: motor },
-  { naam: 'Somfy-app', tekst: `Bedien ${wat} met uw telefoon en stel tijden in.`, beschikbaar: motor },
+  { naam: 'Bediening met app', tekst: `Bij veel motoren kunt u ${wat} ook met een app bedienen. Vraag naar de mogelijkheden.`, beschikbaar: motor },
   { naam: 'Zon- en windsensor', tekst: 'Niet van toepassing bij binnenzonwering.', beschikbaar: false },
 ];
 
@@ -74,7 +74,7 @@ export const details: Record<string, Details> = {
     vragen: [
       { vraag: 'Hoe ver kan een knikarmscherm uitvallen?', antwoord: 'Dat hangt af van de breedte en de constructie van de gevel. Bij het inmeten bekijken we wat op uw terras mogelijk is en adviseren we een maat die goed in verhouding staat. Moet het doek verder uitvallen, kijk dan naar een pergolazonwering.' },
       { vraag: 'Mag het scherm uit blijven staan bij wind?', antwoord: 'Bij harde wind rolt u het scherm in. Met een windsensor gebeurt dat automatisch, ook als u niet thuis bent.' },
-      { vraag: 'Kan ik het scherm bedienen met mijn telefoon?', antwoord: 'Ja, met een motor van Somfy en de bijbehorende app. We stellen dit bij de montage voor u in.' },
+      { vraag: 'Kan ik het scherm bedienen met mijn telefoon?', antwoord: 'Bij veel motoren kan dat met een app. Vraag ernaar bij de offerte, dan kijken we wat bij uw scherm past.' },
       { vraag: 'Hoe lang duurt de montage?', antwoord: 'Een knikarmscherm plaatsen onze monteurs meestal op een dag. We spreken de datum met u af zodra het scherm klaar is voor montage.' },
     ],
     verwant: ['pergolazonwering', 'uitvalschermen', 'overkappingen'],
@@ -118,7 +118,7 @@ export const details: Record<string, Details> = {
     vragen: [
       { vraag: 'Hoeveel scheelt een rolluik in de temperatuur?', antwoord: 'Dat hangt af van het raam, de oriëntatie en de isolatie van de woning. Een gesloten rolluik houdt in elk geval de directe zon helemaal van het glas.' },
       { vraag: 'Moet er een stroomkabel naar het rolluik?', antwoord: 'Bij een elektrisch rolluik wel, tenzij u kiest voor een solar rolluik met zonnepaneel en accu.' },
-      { vraag: 'Kan ik het rolluik op tijden laten sluiten?', antwoord: 'Ja, met een tijdklok of via de Somfy-app. Handig als u op vakantie bent.' },
+      { vraag: 'Kan ik het rolluik op tijden laten sluiten?', antwoord: 'Bij veel elektrische rolluiken kan dat, met een tijdklok of een app. Vraag naar de mogelijkheden.' },
     ],
     verwant: ['screens', 'rolpoorten', 'garagedeuren'],
   },
@@ -295,18 +295,18 @@ export const details: Record<string, Details> = {
     voordelen: [
       { icoon: 'motor', kop: 'Gemak', tekst: 'Een druk op de knop in plaats van slingeren of trekken.' },
       { icoon: 'wind', kop: 'Automatisch op het weer', tekst: 'Met een sensor gaat de zonwering uit bij zon en in bij harde wind.' },
-      { icoon: 'huis', kop: 'Ook als u niet thuis bent', tekst: 'Met de Somfy-app bedient u alles op afstand en stelt u tijden in.' },
+      { icoon: 'huis', kop: 'Op afstand', tekst: 'Bij veel motoren kan bediening met een app of op vaste tijden.' },
       { icoon: 'schild', kop: 'Minder kans op schade', tekst: 'Met een windsensor rolt het scherm bij harde wind vanzelf in.' },
     ],
     varianten: [
       { naam: 'Met afstandsbediening', tekst: 'Een handzender voor een product of voor een groep tegelijk.' },
       { naam: 'Met wandschakelaar', tekst: 'Een vaste schakelaar aan de muur, bijvoorbeeld naast de tuindeur.' },
-      { naam: 'Met de Somfy-app', tekst: 'Bedien met uw telefoon en stel tijden in, ook als u niet thuis bent.' },
+      { naam: 'Met een app', tekst: 'Bij veel motoren mogelijk. Vraag naar de mogelijkheden.' },
       { naam: 'Met zon- en windsensor', tekst: 'De zonwering reageert zelf op zon en wind.' },
     ],
     bediening: bediening({ motor: true, app: true, sensor: true }),
     vragen: [
-      { vraag: 'Kan er een motor in mijn bestaande zonwering?', antwoord: 'Dat hangt af van het product en hoe het gemonteerd is. Neem contact op of kom langs in de showroom, dan bekijken we wat bij u kan.' },
+      { vraag: 'Kan er een motor in mijn bestaande zonwering?', antwoord: 'Neem contact op of kom langs in de showroom, dan bekijken we wat bij uw zonwering kan.' },
       { vraag: 'Welke merken gebruiken jullie?', antwoord: 'We werken met motoren en bediening van Somfy en Geiger.' },
       { vraag: 'Is er stroom nodig bij het raam?', antwoord: 'Een motor heeft stroom nodig. Bij rolluiken en screens kan het ook met een zonnepaneel en accu, zonder bekabeling door de muur.' },
     ],
