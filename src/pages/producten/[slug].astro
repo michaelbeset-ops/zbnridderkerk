@@ -21,6 +21,8 @@ const offerte = url(`?product=${p.slug}#offerte`);
 const naam = inZin(p.naam);
 const eigen = productFotos(p);
 const hoofd = eigen[0];
+const snel = [['uitvoeringen', 'Uitvoeringen'], d.bediening && ['bedieningen', 'Bediening'], d.doek && ['kleuren', 'Kleuren'],
+  eigen.length > 1 && ['fotos', "Foto's"], ['faq', 'Vragen']].filter(Boolean) as string[][];
 // Korte meta description (onder 155 tekens) en een eigen deelafbeelding per product.
 const beschrijving = `${p.naam} op maat in Ridderkerk. ${p.kort} Inmeten en montage door de eigen monteurs van ZBN.`;
 const og = hoofd ? (await getImage({ src: hoofd.src, width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 })).src : undefined;
@@ -55,9 +57,9 @@ const jsonld = site.preview ? undefined : [
         <p class="kicker text-ink-zacht">{cat.naam}</p>
         <h1 class="mt-3 text-3xl hyphens-auto lg:text-[3.4rem]" lang="nl">{p.naam}</h1>
         <p class="mt-5 text-lg text-ink-zacht">{p.intro}</p>
-        <div class="mt-7 flex flex-wrap items-center gap-3">
+        <div class="mt-7 grid grid-cols-[1fr_auto] gap-3 sm:flex sm:flex-wrap sm:items-center">
           <a href={offerte} class="btn btn-groen">Offerte aanvragen</a>
-          <a href={site.telHref} class="btn btn-wit">Bel <span class="tabular-nums">{site.tel}</span></a>
+          <a href={site.telHref} class="btn btn-wit max-sm:px-5">Bel <span class="tabular-nums max-sm:hidden">{site.tel}</span></a>
         </div>
       </div>
       <div class="lg:col-span-6 xl:col-span-7">
@@ -81,34 +83,48 @@ const jsonld = site.preview ? undefined : [
     </div>
   </section>
 
-  <!-- 2. Vier voordeelblokken met icoon. -->
-  <section class="wrap py-14 lg:py-20" aria-labelledby="voordelen">
-    <h2 id="voordelen" class="text-2xl">Waarom {naam}?</h2>
-    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+  <!-- Snel naar een onderdeel: alleen op mobiel en tablet, waar de pagina lang onder elkaar staat. -->
+  <nav aria-label="Op deze pagina" class="mt-8 lg:hidden">
+    <ul class="slider gap-2 md:px-10">
+      {snel.map(([id, label]) => <li><a href={`#${id}`} class="inline-flex items-center rounded-pill bg-wit px-4 py-2.5 text-sm font-semibold no-underline ring-1 ring-lijn active:bg-ijs">{label}</a></li>)}
+    </ul>
+  </nav>
+
+  <!-- 2. Vier voordeelblokken met icoon; op mobiel compact twee naast elkaar. -->
+  <section class="wrap py-10 sm:py-14 lg:py-20" aria-labelledby="voordelen">
+    <h2 id="voordelen" class="text-2xl hyphens-auto" lang="nl">Waarom {naam}?</h2>
+    <ul class="mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-6 lg:grid-cols-4">
       {d.voordelen.map((v) => (
-        <li class="rounded-xl bg-ijs p-6">
-          <span class="flex h-12 w-12 items-center justify-center rounded-pill bg-wit text-groen ring-1 ring-lijn"><Icoon naam={v.icoon} /></span>
-          <h3 class="mt-5 text-lg">{v.kop}</h3>
-          <p class="mt-2 text-sm text-ink-zacht">{v.tekst}</p>
+        <li class="rounded-xl bg-ijs p-4 sm:p-6">
+          <span class="flex h-10 w-10 items-center justify-center rounded-pill bg-wit text-groen ring-1 ring-lijn sm:h-12 sm:w-12"><Icoon naam={v.icoon} /></span>
+          <h3 class="mt-3 text-base leading-snug sm:mt-5 sm:text-lg">{v.kop}</h3>
+          <p class="mt-1.5 text-sm text-ink-zacht sm:mt-2">{v.tekst}</p>
         </li>
       ))}
     </ul>
   </section>
 
   <div class="wrap grid gap-10 lg:grid-cols-12">
-    <div class="lg:col-span-8">
+    <div class="min-w-0 lg:col-span-8">
       <!-- Uitleg -->
       <section class="prose" aria-labelledby="over">
         <h2 id="over" class="text-2xl">Over {naam}</h2>
-        {p.tekst.map((t) => <p class="mt-4 text-lg">{t}</p>)}
+        <p class="mt-4 text-lg">{p.tekst[0]}</p>
+        {p.tekst.length > 1 && <>
+          <div class="max-lg:[&.dicht]:hidden" data-meer>{p.tekst.slice(1).map((t) => <p class="mt-4 text-lg">{t}</p>)}</div>
+          <button type="button" class="mt-3 inline-flex items-center gap-1.5 py-2 font-display font-semibold underline lg:hidden" aria-expanded="true" data-meer-knop hidden>Lees verder</button>
+        </>}
       </section>
 
       <!-- 3. Varianten als kaarten. -->
-      <section class="mt-14" aria-labelledby="varianten">
-        <h2 id="varianten" class="text-2xl">Uitvoeringen</h2>
-        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <section class="mt-12 scroll-mt-24 sm:mt-14" aria-labelledby="varianten" id="uitvoeringen">
+        <div class="flex items-end justify-between gap-4">
+          <h2 id="varianten" class="text-2xl">Uitvoeringen</h2>
+          {d.varianten.length > 1 && <p class="pb-1 text-sm text-ink-zacht sm:hidden" aria-hidden="true">Veeg &rarr;</p>}
+        </div>
+        <ul class="slider -mx-5 mt-5 !items-stretch py-1 sm:mx-0 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:py-0">
           {d.varianten.map((v) => (
-            <li class="rounded-xl bg-wit p-5 ring-1 ring-lijn">
+            <li class="w-[72vw] rounded-xl bg-wit p-5 ring-1 ring-lijn sm:w-auto">
               <h3 class="text-lg">{v.naam}</h3>
               <p class="mt-1.5 text-sm text-ink-zacht">{v.tekst}</p>
             </li>
@@ -117,11 +133,11 @@ const jsonld = site.preview ? undefined : [
       </section>
 
       <!-- 4. Bedieningsopties (niet bij elk product). -->
-      {d.bediening && <section class="mt-14" aria-labelledby="bediening">
+      {d.bediening && <section class="mt-12 scroll-mt-24 sm:mt-14" aria-labelledby="bediening" id="bedieningen">
         <h2 id="bediening" class="text-2xl">Bediening</h2>
         <ul class="mt-6 divide-y divide-lijn rounded-xl bg-ijs">
           {d.bediening.map((b) => (
-            <li class="flex gap-4 px-5 py-4">
+            <li class="flex gap-4 px-4 py-3.5 sm:px-5 sm:py-4">
               <span class={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-pill ${b.beschikbaar ? 'bg-groen text-wit' : 'bg-wit ring-1 ring-lijn'}`}>
                 {b.beschikbaar ? <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg> : <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>}
               </span>
@@ -135,7 +151,7 @@ const jsonld = site.preview ? undefined : [
       </section>}
 
       <!-- 5. Doeken en kleuren (niet bij elk product). -->
-      {d.doek && <section class="mt-14" aria-labelledby="doek">
+      {d.doek && <section class="mt-12 scroll-mt-24 sm:mt-14" aria-labelledby="doek" id="kleuren">
         <h2 id="doek" class="text-2xl">{d.doek.kop}</h2>
         <p class="mt-4 text-lg text-ink-zacht">{d.doek.tekst}</p>
         <ul class="mt-6 flex flex-wrap gap-3" aria-label="Voorbeeldkleuren">
@@ -149,7 +165,7 @@ const jsonld = site.preview ? undefined : [
     </div>
 
     <!-- Offerteblok, plakt op desktop. -->
-    <aside class="lg:col-span-4">
+    <aside class="max-lg:hidden lg:col-span-4">
       <div class="rounded-xl bg-groen p-6 text-wit shadow-kaart lg:sticky lg:top-28 md:p-8">
         <p class="kicker text-wit/75">Offerte</p>
         <h2 class="mt-2 text-xl text-wit">Offerte voor {naam}</h2>
@@ -166,10 +182,10 @@ const jsonld = site.preview ? undefined : [
   </div>
 
   <!-- 6. Fotogalerij met plekken voor foto's. -->
-  {eigen.length > 1 && <div class="mt-14 lg:mt-20"><Galerij naam={p.naam} fotos={eigen} /></div>}
+  {eigen.length > 1 && <div class="mt-10 scroll-mt-20 sm:mt-14 lg:mt-20" id="fotos"><Galerij naam={p.naam} fotos={eigen} /></div>}
 
   <!-- 7. Veelgestelde vragen als accordeon. -->
-  <section class="wrap py-14 lg:py-20" aria-labelledby="vragen">
+  <section class="wrap scroll-mt-20 py-12 sm:py-14 lg:py-20" aria-labelledby="vragen" id="faq">
     <div class="grid gap-8 lg:grid-cols-12">
       <div class="lg:col-span-4">
         <h2 id="vragen" class="text-2xl">Veelgestelde vragen over {naam}</h2>
@@ -209,13 +225,13 @@ const jsonld = site.preview ? undefined : [
       <h2 id="verwant" class="text-2xl">Ook interessant</h2>
       <a href={url(`${cat.slug}/`)} class="shrink-0 whitespace-nowrap font-display font-semibold underline">Alle {cat.naam.toLowerCase()}</a>
     </div>
-    <ul class="mt-8 grid gap-6 sm:grid-cols-3">
+    <ul class="slider -mx-5 mt-6 sm:mx-0 sm:mt-8 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible sm:px-0">
       {verwant.map((a) => (
-        <li class="group">
+        <li class="group w-[68vw] sm:w-auto">
           <a href={url(`producten/${a.slug}/`)} class="block no-underline">
             {productFotos(a)[0] && (
               <div class="aspect-[4/3] overflow-hidden rounded-xl bg-ijs">
-                <Foto src={productFotos(a)[0].src} alt="" sizes="(min-width: 640px) 33vw, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" />
+                <Foto src={productFotos(a)[0].src} alt="" sizes="(min-width: 640px) 33vw, 68vw" class="transition-transform duration-500 group-hover:scale-[1.03]" />
               </div>
             )}
             <h3 class="mt-4 flex items-center justify-between gap-3 px-1 text-lg"><span>{a.naam}</span><span aria-hidden="true" class="text-ink-zacht transition-transform group-hover:translate-x-1">&rarr;</span></h3>
@@ -226,3 +242,13 @@ const jsonld = site.preview ? undefined : [
     </ul>
   </section>
 </Base>
+
+<script>
+  // "Over" op mobiel: eerste alinea zichtbaar, de rest achter Lees verder. Zonder JS blijft alles zichtbaar.
+  const meer = document.querySelector<HTMLElement>('[data-meer]');
+  const knop = document.querySelector<HTMLButtonElement>('[data-meer-knop]');
+  if (meer && knop) {
+    meer.classList.add('dicht'); knop.hidden = false; knop.setAttribute('aria-expanded', 'false');
+    knop.addEventListener('click', () => { meer.classList.remove('dicht'); knop.remove(); });
+  }
+</script>
