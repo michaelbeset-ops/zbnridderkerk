@@ -162,7 +162,16 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await tik('main details summary'); await p.waitForTimeout(200); ok(`${tag} FAQ sluit`, (await p.locator('main details[open]').count()) === 0);
   await tik('a.btn-wit[href$="#showroom"]'); await p.waitForLoadState('load'); await p.waitForTimeout(700); ok(`${tag} doek -> showroom`, p.url().includes('#showroom') && Math.abs((await top('#showroom')) - (await headerBottom())) < 60);
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
-  await tik('aside a.btn-wit'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} zijblok Offerte -> ingevuld`, await p.isChecked('input[name="product-keuze"][value="Screens"]'));
+  if (w >= 1024) { await tik('aside a.btn-wit'); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} zijblok Offerte -> ingevuld`, await p.isChecked('input[name="product-keuze"][value="Screens"]')); }
+  else {
+    // Mobiel: geen zijblok, wel snelmenu naar onderdelen en "Lees verder" bij de uitleg.
+    ok(`${tag} zijblok verborgen`, !(await p.locator('aside').isVisible()));
+    await p.goto(base + 'producten/knikarmschermen/', { waitUntil: 'load' });
+    ok(`${tag} uitleg ingeklapt`, !(await p.locator('[data-meer]').isVisible()));
+    await tik('[data-meer-knop]'); ok(`${tag} Lees verder klapt uit`, await p.locator('[data-meer]').isVisible());
+    await tik('nav[aria-label="Op deze pagina"] a[href="#faq"]'); await p.waitForTimeout(700);
+    ok(`${tag} snelmenu -> vragen`, p.url().endsWith('#faq') && Math.abs((await top('#faq'))) < 140);
+  }
   // Galerij met lightbox: alleen bij producten met eigen foto's (markiezen). Horren heeft nog geen foto: dan geen galerij.
   await p.goto(base + 'producten/horren/', { waitUntil: 'load' });
   ok(`${tag} geen galerij zonder foto's`, (await p.locator('[data-galerij]').count()) === 0 && (await p.locator('text=In het kort').count()) === 1);
