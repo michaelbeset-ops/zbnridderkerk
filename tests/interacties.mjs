@@ -2,7 +2,7 @@
 import { chromium } from 'playwright';
 import { preview } from 'astro';
 const server = await preview({ root: process.cwd(), logLevel: 'silent' });
-const base = `http://localhost:${server.port}/zbnridderkerk/`;
+const base = `http://localhost:${server.port}/`;
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--no-sandbox'] });
 const out = [];
 const ok = (naam, cond, extra = '') => out.push(`${cond ? 'OK  ' : 'FOUT'} ${naam}${extra ? ' | ' + extra : ''}`);
@@ -152,7 +152,7 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   ok(`${tag} footer Sitefront`, (await p.getAttribute('footer a[href*="sitefront"]', 'target')) === '_blank');
   // Productpagina
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
-  for (const [naam, sel, verwacht] of [['kruimel Home', 'nav[aria-label="Kruimelpad"] a[href$="/zbnridderkerk/"]', base], ['kruimel Buitenzonwering', 'nav[aria-label="Kruimelpad"] a[href*="buitenzonwering/"]', 'buitenzonwering/']]) {
+  for (const [naam, sel, verwacht] of [['kruimel Home', 'nav[aria-label="Kruimelpad"] a[href="/"]', base], ['kruimel Buitenzonwering', 'nav[aria-label="Kruimelpad"] a[href*="buitenzonwering/"]', 'buitenzonwering/']]) {
     await p.goto(base + 'producten/screens/', { waitUntil: 'load' }); await tik(sel); await p.waitForLoadState('load'); await p.waitForTimeout(600); ok(`${tag} ${naam}`, p.url().includes(verwacht));
   }
   await p.goto(base + 'producten/screens/', { waitUntil: 'load' });
