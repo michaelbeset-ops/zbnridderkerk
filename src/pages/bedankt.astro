@@ -1,0 +1,19 @@
+---
+// Hierheen stuurt FormSubmit de bezoeker na een geslaagde aanvraag (_next in het offerteformulier). Niet in Google.
+import Base from '../layouts/Base.astro';
+import { site, url } from '../data/site';
+---
+<Base title="Bedankt voor uw aanvraag | ZBN Zonwering" description="Uw offerteaanvraag is verstuurd." noindex>
+  <section class="wrap py-20 lg:py-32">
+    <div class="max-w-xl">
+      <div class="flex h-16 w-16 items-center justify-center rounded-pill bg-groen text-wit"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+      <h1 class="mt-6 text-4xl">Bedankt, uw aanvraag is verstuurd.</h1>
+      <p class="mt-5 text-lg text-ink-zacht">We hebben uw gegevens ontvangen en nemen contact met u op om een afspraak te maken voor het inmeten.</p>
+      <p class="mt-3 text-ink-zacht">Wilt u in de tussentijd iets wijzigen of toevoegen? Bel <a href={site.telHref} class="font-semibold tabular-nums text-ink underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-semibold text-ink underline">{site.mail}</a>.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={url('')} class="btn btn-groen">Naar de homepage</a>
+        <a href={url('#offerte')} class="btn btn-wit">Nog een aanvraag doen</a>
+      </div>
+    </div>
+  </section>
+</Base>

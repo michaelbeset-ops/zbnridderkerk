@@ -21,8 +21,8 @@ Mobiel: vaste balk met Bellen en Offerte.
 - Reviews: de echte Google-reviews uit de chat, niet [[AANLEVEREN]].
 - Foto's: alleen de vier Unsplash-foto's uit het eerste voorstel; de omgeving kan geen nieuwe ophalen. De rest is
   een licht vlak met raster en markering.
-- Formulier: Web3Forms via AJAX, key uit PUBLIC_WEB3FORMS_KEY. Zonder key toont het formulier een melding.
-  Bijlagen werken bij Web3Forms alleen op het betaalde plan; het veld is gebouwd.
+- Formulier: eerst Web3Forms; bijlagen kunnen daar alleen betaald. Sinds 13 okt 2026 FormSubmit: gewone POST met
+  foto's (samen max 10 MB) naar info@, daarna /bedankt/. Eenmalige activatie via de mail aan info@.
 - Kaart: click-to-load, dus geen cookiebanner. Staat zo in de privacyverklaring.
 - Algemene voorwaarden: standaardtekst met drie markeringen (geldigheid offerte, aanbetaling, montagegarantie).
 - Showroom (9 okt 2026): de stockfoto is vervangen door een klikbare rondloop met de eigen foto's van Michael

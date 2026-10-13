@@ -9,7 +9,7 @@ export default defineConfig({
   site: 'https://www.zbnridderkerk.nl',
   trailingSlash: 'always',
   devToolbar: { enabled: false },
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (pagina) => !pagina.includes('/bedankt/') })],
   vite: {
     plugins: [tailwindcss()],
     // Scripts nooit inline, zodat de Content-Security-Policy ze zonder 'unsafe-inline' toestaat.

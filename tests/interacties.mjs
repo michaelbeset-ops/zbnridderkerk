@@ -121,9 +121,9 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   ok(`${tag} vandaag gemarkeerd`, (await p.locator('#showroom tr.text-groen').count()) === 1);
   // Reviews link
   ok(`${tag} reviews Google-link`, (await p.getAttribute('#reviews a[href*="google"]', 'target')) === '_blank');
-  // Formulier compleet: validatie, verzenden (gemockt), bevestiging, nog een aanvraag
+  // Formulier compleet: validatie, foto, verzenden naar FormSubmit (gemockt), daarna de bedankpagina
   let verstuurd = '';
-  await p.route('https://api.web3forms.com/submit', (r) => { verstuurd = r.request().postData() ?? ''; return r.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' }); });
+  await p.route('https://formsubmit.co/**', (r) => { verstuurd = (r.request().postDataBuffer() ?? Buffer.alloc(0)).toString('latin1'); return r.fulfill({ status: 303, headers: { Location: base + 'bedankt/' } }); });
   await p.goto(base + '?product=screens#offerte', { waitUntil: 'load' }); await p.waitForTimeout(400);
   ok(`${tag} formulier product vooringevuld`, await p.isChecked('input[name="product-keuze"][value="Screens"]') && (await p.textContent('[data-keuze-tekst]')) === 'Screens');
   await tik('[data-producten] summary'); await p.waitForTimeout(200);
@@ -135,10 +135,18 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await p.fill('#mail', 'fout'); await p.locator('#mail').blur(); await p.waitForTimeout(100);
   ok(`${tag} formulier ongeldig e-mail`, !(await p.locator('#mail-fout').evaluate((e) => e.classList.contains('hidden'))));
   await p.fill('#naam', 'Test'); await p.fill('#straat', 'Teststraat 1'); await p.fill('#plaats', 'Ridderkerk'); await p.fill('#tel', '0612345678'); await p.fill('#mail', 'test@example.com');
-  const key = await p.getAttribute('[data-offerte]', 'data-key');
-  await tik('[data-verstuur]'); await p.waitForTimeout(1200);
-  if (key) { ok(`${tag} formulier stuurt producten samen mee`, verstuurd.includes('Rolluiken, Screens, Horren') && !verstuurd.includes('product-keuze')); ok(`${tag} formulier bevestiging`, await p.locator('[data-klaar]').isVisible()); await tik('[data-nog-een]'); await p.waitForTimeout(300); ok(`${tag} formulier nog een aanvraag`, await p.locator('#naam').isVisible()); }
-  else ok(`${tag} formulier zonder key: nette melding`, (await p.textContent('[data-status]')).includes('nog niet gekoppeld'));
+  await p.setInputFiles('#fotos', [{ name: 'a.png', mimeType: 'image/png', buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64') }]);
+  await p.waitForTimeout(200); ok(`${tag} formulier fotopreview`, (await p.locator('[data-previews] li').count()) === 1);
+  await p.setInputFiles('#fotos', [{ name: 'groot.png', mimeType: 'image/png', buffer: Buffer.alloc(11 * 1024 * 1024) }]); await p.waitForTimeout(200);
+  ok(`${tag} formulier foto te groot geweigerd`, !(await p.locator('#fotos-fout').evaluate((e) => e.classList.contains('hidden'))));
+  await p.setInputFiles('#fotos', []); await p.waitForTimeout(100);
+  ok(`${tag} formulier naar FormSubmit info@`, (await p.getAttribute('[data-offerte]', 'action')) === 'https://formsubmit.co/info@zbnridderkerk.nl' && (await p.getAttribute('[data-offerte]', 'enctype')) === 'multipart/form-data');
+  await p.setInputFiles('#fotos', [{ name: 'gevel.png', mimeType: 'image/png', buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64') }]); await p.waitForTimeout(200);
+  await tik('[data-verstuur]'); await p.waitForURL('**/bedankt/', { timeout: 8000 }).catch(() => {}); await p.waitForTimeout(300);
+  ok(`${tag} formulier stuurt producten samen mee`, verstuurd.includes('Rolluiken, Screens, Horren') && !verstuurd.includes('product-keuze') && verstuurd.includes('Offerteaanvraag via de website: Rolluiken, Screens, Horren'));
+  ok(`${tag} formulier stuurt foto mee`, verstuurd.includes('filename="gevel.png"') && verstuurd.includes('name="_next"'));
+  ok(`${tag} formulier -> bedankpagina`, p.url().endsWith('/bedankt/') && (await p.locator('h1').textContent()).includes('Bedankt'));
+  ok(`${tag} bedankpagina niet in Google`, (await p.getAttribute('meta[name="robots"][content*="noindex"]', 'content')) !== null);
   // Afsluiter
   await p.goto(base, { waitUntil: 'load' }); await tik('main > section:last-of-type a.btn-groen'); await p.waitForTimeout(900); ok(`${tag} afsluiter Offerte`, Math.abs((await top('#offerte')) - (await headerBottom())) < 60);
   // Footer
