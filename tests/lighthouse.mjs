@@ -5,7 +5,7 @@ import lighthouse from 'lighthouse';
 import { launch } from 'chrome-launcher';
 const pad = process.argv[2] ?? '/';
 const server = await preview({ root: process.cwd(), logLevel: 'silent' });
-const url = `http://localhost:${server.port}/zbnridderkerk${pad}`;
+const url = `http://localhost:${server.port}${pad}`;
 
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--no-sandbox'] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });

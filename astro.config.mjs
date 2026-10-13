@@ -3,11 +3,10 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
-// Preview op GitHub Pages: https://michaelbeset-ops.github.io/zbnridderkerk/
-// Bij livegang op het eigen domein: site op https://www.zbnridderkerk.nl, base weg, public/CNAME erbij.
+// Live op het eigen domein via GitHub Pages (public/CNAME). Terug naar preview op github.io: site
+// https://michaelbeset-ops.github.io met base '/zbnridderkerk' en PUBLIC_PREVIEW '1' in de workflow.
 export default defineConfig({
-  site: 'https://michaelbeset-ops.github.io',
-  base: '/zbnridderkerk',
+  site: 'https://www.zbnridderkerk.nl',
   trailingSlash: 'always',
   devToolbar: { enabled: false },
   integrations: [sitemap()],

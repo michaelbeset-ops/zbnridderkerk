@@ -4,7 +4,7 @@ import { preview } from 'astro';
 const pad = process.argv[2] ?? '/';
 const naam = process.argv[3] ?? 'home';
 const server = await preview({ root: process.cwd(), logLevel: 'silent' });
-const base = `http://localhost:${server.port}/zbnridderkerk${pad}`;
+const base = `http://localhost:${server.port}${pad}`;
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--no-sandbox'] });
 for (const [w, h] of [[1440, 900], [390, 844], [320, 640]]) {
   const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1 });

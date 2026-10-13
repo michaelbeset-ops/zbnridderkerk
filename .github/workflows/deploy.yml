@@ -20,10 +20,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Preview (noindex) zolang de site nog niet op het eigen domein staat. Zet op '' bij livegang.
       - run: npm run build
         env:
-          PUBLIC_PREVIEW: '1'
           # Web3Forms access key: Settings > Secrets and variables > Actions > Variables > PUBLIC_WEB3FORMS_KEY
           PUBLIC_WEB3FORMS_KEY: ${{ vars.PUBLIC_WEB3FORMS_KEY }}
       - uses: actions/upload-pages-artifact@v3
