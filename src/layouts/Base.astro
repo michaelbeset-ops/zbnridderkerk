@@ -6,11 +6,11 @@ import Chrome from '../components/Chrome.astro';
 import dmSans from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
 import archivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 
-interface Props { title: string; description: string; jsonld?: object | object[]; ogImage?: string; }
-const { title, description, jsonld, ogImage } = Astro.props;
+interface Props { title: string; description: string; jsonld?: object | object[]; ogImage?: string; noindex?: boolean; }
+const { title, description, jsonld, ogImage, noindex } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 // Alles van de eigen host; alleen de kaart (Google) en het formulier (FormSubmit) gaan naar buiten.
-const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests";
+const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self' https://formsubmit.co; object-src 'none'; base-uri 'self'; upgrade-insecure-requests";
 ---
 <!doctype html>
 <html lang="nl">
@@ -23,7 +23,7 @@ const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'u
     <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {site.preview ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={canonical} />}
+    {site.preview || noindex ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content={site.themeColor} />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
     <link rel="icon" type="image/png" sizes="32x32" href={url('favicon-32.png')} />

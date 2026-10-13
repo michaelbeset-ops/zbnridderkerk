@@ -1,10 +1,11 @@
 # ZBN Zonwering Ridderkerk, website
 
     npm install
-    PUBLIC_PREVIEW=1 PUBLIC_WEB3FORMS_KEY=... npm run build
+    npm run build
 
-- `PUBLIC_PREVIEW=1`: noindex, zolang de site nog niet op het eigen domein staat.
-- `PUBLIC_WEB3FORMS_KEY`: access key van Web3Forms voor het offerteformulier (in GitHub als repository-variabele).
+- `PUBLIC_PREVIEW=1`: noindex en geen JSON-LD (alleen voor een preview buiten het eigen domein).
+- Offerteformulier: FormSubmit (formsubmit.co) naar info@zbnridderkerk.nl, met foto's als bijlage; geen key nodig.
+  De eerste aanvraag stuurt een activatiemail naar info@ die eenmalig bevestigd moet worden.
 - Teksten en gegevens staan in `src/data/site.ts`, foto's in `src/assets`.
 - Screenshots: `node shots/shoot.mjs / home` (na `npm run build`).
 
