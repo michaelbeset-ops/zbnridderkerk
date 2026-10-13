@@ -296,7 +296,7 @@ export const producten: Product[] = [
     intro: 'Voor een dakraam van Fakro is er zonwering die precies in het kozijn past. Zo houdt u licht, warmte of inkijk tegen, ook bij een schuin raam.',
     tekst: [
       'Er is zonwering voor binnen, zoals verduisterende gordijnen, rolgordijnen en plissés. Voor buiten zijn er rolluiken en screens, die de warmte tegenhouden voordat die het glas raakt.',
-      'Welke zonwering past, hangt af van het type en de maat van het dakraam. Die staan op het typeplaatje in het raam. Neem een foto van het plaatje mee naar de showroom, of stuur hem mee met uw offerteaanvraag.',
+      'Welke zonwering past, hangt af van het type en de maat van het dakraam. Die staan op het typeplaatje in het raam. Neem een foto van het plaatje mee naar de showroom, of mail hem naar ons na uw offerteaanvraag.',
     ],
     punten: ['Past precies in het Fakro-dakraam', 'Verduisteren, licht dempen of warmte tegenhouden', 'Voor binnen en buiten', 'Neem een foto van het typeplaatje mee'],
   },
@@ -305,7 +305,7 @@ export const producten: Product[] = [
     intro: 'Voor een dakraam van Velux is er zonwering die precies in het kozijn past. Zo houdt u licht, warmte of inkijk tegen, ook bij een schuin raam.',
     tekst: [
       'Er is zonwering voor binnen, zoals verduisterende gordijnen, rolgordijnen en plissés. Voor buiten zijn er rolluiken en screens, die de warmte tegenhouden voordat die het glas raakt.',
-      'Welke zonwering past, hangt af van het type en de maat van het dakraam. Die staan op het typeplaatje in het raam. Neem een foto van het plaatje mee naar de showroom, of stuur hem mee met uw offerteaanvraag.',
+      'Welke zonwering past, hangt af van het type en de maat van het dakraam. Die staan op het typeplaatje in het raam. Neem een foto van het plaatje mee naar de showroom, of mail hem naar ons na uw offerteaanvraag.',
     ],
     punten: ['Past precies in het Velux-dakraam', 'Verduisteren, licht dempen of warmte tegenhouden', 'Voor binnen en buiten', 'Neem een foto van het typeplaatje mee'],
   },

@@ -577,7 +577,7 @@ export const details: Record<string, Details> = {
     bediening: binnenBediening('de dakraamzonwering', 'Met de hand, met een greep aan de onderlat.'),
     doek: { ...stoffen, kop: 'Stoffen en kleuren', merken: 'Zonwering van Fakro.' },
     vragen: [
-      { vraag: 'Hoe weet ik welk dakraam ik heb?', antwoord: 'Het type en de maat staan op het typeplaatje in het raam, meestal bovenin het kozijn als u het raam opent. Maak er een foto van en neem die mee naar de showroom of stuur hem mee met uw offerteaanvraag.' },
+      { vraag: 'Hoe weet ik welk dakraam ik heb?', antwoord: 'Het type en de maat staan op het typeplaatje in het raam, meestal bovenin het kozijn als u het raam opent. Maak er een foto van en neem die mee naar de showroom of mail hem naar ons na uw offerteaanvraag.' },
       { vraag: 'Kan de zonwering elektrisch?', antwoord: 'Voor veel dakramen is er elektrische zonwering, ook op zonne-energie. Of het bij uw raam kan, hangt af van het type.' },
       { vraag: 'Binnen of buiten?', antwoord: 'Binnen regelt u licht en privacy. Buiten houdt de warmte het beste tegen, omdat de zon het glas niet raakt. Ze zijn ook te combineren.' },
     ],
@@ -599,7 +599,7 @@ export const details: Record<string, Details> = {
     bediening: binnenBediening('de dakraamzonwering', 'Met de hand, met een greep aan de onderlat.'),
     doek: { ...stoffen, kop: 'Stoffen en kleuren', merken: 'Zonwering van Velux.' },
     vragen: [
-      { vraag: 'Hoe weet ik welk dakraam ik heb?', antwoord: 'Het type en de maat staan op het typeplaatje in het raam, meestal bovenin het kozijn als u het raam opent. Maak er een foto van en neem die mee naar de showroom of stuur hem mee met uw offerteaanvraag.' },
+      { vraag: 'Hoe weet ik welk dakraam ik heb?', antwoord: 'Het type en de maat staan op het typeplaatje in het raam, meestal bovenin het kozijn als u het raam opent. Maak er een foto van en neem die mee naar de showroom of mail hem naar ons na uw offerteaanvraag.' },
       { vraag: 'Kan de zonwering elektrisch?', antwoord: 'Voor veel dakramen is er elektrische zonwering, ook op zonne-energie. Of het bij uw raam kan, hangt af van het type.' },
       { vraag: 'Binnen of buiten?', antwoord: 'Binnen regelt u licht en privacy. Buiten houdt de warmte het beste tegen, omdat de zon het glas niet raakt. Ze zijn ook te combineren.' },
     ],
