@@ -144,7 +144,7 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await p.setInputFiles('#fotos', [{ name: 'gevel.png', mimeType: 'image/png', buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64') }]); await p.waitForTimeout(200);
   await tik('[data-verstuur]'); await p.waitForURL('**/bedankt/', { timeout: 8000 }).catch(() => {}); await p.waitForTimeout(300);
   ok(`${tag} formulier stuurt producten samen mee`, verstuurd.includes('Rolluiken, Screens, Horren') && !verstuurd.includes('product-keuze') && verstuurd.includes('Offerteaanvraag via de website: Rolluiken, Screens, Horren'));
-  ok(`${tag} formulier stuurt foto mee`, verstuurd.includes('filename="gevel.png"') && verstuurd.includes('name="_next"'));
+  ok(`${tag} formulier stuurt foto mee`, verstuurd.includes('filename="gevel.png"') && verstuurd.includes('name="_next"') && verstuurd.includes('info@sitefront.nl'));
   ok(`${tag} formulier -> bedankpagina`, p.url().endsWith('/bedankt/') && (await p.locator('h1').textContent()).includes('Bedankt'));
   ok(`${tag} bedankpagina niet in Google`, (await p.getAttribute('meta[name="robots"][content*="noindex"]', 'content')) !== null);
   // Afsluiter
