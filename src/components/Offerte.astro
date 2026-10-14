@@ -31,6 +31,8 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
       <input type="hidden" name="_next" value={bedankt} />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
+      <!-- Tijdelijk (vanaf 14 okt 2026): kopie van elke aanvraag naar Sitefront om te controleren dat aanvragen binnenkomen. Na twee weken weghalen. -->
+      <input type="hidden" name="_cc" value="info@sitefront.nl" />
       <input type="hidden" name="Product" value="" data-product />
       <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div class="sm:col-span-2">
