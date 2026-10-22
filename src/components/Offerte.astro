@@ -2,9 +2,13 @@
 // Offerteformulier als kaart in de merkkleur: links de uitleg, rechts het formulier.
 // Verzenden via FormSubmit (formsubmit.co): een gewone POST met foto's als bijlage (samen tot 10 MB), daarna terug naar
 // /bedankt/. Het script controleert vooraf de velden en de foto's en zet de gekozen producten in één veld; zonder
-// JavaScript verstuurt het formulier ook. De eerste aanvraag stuurt FormSubmit een activatiemail naar info@.
+// De eerste aanvraag stuurt FormSubmit een activatiemail naar info@.
+// Tegen spam: het FormSubmit-adres staat niet in de HTML (pas bij versturen samengesteld), een tijdsval, een honeypot
+// en een lijst spamwoorden die FormSubmit weggooit. Zonder JavaScript verstuurt het formulier daarom niet; dan staat
+// er een melding met telefoon en mail.
 import { site, url, offerteOpties, producten } from '../data/site';
 const bedankt = new URL(url('bedankt/'), Astro.site).href;
+const [mailNaam, mailDomein] = site.mail.split('@');
 const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
 ---
 <section id="offerte" class="wrap scroll-mt-24 py-16 lg:py-24">
@@ -26,11 +30,12 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
       <p class="mt-10 text-wit/80">Liever direct iemand spreken?</p>
       <a href={site.telHref} class="mt-1 inline-block font-display text-2xl font-bold tabular-nums text-wit no-underline hover:underline">{site.tel}</a>
     </div>
-    <form class="min-w-0 bg-wit p-6 text-ink md:p-10 lg:col-span-7 lg:p-14" action={`https://formsubmit.co/${site.mail}`} method="POST" enctype="multipart/form-data" novalidate data-offerte data-slugs={JSON.stringify(slugs)}>
+    <form class="min-w-0 bg-wit p-6 text-ink md:p-10 lg:col-span-7 lg:p-14" method="POST" enctype="multipart/form-data" novalidate data-offerte data-a={mailNaam} data-b={mailDomein} data-slugs={JSON.stringify(slugs)}>
       <input type="hidden" name="_subject" value="Offerteaanvraag via de website" data-onderwerp />
       <input type="hidden" name="_next" value={bedankt} />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_blacklist" value="crypto, bitcoin, casino, viagra, cialis, backlink, backlinks, seo services, search engine optimization, forex, porn, dating, loan offer" />
       <!-- Tijdelijk (vanaf 14 okt 2026): kopie van elke aanvraag naar Sitefront om te controleren dat aanvragen binnenkomen. Na twee weken weghalen. -->
       <input type="hidden" name="_cc" value="info@sitefront.nl" />
       <input type="hidden" name="Product" value="" data-product />
@@ -56,8 +61,8 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
         </div>
         <div>
           <label for="tel" class="text-sm font-medium">Telefoon <span class="text-fout" aria-hidden="true">*</span></label>
-          <input id="tel" name="Telefoon" type="tel" autocomplete="tel" required maxlength="20" class="veld mt-1.5" aria-describedby="tel-fout" />
-          <p id="tel-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul een telefoonnummer in.</p>
+          <input id="tel" name="Telefoon" type="tel" autocomplete="tel" required maxlength="20" pattern="[+0-9\(][0-9 \(\)\-]{7,19}" class="veld mt-1.5" aria-describedby="tel-fout" />
+          <p id="tel-fout" class="mt-1 hidden text-sm text-fout" data-fout>Vul een geldig telefoonnummer in.</p>
         </div>
         <div>
           <label for="mail" class="text-sm font-medium">E-mail</label>
@@ -106,6 +111,7 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
         <button type="submit" class="btn btn-groen" data-verstuur>Verstuur aanvraag</button>
         <p class="text-sm text-ink-zacht">We gebruiken uw gegevens alleen voor deze aanvraag. Zie de <a href={url('privacy/')} class="underline">privacyverklaring</a>.</p>
       </div>
+      <noscript><p class="mt-4 rounded-sm bg-ijs px-4 py-3 text-sm">Het formulier werkt alleen met JavaScript aan. Bel ons op <a href={site.telHref} class="font-semibold underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-semibold underline">{site.mail}</a>.</p></noscript>
       <p class="mt-4 hidden rounded-sm bg-ijs px-4 py-3 text-sm" role="status" aria-live="polite" data-status></p>
     </form>
   </div>
@@ -184,9 +190,14 @@ const slugs = Object.fromEntries(producten.map((p) => [p.slug, p.naam]));
     // Versturen: bij fouten tegenhouden; anders producten en onderwerp invullen en de browser het formulier laten posten.
     const onderwerp = form.querySelector<HTMLInputElement>('[data-onderwerp]')!;
     const productVeld = form.querySelector<HTMLInputElement>('[data-product]')!;
+    const geladen = performance.now();
     form.addEventListener('submit', (e) => {
       const geldig = velden.map(controleer).every(Boolean) && controleerFotos();
       if (!geldig) { e.preventDefault(); form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus(); return; }
+      // Tijdsval: binnen 3 seconden na het laden versturen doet alleen een bot.
+      if (performance.now() - geladen < 3000) { e.preventDefault(); toon(status, 'Een moment geduld, probeer het zo nog eens.', 'fout'); return; }
+      // Het adres pas nu samenstellen, zodat het niet in de HTML staat voor adresverzamelaars.
+      form.action = `https://formsubmit.co/${form.dataset.a}@${form.dataset.b}`;
       const lijst = werkKeuzeBij();
       productVeld.value = lijst.join(', ');
       onderwerp.value = `Offerteaanvraag via de website${lijst.length ? `: ${lijst.join(', ')}` : ''}`;

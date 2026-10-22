@@ -122,8 +122,8 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   // Reviews link
   ok(`${tag} reviews Google-link`, (await p.getAttribute('#reviews a[href*="google"]', 'target')) === '_blank');
   // Formulier compleet: validatie, foto, verzenden naar FormSubmit (gemockt), daarna de bedankpagina
-  let verstuurd = '';
-  await p.route('https://formsubmit.co/**', (r) => { verstuurd = (r.request().postDataBuffer() ?? Buffer.alloc(0)).toString('latin1'); return r.fulfill({ status: 303, headers: { Location: base + 'bedankt/' } }); });
+  let verstuurd = '', verstuurdNaar = '';
+  await p.route('https://formsubmit.co/**', (r) => { verstuurdNaar = r.request().url(); verstuurd = (r.request().postDataBuffer() ?? Buffer.alloc(0)).toString('latin1'); return r.fulfill({ status: 303, headers: { Location: base + 'bedankt/' } }); });
   await p.goto(base + '?product=screens#offerte', { waitUntil: 'load' }); await p.waitForTimeout(400);
   ok(`${tag} formulier product vooringevuld`, await p.isChecked('input[name="product-keuze"][value="Screens"]') && (await p.textContent('[data-keuze-tekst]')) === 'Screens');
   await tik('[data-producten] summary'); await p.waitForTimeout(200);
@@ -140,10 +140,12 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
   await p.setInputFiles('#fotos', [{ name: 'groot.png', mimeType: 'image/png', buffer: Buffer.alloc(11 * 1024 * 1024) }]); await p.waitForTimeout(200);
   ok(`${tag} formulier foto te groot geweigerd`, !(await p.locator('#fotos-fout').evaluate((e) => e.classList.contains('hidden'))));
   await p.setInputFiles('#fotos', []); await p.waitForTimeout(100);
-  ok(`${tag} formulier naar FormSubmit info@`, (await p.getAttribute('[data-offerte]', 'action')) === 'https://formsubmit.co/info@zbnridderkerk.nl' && (await p.getAttribute('[data-offerte]', 'enctype')) === 'multipart/form-data');
+  ok(`${tag} formulieradres niet in de HTML`, !(await p.content()).includes('formsubmit.co/info@') && (await p.getAttribute('[data-offerte]', 'enctype')) === 'multipart/form-data');
+  ok(`${tag} spamwoorden en honeypot aanwezig`, (await p.locator('[name="_blacklist"]').count()) === 1 && (await p.locator('[name="_honey"]').count()) === 1);
   await p.setInputFiles('#fotos', [{ name: 'gevel.png', mimeType: 'image/png', buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64') }]); await p.waitForTimeout(200);
   await tik('[data-verstuur]'); await p.waitForURL('**/bedankt/', { timeout: 8000 }).catch(() => {}); await p.waitForTimeout(300);
   ok(`${tag} formulier stuurt producten samen mee`, verstuurd.includes('Rolluiken, Screens, Horren') && !verstuurd.includes('product-keuze') && verstuurd.includes('Offerteaanvraag via de website: Rolluiken, Screens, Horren'));
+  ok(`${tag} formulier naar FormSubmit info@`, verstuurdNaar === 'https://formsubmit.co/info@zbnridderkerk.nl');
   ok(`${tag} formulier stuurt foto mee`, verstuurd.includes('filename="gevel.png"') && verstuurd.includes('name="_next"') && verstuurd.includes('info@sitefront.nl'));
   ok(`${tag} formulier -> bedankpagina`, p.url().endsWith('/bedankt/') && (await p.locator('h1').textContent()).includes('Bedankt'));
   ok(`${tag} bedankpagina niet in Google`, (await p.getAttribute('meta[name="robots"][content*="noindex"]', 'content')) !== null);
