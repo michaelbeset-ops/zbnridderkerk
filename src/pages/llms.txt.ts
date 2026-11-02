@@ -7,7 +7,7 @@ export const GET: APIRoute = ({ site: basis }) => {
   const abs = (p: string) => new URL(url(p), basis).href;
   const open = tijden.filter((t) => t.open).map((t) => `${t.naam} ${t.open} uur`).join(', ');
   const tekst = [
-    `# ${site.naam} ${site.rechtsvorm} (${site.kort})`,
+    `# ${site.handelsnaam} (${site.naam} ${site.rechtsvorm})`,
     '',
     `> Zonweringsbedrijf met eigen showroom in ${site.plaats}. Buiten- en binnenzonwering, rolluiken, garagedeuren en overkappingen op maat, ingemeten bij de klant thuis en gemonteerd door eigen monteurs.`,
     '',
@@ -16,6 +16,7 @@ export const GET: APIRoute = ({ site: basis }) => {
     `- Telefoon: ${site.tel}`,
     `- E-mail: ${site.mail}`,
     `- KvK: ${site.kvk}`,
+    `- Werkgebied: ${site.werkgebied.join(', ')} en omgeving`,
     `- Showroom open: ${open}. Zondag gesloten.`,
     `- Offerte aanvragen: ${abs('#offerte')}`,
     '',

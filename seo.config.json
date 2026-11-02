@@ -1,0 +1,272 @@
+{
+  "slug": "zbnridderkerk",
+  "site": "https://www.zbnridderkerk.nl",
+  "base": "",
+  "githubPagesUrl": "https://michaelbeset-ops.github.io/zbnridderkerk/",
+  "mode": "klant",
+  "language": "nl-NL",
+  "branche": "bouw",
+  "strategy": [
+    "lokaal",
+    "ai"
+  ],
+  "brandTerms": [
+    "zbn",
+    "zbn ridderkerk",
+    "zbn zonwering",
+    "zonweringsbedrijf noordenweg",
+    "zbnridderkerk"
+  ],
+  "business": {
+    "schemaType": "HomeAndConstructionBusiness",
+    "name": "ZBN Zonwering",
+    "legalName": "Zonweringsbedrijf Noordenweg vof",
+    "description": "Zonweringsbedrijf met eigen showroom in Ridderkerk voor buiten- en binnenzonwering, rolluiken, garagedeuren en overkappingen op maat, ingemeten en gemonteerd door eigen monteurs.",
+    "kvk": "24249059",
+    "vatID": "",
+    "foundingYear": "",
+    "founder": "",
+    "showAddress": true,
+    "street": "Noordenweg 71a",
+    "postalCode": "2984 AG",
+    "city": "Ridderkerk",
+    "region": "Zuid-Holland",
+    "country": "NL",
+    "geo": {
+      "lat": 51.8724936,
+      "lng": 4.6035895
+    },
+    "phone": "+31180430211",
+    "phoneDisplay": "0180 430 211",
+    "whatsapp": "",
+    "email": "info@zbnridderkerk.nl",
+    "priceRange": "",
+    "openingHours": [
+      {
+        "days": [
+          "Monday"
+        ],
+        "opens": "12:30",
+        "closes": "16:30"
+      },
+      {
+        "days": [
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:30",
+        "closes": "16:30"
+      },
+      {
+        "days": [
+          "Saturday"
+        ],
+        "opens": "09:30",
+        "closes": "12:30"
+      }
+    ],
+    "specialHours": [],
+    "areaServed": [
+      "Ridderkerk",
+      "Barendrecht",
+      "Rotterdam-Zuid"
+    ],
+    "gbpUrl": "https://maps.google.com/?cid=308299772888025268",
+    "reviewLink": "",
+    "gbpPrimaryCategory": "Leverancier van zonwering",
+    "sameAs": [
+      "https://maps.google.com/?cid=308299772888025268"
+    ],
+    "logo": "/favicon.svg",
+    "image": "/og.png",
+    "extra": {}
+  },
+  "services": [
+    {
+      "name": "Knikarmschermen",
+      "path": "/producten/knikarmschermen/",
+      "summary": "Schaduw op het terras, zonder palen in de weg.",
+      "keywords": [
+        "knikarmscherm ridderkerk",
+        "zonnescherm ridderkerk"
+      ]
+    },
+    {
+      "name": "Uitvalschermen",
+      "path": "/producten/uitvalschermen/",
+      "summary": "Zon buiten het raam houden, uitzicht behouden.",
+      "keywords": [
+        "uitvalschermen ridderkerk"
+      ]
+    },
+    {
+      "name": "Rolluiken",
+      "path": "/producten/rolluiken/",
+      "summary": "Isoleren, verduisteren en beveiligen in een.",
+      "keywords": [
+        "rolluiken ridderkerk",
+        "rolluiken barendrecht"
+      ]
+    },
+    {
+      "name": "Screens",
+      "path": "/producten/screens/",
+      "summary": "Verticaal doek dat warmte buiten houdt en uitzicht doorlaat.",
+      "keywords": [
+        "screens ridderkerk",
+        "screens barendrecht"
+      ]
+    },
+    {
+      "name": "Zipscreens",
+      "path": "/producten/zipscreens/",
+      "summary": "Screens met het doek vast in de geleiders, ook bij wind.",
+      "keywords": [
+        "zipscreens ridderkerk"
+      ]
+    },
+    {
+      "name": "Serrezonwering",
+      "path": "/producten/serrezonwering/",
+      "summary": "Doek boven het glazen dak van een serre of tuinkamer.",
+      "keywords": []
+    },
+    {
+      "name": "Pergolazonwering",
+      "path": "/producten/pergolazonwering/",
+      "summary": "Een scherm op palen, voor grote terrassen en veel wind.",
+      "keywords": []
+    },
+    {
+      "name": "Rolpoorten",
+      "path": "/producten/rolpoorten/",
+      "summary": "Een oprolbare poort voor garage, berging of bedrijfspand.",
+      "keywords": []
+    },
+    {
+      "name": "Garagedeuren",
+      "path": "/producten/garagedeuren/",
+      "summary": "Sectionaaldeuren op maat, met of zonder motor.",
+      "keywords": []
+    },
+    {
+      "name": "Overkappingen",
+      "path": "/producten/overkappingen/",
+      "summary": "Buiten zitten, ook als het regent.",
+      "keywords": []
+    },
+    {
+      "name": "Markiezen",
+      "path": "/producten/markiezen/",
+      "summary": "Het klassieke gebogen scherm boven raam, deur of etalage.",
+      "keywords": []
+    },
+    {
+      "name": "Motoren",
+      "path": "/producten/motoren/",
+      "summary": "Elektrische bediening voor zonwering en rolluiken.",
+      "keywords": []
+    },
+    {
+      "name": "Screendoek",
+      "path": "/producten/screendoek/",
+      "summary": "Doek voor screens en zipscreens, in veel kleuren en openheden.",
+      "keywords": []
+    },
+    {
+      "name": "Zonweringsdoek",
+      "path": "/producten/zonweringsdoek/",
+      "summary": "Doek voor zonnescherm, markies en pergola.",
+      "keywords": []
+    },
+    {
+      "name": "Jaloezieën",
+      "path": "/producten/jaloezieen/",
+      "summary": "Kantelbare lamellen van hout of aluminium.",
+      "keywords": []
+    },
+    {
+      "name": "Rolgordijnen",
+      "path": "/producten/rolgordijnen/",
+      "summary": "Een strak doek, lichtdoorlatend of verduisterend.",
+      "keywords": []
+    },
+    {
+      "name": "Plisségordijnen",
+      "path": "/producten/plissegordijnen/",
+      "summary": "Gevouwen stof die compact opvouwt, ook voor lastige ramen.",
+      "keywords": []
+    },
+    {
+      "name": "Lamelgordijnen",
+      "path": "/producten/lamelgordijnen/",
+      "summary": "Verticale lamellen voor grote ramen en schuifpuien.",
+      "keywords": []
+    },
+    {
+      "name": "Smart-fit",
+      "path": "/producten/smart-fit/",
+      "summary": "Raamdecoratie in een slank frame, zonder boren.",
+      "keywords": []
+    },
+    {
+      "name": "Duo rolgordijnen",
+      "path": "/producten/duo-rolgordijnen/",
+      "summary": "Twee banen stof die u precies op elkaar afstemt.",
+      "keywords": []
+    },
+    {
+      "name": "Shutters",
+      "path": "/producten/shutters/",
+      "summary": "Houten luiken met kantelbare lamellen, aan de binnenkant.",
+      "keywords": []
+    },
+    {
+      "name": "Fractions",
+      "path": "/producten/fractions/",
+      "summary": "Panelen met een uitgesneden patroon, voor licht en privacy.",
+      "keywords": []
+    },
+    {
+      "name": "Hordeuren",
+      "path": "/producten/hordeuren/",
+      "summary": "Deur open, insecten buiten.",
+      "keywords": []
+    },
+    {
+      "name": "Horren",
+      "path": "/producten/horren/",
+      "summary": "Raamhorren op maat, vast, oprolbaar of plissé.",
+      "keywords": []
+    },
+    {
+      "name": "Zonwering voor Fakro dakramen",
+      "path": "/producten/dakramen-fakro/",
+      "summary": "Zonwering die precies in een Fakro-dakraam past.",
+      "keywords": []
+    },
+    {
+      "name": "Zonwering voor Velux dakramen",
+      "path": "/producten/dakramen-velux/",
+      "summary": "Zonwering die precies in een Velux-dakraam past.",
+      "keywords": []
+    }
+  ],
+  "llmsPages": [],
+  "ignorePaths": [
+    "/bedankt/",
+    "/privacy/",
+    "/algemene-voorwaarden/"
+  ],
+  "gscProperty": "sc-domain:zbnridderkerk.nl",
+  "psiUrls": [
+    "/",
+    "/producten/screens/",
+    "/producten/rolluiken/"
+  ],
+  "aiCrawlers": {
+    "training": "allow"
+  }
+}

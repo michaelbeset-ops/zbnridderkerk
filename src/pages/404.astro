@@ -11,3 +11,25 @@ import { url } from '../data/site';
     </div>
   </section>
 </Base>
+
+<script>
+  // Vangnet voor adressen van de oude site (bijv. /home/index.php/rolluiken): op trefwoord naar de nieuwe pagina,
+  // anders naar de homepage. Alleen voor paden die op de oude site leken; echte typfouten blijven op deze 404.
+  // Pad plus querystring: de oude site zette het product in ?subcat=..., niet in het pad.
+  const pad = decodeURIComponent((location.pathname + location.search).toLowerCase());
+  if (/\/home\/|index\.php|\.html?$|\.php/.test(pad)) {
+    const doelen: [RegExp, string][] = [
+      [/page=(contact|showroom)/, '#showroom'], [/raamdecoratie/, 'binnenzonwering/'],
+      [/knikarm|zonnescherm/, 'producten/knikarmschermen/'], [/uitval/, 'producten/uitvalschermen/'], [/rolluik/, 'producten/rolluiken/'],
+      [/zip/, 'producten/zipscreens/'], [/screen/, 'producten/screens/'], [/serre/, 'producten/serrezonwering/'], [/pergola/, 'producten/pergolazonwering/'],
+      [/rolpoort/, 'producten/rolpoorten/'], [/garage/, 'producten/garagedeuren/'], [/overkap|terras/, 'producten/overkappingen/'], [/markiez|markies/, 'producten/markiezen/'],
+      [/motor|somfy/, 'producten/motoren/'], [/jaloez/, 'producten/jaloezieen/'], [/duo/, 'producten/duo-rolgordijnen/'], [/rolgordijn/, 'producten/rolgordijnen/'],
+      [/pliss/, 'producten/plissegordijnen/'], [/lamel/, 'producten/lamelgordijnen/'], [/shutter/, 'producten/shutters/'], [/hordeur/, 'producten/hordeuren/'],
+      [/hor/, 'producten/horren/'], [/velux/, 'producten/dakramen-velux/'], [/fakro/, 'producten/dakramen-fakro/'], [/binnen/, 'binnenzonwering/'],
+      [/buiten|zonwering/, 'buitenzonwering/'], [/contact|route|openingstijd/, '#showroom'],
+    ];
+    const doel = doelen.find(([r]) => r.test(pad))?.[1] ?? '';
+    location.replace('/' + doel);
+  }
+</script>
+

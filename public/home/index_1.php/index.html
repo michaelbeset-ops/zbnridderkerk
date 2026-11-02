@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Doorsturen | ZBN Zonwering</title>
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  // Oude site (tot okt 2026): /home/index_1.php?page=fotoalbum&subcat=Rolluiken enz. Een statische host kan niet op
+  // de querystring doorsturen, dus deze pagina leest hem en stuurt door naar de nieuwe pagina. Zelfde lijst als de 404.
+  var pad = decodeURIComponent((location.pathname + location.search).toLowerCase());
+  var doelen = [
+    [/page=(contact|showroom)/, '#showroom'], [/raamdecoratie/, 'binnenzonwering/'],
+    [/knikarm|zonnescherm/, 'producten/knikarmschermen/'], [/uitval/, 'producten/uitvalschermen/'], [/rolluik/, 'producten/rolluiken/'],
+    [/zip/, 'producten/zipscreens/'], [/screen/, 'producten/screens/'], [/serre/, 'producten/serrezonwering/'], [/pergola/, 'producten/pergolazonwering/'],
+    [/rolpoort/, 'producten/rolpoorten/'], [/garage/, 'producten/garagedeuren/'], [/overkap|terras/, 'producten/overkappingen/'], [/markiez|markies/, 'producten/markiezen/'],
+    [/motor|somfy/, 'producten/motoren/'], [/jaloez/, 'producten/jaloezieen/'], [/duo/, 'producten/duo-rolgordijnen/'], [/rolgordijn/, 'producten/rolgordijnen/'],
+    [/pliss/, 'producten/plissegordijnen/'], [/lamel/, 'producten/lamelgordijnen/'], [/shutter/, 'producten/shutters/'], [/hordeur/, 'producten/hordeuren/'],
+    [/hor(ren)?\b|subcat=hor/, 'producten/horren/'], [/velux/, 'producten/dakramen-velux/'], [/fakro/, 'producten/dakramen-fakro/'], [/binnen/, 'binnenzonwering/'],
+    [/buiten/, 'buitenzonwering/']
+  ];
+  var doel = '';
+  for (var i = 0; i < doelen.length; i++) { if (doelen[i][0].test(pad)) { doel = doelen[i][1]; break; } }
+  location.replace('/' + doel);
+</script>
+<noscript><meta http-equiv="refresh" content="0;url=/"></noscript>
+</head>
+<body><p>U wordt doorgestuurd naar de <a href="/">nieuwe website van ZBN Zonwering</a>.</p></body>
+</html>

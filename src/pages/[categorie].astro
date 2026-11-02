@@ -17,7 +17,7 @@ const lijst = perCategorie(c.categorie);
 const metFoto = lijst.filter((p) => productFotos(p).length);
 const zonderFoto = lijst.filter((p) => !productFotos(p).length);
 const ander = categorieen.find((x) => x.slug !== c.slug)!;
-const beschrijving = `${c.naam} op maat in Ridderkerk: ${lijst.map((p) => p.naam.toLowerCase()).slice(0, 6).join(', ')} en meer. Inmeten en montage door de eigen monteurs van ZBN.`;
+const beschrijving = `${c.naam} op maat in Ridderkerk: ${lijst.map((p) => p.naam.toLowerCase()).slice(0, 4).join(', ')} en meer. Inmeten en montage door eigen monteurs.`;
 const og = (await getImage({ src: fotos[c.foto], width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 })).src;
 const jsonld = site.preview ? undefined : {
   '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -26,7 +26,7 @@ const jsonld = site.preview ? undefined : {
   ],
 };
 ---
-<Base title={`${c.naam} op maat in Ridderkerk | ZBN Zonwering`} description={beschrijving} ogImage={og} jsonld={jsonld}>
+<Base title={c.slug === 'binnenzonwering' ? 'Raamdecoratie en binnenzonwering in Ridderkerk | ZBN' : `${c.naam} op maat in Ridderkerk | ZBN Zonwering`} description={beschrijving} ogImage={og} jsonld={jsonld}>
   <section class="wrap pt-8 lg:pt-14">
     <nav aria-label="Kruimelpad" class="text-sm text-ink-zacht">
       <ol class="flex flex-wrap items-center gap-2">
