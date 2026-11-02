@@ -2,6 +2,9 @@
 export const site = {
   naam: 'Zonweringsbedrijf Noordenweg',
   kort: 'ZBN Ridderkerk',
+  handelsnaam: 'ZBN Zonwering', // zoals in bedrijvengidsen en de Microsoft-omgeving; controleren tegen het Google-profiel
+  // Werkgebied, opgegeven door Michael (2 nov 2026). Geen andere plaatsen toevoegen zonder bevestiging.
+  werkgebied: ['Ridderkerk', 'Barendrecht', 'Rotterdam-Zuid'],
   rechtsvorm: 'vof',
   straat: 'Noordenweg 71a',
   postcode: '2984 AG',

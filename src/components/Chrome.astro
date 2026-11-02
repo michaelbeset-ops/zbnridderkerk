@@ -78,6 +78,7 @@ const menu = [['Werkwijze', '#werkwijze'], ['Showroom', '#showroom'], ['Reviews'
         <div class="md:col-span-4">
           <Image src={logo} alt="" width={176} height={120} class="h-16 w-auto" />
           <p class="mt-4 text-sm"><strong class="font-display text-base font-semibold">{site.naam} {site.rechtsvorm}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}<br />KvK {site.kvk}</p>
+          <p class="mt-3 text-sm">Werkgebied: {site.werkgebied.join(', ')} en omgeving</p>
         </div>
         <div class="text-sm md:col-span-3">
           <p class="kicker text-ink-zacht">Contact</p>

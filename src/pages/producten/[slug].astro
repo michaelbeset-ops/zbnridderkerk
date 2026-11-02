@@ -25,6 +25,8 @@ const snel = [['uitvoeringen', 'Uitvoeringen'], d.bediening && ['bedieningen', '
   eigen.length > 1 && ['fotos', "Foto's"], ['faq', 'Vragen']].filter(Boolean) as string[][];
 // Korte meta description (onder 155 tekens) en een eigen deelafbeelding per product.
 const beschrijving = `${p.naam} op maat in Ridderkerk. ${p.kort} Inmeten en montage door de eigen monteurs van ZBN.`;
+// Title onder ~60 tekens: bij lange productnamen valt "op maat" weg.
+const titel = `${p.naam} op maat in Ridderkerk | ZBN Zonwering`.length <= 60 ? `${p.naam} op maat in Ridderkerk | ZBN Zonwering` : `${p.naam} in Ridderkerk | ZBN`;
 const og = hoofd ? (await getImage({ src: hoofd.src, width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 80 })).src : undefined;
 // Gestructureerde data met alleen echte inhoud: kruimelpad en de vragen op deze pagina. Pas als de site op het domein staat.
 const jsonld = site.preview ? undefined : [
@@ -36,11 +38,11 @@ const jsonld = site.preview ? undefined : [
   { '@context': 'https://schema.org', '@type': 'Service', name: p.naam, serviceType: p.naam, description: p.intro.replace(/\s*\[\[[^\]]*\]\]/g, ''),
     url: new URL(url(`producten/${p.slug}/`), Astro.site).href, ...(og ? { image: new URL(og, Astro.site).href } : {}),
     provider: { '@id': new URL(url('#bedrijf'), Astro.site).href, '@type': 'HomeAndConstructionBusiness', name: `${site.naam} ${site.rechtsvorm}`, telephone: '+31180430211' },
-    areaServed: { '@type': 'City', name: site.plaats } },
+    areaServed: site.werkgebied.map((name) => ({ '@type': 'City', name })) },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: d.vragen.map((v) => ({ '@type': 'Question', name: v.vraag, acceptedAnswer: { '@type': 'Answer', text: v.antwoord } })) },
 ];
 ---
-<Base title={`${p.naam} op maat in Ridderkerk | ZBN Zonwering`} description={beschrijving} ogImage={og} jsonld={jsonld}>
+<Base title={titel} description={beschrijving} ogImage={og} jsonld={jsonld}>
   <!-- 1. Split hero: tekst links, foto rechts, drie voordeel-labels onder de foto. -->
   <section class="wrap pt-8 lg:pt-14">
     <nav aria-label="Kruimelpad" class="text-sm text-ink-zacht">

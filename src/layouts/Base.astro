@@ -34,7 +34,7 @@ const csp = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'u
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(ogImage ?? url('og.png'), Astro.site).href} />
+    <meta property="og:image" content={new URL(ogImage ?? url('og.jpg'), Astro.site).href} />
     <meta name="twitter:card" content="summary_large_image" />
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
     <meta name="robots" content="max-image-preview:large" />

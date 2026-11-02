@@ -8,6 +8,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.zbnridderkerk.nl',
   trailingSlash: 'always',
+  // Oude site (tot okt 2026) draaide op /home/index.php/...; die adressen staan nog in Google.
+  redirects: { '/home/index.php/': '/', '/home/': '/' },
   devToolbar: { enabled: false },
   integrations: [sitemap({ filter: (pagina) => !pagina.includes('/bedankt/') })],
   vite: {
