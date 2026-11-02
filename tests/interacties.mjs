@@ -86,7 +86,10 @@ for (const [w, h, touch] of [[390, 844, true], [1440, 900, false]]) {
       const t = await top('#' + naam.toLowerCase()); const hb = await headerBottom();
       ok(`${tag} nav ${naam} landt onder header`, t >= hb - 1 && t < hb + 60, `top ${t} header ${Math.round(hb)}`);
     }
-    await p.goto(base, { waitUntil: 'load' }); await p.click('header a.btn-groen'); await p.waitForTimeout(900); ok(`${tag} nav Offerte landt`, Math.abs((await top('#offerte')) - (await headerBottom())) < 60);
+    await p.goto(base, { waitUntil: 'load' }); await p.click('header a.btn-groen'); await p.waitForTimeout(900);
+    // Offerte ligt het verst weg: wacht tot het zachte scrollen echt stilstaat (op een trage machine duurt het langer dan 900 ms).
+    await p.waitForFunction(() => new Promise((r) => { const y = scrollY; setTimeout(() => r(scrollY === y), 150); }), null, { timeout: 3000 }).catch(() => {});
+    ok(`${tag} nav Offerte landt`, Math.abs((await top('#offerte')) - (await headerBottom())) < 60);
     ok(`${tag} nav belknop`, (await p.getAttribute('header a[href^="tel"]', 'href')) === 'tel:+31180430211');
     await p.click('header a[aria-label*="homepage"]'); await p.waitForLoadState('load'); ok(`${tag} logo -> home`, p.url() === base);
     // Reviews pijlen

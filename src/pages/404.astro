@@ -15,9 +15,11 @@ import { url } from '../data/site';
 <script>
   // Vangnet voor adressen van de oude site (bijv. /home/index.php/rolluiken): op trefwoord naar de nieuwe pagina,
   // anders naar de homepage. Alleen voor paden die op de oude site leken; echte typfouten blijven op deze 404.
-  const pad = decodeURIComponent(location.pathname.toLowerCase());
+  // Pad plus querystring: de oude site zette het product in ?subcat=..., niet in het pad.
+  const pad = decodeURIComponent((location.pathname + location.search).toLowerCase());
   if (/\/home\/|index\.php|\.html?$|\.php/.test(pad)) {
     const doelen: [RegExp, string][] = [
+      [/page=(contact|showroom)/, '#showroom'], [/raamdecoratie/, 'binnenzonwering/'],
       [/knikarm|zonnescherm/, 'producten/knikarmschermen/'], [/uitval/, 'producten/uitvalschermen/'], [/rolluik/, 'producten/rolluiken/'],
       [/zip/, 'producten/zipscreens/'], [/screen/, 'producten/screens/'], [/serre/, 'producten/serrezonwering/'], [/pergola/, 'producten/pergolazonwering/'],
       [/rolpoort/, 'producten/rolpoorten/'], [/garage/, 'producten/garagedeuren/'], [/overkap|terras/, 'producten/overkappingen/'], [/markiez|markies/, 'producten/markiezen/'],

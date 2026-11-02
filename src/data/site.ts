@@ -14,6 +14,8 @@ export const site = {
   mail: 'info@zbnridderkerk.nl', // op verzoek van ZBN (12 okt 2026), niet zonwering@
   privacyMail: 'info@zbnridderkerk.nl',
   kvk: '24249059',
+  // Google Bedrijfsprofiel (CID-link). Naam daar: 'ZBN zonwering', categorie 'Leverancier van zonwering'.
+  gbp: 'https://maps.google.com/?cid=308299772888025268',
   maps: 'https://www.google.com/maps/dir/?api=1&destination=Noordenweg+71a,+2984+AG+Ridderkerk',
   reviewsUrl: 'https://www.google.com/maps/search/?api=1&query=ZBN+Zonwering+Noordenweg+71a+Ridderkerk',
   mapsEmbed: 'https://www.google.com/maps?q=Noordenweg+71a,+2984+AG+Ridderkerk&z=15&hl=nl&output=embed',
@@ -115,7 +117,7 @@ export const producten: Product[] = [
   },
   {
     slug: 'zipscreens', naam: 'Zipscreens', categorie: 'buiten', kort: 'Screens met het doek vast in de geleiders, ook bij wind.',
-    intro: 'Bij een zipscreen zit het doek met een rits vast in de zijgeleiders. Het blijft strak staan bij wind, wappert niet en houdt insecten buiten.',
+    intro: 'Bij een zipscreen, ook wel ritsscreen genoemd, zit het doek met een rits vast in de zijgeleiders. Het blijft strak staan bij wind, wappert niet en houdt insecten buiten.',
     tekst: [
       'Zipscreens zijn de meest gekozen screens voor grote ramen en schuifpuien, omdat ze ook bij een stevige bries uit kunnen blijven. Met het doek omlaag ontstaat een gesloten vlak zonder kieren aan de zijkant.',
       'U kiest de openheid van het doek, de kleur van de cassette en de geleiders, en de bediening. Vrijwel altijd elektrisch, eventueel met een zon- en windsensor.',

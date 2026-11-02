@@ -32,7 +32,10 @@
     "city": "Ridderkerk",
     "region": "Zuid-Holland",
     "country": "NL",
-    "geo": {},
+    "geo": {
+      "lat": 51.8724936,
+      "lng": 4.6035895
+    },
     "phone": "+31180430211",
     "phoneDisplay": "0180 430 211",
     "whatsapp": "",
@@ -70,10 +73,12 @@
       "Barendrecht",
       "Rotterdam-Zuid"
     ],
-    "gbpUrl": "",
+    "gbpUrl": "https://maps.google.com/?cid=308299772888025268",
     "reviewLink": "",
-    "gbpPrimaryCategory": "",
-    "sameAs": [],
+    "gbpPrimaryCategory": "Leverancier van zonwering",
+    "sameAs": [
+      "https://maps.google.com/?cid=308299772888025268"
+    ],
     "logo": "/favicon.svg",
     "image": "/og.png",
     "extra": {}

@@ -26,7 +26,7 @@ const jsonld = site.preview ? undefined : {
   ],
 };
 ---
-<Base title={`${c.naam} op maat in Ridderkerk | ZBN Zonwering`} description={beschrijving} ogImage={og} jsonld={jsonld}>
+<Base title={c.slug === 'binnenzonwering' ? 'Raamdecoratie en binnenzonwering in Ridderkerk | ZBN' : `${c.naam} op maat in Ridderkerk | ZBN Zonwering`} description={beschrijving} ogImage={og} jsonld={jsonld}>
   <section class="wrap pt-8 lg:pt-14">
     <nav aria-label="Kruimelpad" class="text-sm text-ink-zacht">
       <ol class="flex flex-wrap items-center gap-2">
